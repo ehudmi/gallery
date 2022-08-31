@@ -1,7 +1,7 @@
 const { db } = require("../connections/heroku-gallery-local");
 
-const readDb = (table, data, criteria) => {
-  return db(table).select(data).where(criteria);
+const readDb = (table, data, criteria, limit, offset) => {
+  return db(table).select(data).where(criteria).limit(limit).offset(offset);
 };
 
 const insertDb = (table, inputData) => {

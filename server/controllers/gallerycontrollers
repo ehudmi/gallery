@@ -2,7 +2,24 @@ const { readDb, insertDb, updateDb } = require("../modules/gallerymodules");
 
 const getInfo = async (req, res) => {
   try {
-    let result = await readDb("authors", "*", { first_name: "Ehud" });
+    let result = await readDb(
+      "authors",
+      "*",
+      { first_name: "Ehud" },
+      null,
+      null
+    );
+    console.log(result);
+    res.send(result);
+  } catch (error) {
+    console.log(error);
+    res.status(404).json({ msg: "couldn't read" });
+  }
+};
+
+const getCourseList = async (req, res) => {
+  try {
+    let result = await readDb("courses", "*", { id: "1" }, null, null);
     console.log(result);
     res.send(result);
   } catch (error) {
@@ -28,6 +45,18 @@ const addInfo = async (req, res) => {
   }
 };
 
+const insertNewUser = async (req, res) => {
+  console.log(await req.body);
+  try {
+    let result = await insertDb("users", req.body);
+    console.log(result);
+    res.send("added info");
+  } catch (error) {
+    console.log(error);
+    res.status(404).json({ msg: "couldn't insert" });
+  }
+};
+
 const updateInfo = async (req, res) => {
   try {
     let result = await updateDb(
@@ -43,4 +72,4 @@ const updateInfo = async (req, res) => {
   }
 };
 
-module.exports = { getInfo, addInfo, updateInfo };
+module.exports = { getInfo, getCourseList, addInfo, insertNewUser, updateInfo };
