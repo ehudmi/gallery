@@ -1,14 +1,8 @@
-const { readDb, insertDb, updateDb } = require("../modules/gallerymodules");
+const { readDb, insertDb, updateDb } = require("../modules/gallery_modules");
 
 const getInfo = async (req, res) => {
   try {
-    let result = await readDb(
-      "authors",
-      "*",
-      { first_name: "Ehud" },
-      null,
-      null
-    );
+    let result = await readDb("users", "*", { first_name: "Ehud" });
     console.log(result);
     res.send(result);
   } catch (error) {
