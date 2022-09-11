@@ -1,4 +1,4 @@
-const jwt = require("express-jwt");
+const { expressjwt: jwt } = require("express-jwt");
 const { secret } = require("config.json");
 
 module.exports = authorize;

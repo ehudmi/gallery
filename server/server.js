@@ -1,22 +1,28 @@
+﻿require("rootpath")();
 const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
 const bodyParser = require("body-parser");
-const router = require("./routes/gallery_routes");
+const router = require("routes/gallery_routes");
+const errorHandler = require("_helpers/error-handler");
+const app = express();
+const { getUsers } = require("users/user.service");
 
 dotenv.config({ path: "C:/Github/gallery/server/.env" });
-
-const app = express();
-
-app.listen(process.env.PORT || 8080, () => {
-  console.log(`server is running on port ${process.env.PORT || 8080}`);
-});
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors());
 
 app.use("/", router);
+
+// api routes
+app.use("/users", require("users/users.controller"));
+
+// global error handler
+app.use(errorHandler);
+
+getUsers();
 
 // user request => middleware => response
 
@@ -28,3 +34,7 @@ app.use("/", router);
 //   console.log(req.body);
 //   next();
 // };
+
+app.listen(process.env.PORT || 8080, () => {
+  console.log(`server is running on port ${process.env.PORT || 8080}`);
+});

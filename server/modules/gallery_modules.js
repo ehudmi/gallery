@@ -1,7 +1,11 @@
-const { db } = require("../connections/heroku-gallery-local");
+const { db } = require("connections/heroku-gallery-local");
 
 const readDb = (table, data, criteria) => {
   return db(table).select(data).where(criteria);
+};
+
+const readDbNotNull = (table, data, criteria) => {
+  return db(table).select(data).whereNotNull(criteria);
 };
 
 const readDb_Limited = (table, data, criteria, limit, offset) => {
@@ -16,4 +20,4 @@ const updateDb = (table, updatedData, criteria) => {
   return db(table).update(updatedData).where(criteria).returning("*");
 };
 
-module.exports = { readDb, insertDb, updateDb, readDb_Limited };
+module.exports = { readDb, insertDb, updateDb, readDb_Limited, readDbNotNull };
