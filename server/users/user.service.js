@@ -1,6 +1,6 @@
 const config = require("config.json");
 const jwt = require("jsonwebtoken");
-const Role = require("_helpers/role");
+const Role = require("users/_helpers/role");
 const { readDbNotNull } = require("modules/gallery_modules");
 
 // users retrieved from Gallery db and stored in local variable for efficiency

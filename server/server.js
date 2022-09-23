@@ -4,7 +4,7 @@ const cors = require("cors");
 const dotenv = require("dotenv");
 const bodyParser = require("body-parser");
 const router = require("routes/gallery_routes");
-const errorHandler = require("_helpers/error-handler");
+const errorHandler = require("users/_helpers/error-handler");
 const app = express();
 const { getUsers } = require("users/user.service");
 
