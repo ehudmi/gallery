@@ -4,9 +4,9 @@ const cors = require("cors");
 const dotenv = require("dotenv");
 const bodyParser = require("body-parser");
 const router = require("routes/gallery_routes");
-const errorHandler = require("users/_helpers/error-handler");
+// const errorHandler = require("users/_helpers/error-handler");
 const app = express();
-const { getUsers } = require("users/user.service");
+// const { getUsers } = require("users/user.service");
 
 dotenv.config({ path: "C:/Github/gallery/server/.env" });
 
@@ -17,12 +17,12 @@ app.use(cors());
 app.use("/", router);
 
 // api routes
-app.use("/users", require("users/users.controller"));
+// app.use("/users", require("users/users.controller"));
 
 // global error handler
-app.use(errorHandler);
+// app.use(errorHandler);
 
-getUsers();
+// getUsers();
 
 // user request => middleware => response
 
