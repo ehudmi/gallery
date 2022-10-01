@@ -8,6 +8,9 @@ function UserForm() {
     last_name: "",
     email: "",
     password: "",
+    role: "",
+    birth_date: "",
+    about: "",
   });
 
   const handleChange = (event) => {
@@ -56,6 +59,20 @@ function UserForm() {
           placeholder="Password"
           inputChange={handleChange}
         />
+        <Input
+          type={"date"}
+          name="birth_date"
+          placeholder="Birth Date"
+          inputChange={handleChange}
+        />
+        <label htmlFor="about">About</label>
+        <textarea
+          name="about"
+          placeholder="About"
+          rows="4"
+          cols="50"
+          inputChange={handleChange}
+        ></textarea>
         <button type="submit">Submit</button>
       </form>
     </div>

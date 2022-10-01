@@ -5,7 +5,7 @@ const {
   addInfo,
   insertNewUser,
   updateInfo,
-} = require("controllers/gallery_controllers");
+} = require("../controllers/gallery_controllers");
 
 const router = express.Router();
 

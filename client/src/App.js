@@ -1,10 +1,11 @@
+import React from "react";
 import "./App.css";
-import UserForm from "./containers/UserForm";
+import AppRouter from "./AppRouter";
 
 function App() {
   return (
     <div className="App">
-      <UserForm />
+      <AppRouter />
     </div>
   );
 }
