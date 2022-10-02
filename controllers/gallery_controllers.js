@@ -1,8 +1,8 @@
-const { readDb, insertDb, updateDb } = require("../modules/gallery_modules");
+const { _readDb, _insertDb, _updateDb } = require("../modules/gallery_modules");
 
 const getInfo = async (req, res) => {
   try {
-    let result = await readDb("users", "*", { first_name: "Ehud" });
+    let result = await _readDb("users", "*", { first_name: "Ehud" });
     console.log(result);
     res.send(result);
   } catch (error) {
@@ -13,7 +13,7 @@ const getInfo = async (req, res) => {
 
 const getCourseList = async (req, res) => {
   try {
-    let result = await readDb("courses", "*", { id: "1" }, null, null);
+    let result = await _readDb("courses", "*", { id: "1" }, null, null);
     console.log(result);
     res.send(result);
   } catch (error) {
@@ -24,7 +24,7 @@ const getCourseList = async (req, res) => {
 
 const addInfo = async (req, res) => {
   try {
-    let result = await insertDb("authors", {
+    let result = await _insertDb("authors", {
       first_name: "Ehud",
       last_name: "Miron",
       email: "ehudmi1@yahoo.com",
@@ -42,7 +42,7 @@ const addInfo = async (req, res) => {
 const insertNewUser = async (req, res) => {
   console.log(await req.body);
   try {
-    let result = await insertDb("users", req.body);
+    let result = await _insertDb("users", req.body);
     console.log(result);
     res.send("added info");
   } catch (error) {
@@ -53,7 +53,7 @@ const insertNewUser = async (req, res) => {
 
 const updateInfo = async (req, res) => {
   try {
-    let result = await updateDb(
+    let result = await _updateDb(
       "authors",
       { email: "ehudmi12@gmail.com" },
       { first_name: "Ehud" }

@@ -1,16 +1,16 @@
 import React from "react";
 
-function Input(props) {
+function Input({ type, name, placeholder, value, inputChange }) {
   return (
     <div>
       <input
-        type={props.type}
-        name={props.name}
-        placeholder={props.placeholder}
-        value={props.value}
-        onChange={props.inputChange}
+        type={type}
+        name={name}
+        placeholder={placeholder}
+        value={value}
+        onChange={inputChange}
       />
-      <label htmlFor={props.name}>{props.placeholder}</label>
+      <label htmlFor={name}>{placeholder}</label>
     </div>
   );
 }

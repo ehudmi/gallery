@@ -1,23 +1,29 @@
 const { db } = require("connections/heroku-gallery-local");
 
-const readDb = (table, data, criteria) => {
+const _readDb = (table, data, criteria) => {
   return db(table).select(data).where(criteria);
 };
 
-const readDbNotNull = (table, data, criteria) => {
+const _readDbNotNull = (table, data, criteria) => {
   return db(table).select(data).whereNotNull(criteria);
 };
 
-const readDb_Limited = (table, data, criteria, limit, offset) => {
+const _readDb_Limited = (table, data, criteria, limit, offset) => {
   return db(table).select(data).where(criteria).limit(limit).offset(offset);
 };
 
-const insertDb = (table, inputData) => {
+const _insertDb = (table, inputData) => {
   return db(table).insert(inputData).returning("*");
 };
 
-const updateDb = (table, updatedData, criteria) => {
+const _updateDb = (table, updatedData, criteria) => {
   return db(table).update(updatedData).where(criteria).returning("*");
 };
 
-module.exports = { readDb, insertDb, updateDb, readDb_Limited, readDbNotNull };
+module.exports = {
+  _readDb,
+  _insertDb,
+  _updateDb,
+  _readDb_Limited,
+  _readDbNotNull,
+};
