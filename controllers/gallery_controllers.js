@@ -1,4 +1,4 @@
-const { _readDb, _insertDb, _updateDb } = require("../modules/gallery_modules");
+const { _readDb, _insertDb, _updateDb } = require("../models/gallery_models");
 
 const getInfo = async (req, res) => {
   try {

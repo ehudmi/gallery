@@ -8,7 +8,7 @@ const router = require("routes/gallery_routes");
 const app = express();
 // const { getUsers } = require("users/user.service");
 
-dotenv.config({ path: "C:/Github/gallery/server/.env" });
+dotenv.config({ path: "C:/Github/gallery/.env" });
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
