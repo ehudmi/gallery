@@ -1,4 +1,4 @@
-const { _readDb, _insertDb, _updateDb } = require("../models/gallery_models");
+const { _readDb, _insertDb, _updateDb } = require("../models/gallery.models");
 
 const getInfo = async (req, res) => {
   try {
@@ -39,17 +39,17 @@ const addInfo = async (req, res) => {
   }
 };
 
-const insertNewUser = async (req, res) => {
-  console.log(await req.body);
-  try {
-    let result = await _insertDb("users", req.body);
-    console.log(result);
-    res.send("added info");
-  } catch (error) {
-    console.log(error);
-    res.status(404).json({ msg: "couldn't insert" });
-  }
-};
+// const insertNewUser = async (req, res) => {
+//   console.log(await req.body);
+//   try {
+//     let result = await _insertDb("users", req.body);
+//     console.log(result);
+//     res.send("added info");
+//   } catch (error) {
+//     console.log(error);
+//     res.status(404).json({ msg: "couldn't insert" });
+//   }
+// };
 
 const updateInfo = async (req, res) => {
   try {
@@ -66,4 +66,4 @@ const updateInfo = async (req, res) => {
   }
 };
 
-module.exports = { getInfo, getCourseList, addInfo, insertNewUser, updateInfo };
+module.exports = { getInfo, getCourseList, addInfo, updateInfo };

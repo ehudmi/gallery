@@ -3,7 +3,7 @@ const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
 const bodyParser = require("body-parser");
-const router = require("routes/gallery_routes");
+// const router = require("project/routes/project.routes");
 // const errorHandler = require("users/_helpers/error-handler");
 const app = express();
 // const { getUsers } = require("users/user.service");
@@ -14,7 +14,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors());
 
-app.use("/", router);
+// app.use("/", router);
+app.use("/users", require("routes/user.routes"));
+app.use("/projects", require("routes/project.routes"));
 
 // api routes
 // app.use("/users", require("users/users.controller"));
