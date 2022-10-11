@@ -3,14 +3,27 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const config = require("config/auth.config.json");
 
+const checkStudent = async (req, res) => {
+  const student = await _readDb("students", "*", {
+    email: req.body.email,
+  });
+  return student ? "user" : "author";
+};
+
 const register = async (req, res) => {
-  const { email, password } = req.body;
+  const { first_name, last_name, email, password, birth_date, about } =
+    req.body;
   const salt = await bcrypt.genSalt();
   const hashPassword = await bcrypt.hash(password, salt);
   try {
     await _insertDb("users", {
+      first_name: first_name,
+      last_name: last_name,
       email: email,
       password: hashPassword,
+      birth_date: birth_date,
+      role: await checkStudent(),
+      about: about,
     });
     res.json({ msg: "Registered Successfully" });
   } catch (e) {
@@ -26,11 +39,17 @@ const login = async (req, res) => {
     const match = await bcrypt.compare(req.body.password, user[0].password);
     if (!match) return res.status(400).json({ msg: "Wrong password" });
     const userId = user[0].id;
+    const first_name = user[0].first_name;
+    const last_name = user[0].last_name;
     const email = user[0].email;
     const role = user[0].role;
-    const accessToken = jwt.sign({ userId, email, role }, config.secret, {
-      expiresIn: "60s",
-    });
+    const accessToken = jwt.sign(
+      { userId, first_name, last_name, email, role },
+      config.secret,
+      {
+        expiresIn: "60s",
+      }
+    );
     console.log("accessToken", accessToken);
     res.cookie("accessToken", accessToken, {
       httpOnly: true,
@@ -48,7 +67,14 @@ const logout = (req, res) => {
 
 const getUsers = async (req, res) => {
   try {
-    const users = await _readDb("users", ["id", "email", "password", "role"]);
+    const users = await _readDb("users", [
+      "id",
+      "first_name",
+      "last_name",
+      "email",
+      "password",
+      "role",
+    ]);
     res.json(users);
   } catch (e) {
     res.json({ msg: "not" });

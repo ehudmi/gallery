@@ -1,14 +1,16 @@
-import React from "react";
-// import React, { useState, useContext } from "react";
-// import { AuthContext } from "./GlobalStates";
+import React, { useState, useContext } from "react";
+import { AuthContext } from "./GlobalStates";
 import "./App.css";
+import Modal from "./containers/Modal";
 import AppRouter from "./AppRouter";
+import Login from "./containers/Login";
 
 // let regexPass = new RegExp("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,15}$");
 // sessionStorage.setItem("key", "value");
 
 function App() {
-  //   const [authState, setauthState] = useContext(AuthContext);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [authState, setauthState] = useContext(AuthContext);
   // const [email, setEmail] = useState();
   // const [password, setPassword] = useState();
 
@@ -50,6 +52,42 @@ function App() {
 
   return (
     <div className="App">
+      {!modalIsOpen && (
+        <button onClick={() => setModalIsOpen(true)}>Open modal</button>
+      )}
+      <Modal
+        isOpen={modalIsOpen}
+        title="Hello"
+        onClose={() => setModalIsOpen(false)}
+        onCancel={() => {
+          setModalIsOpen(false);
+        }}
+        onOkay={(e) => {
+          console.log(e.target);
+          setModalIsOpen(false);
+        }}
+        okayText={"Okay!"}
+        //headerOverride={<div>Header</div>}
+        //footerOverride={<div>Footer</div>}
+      >
+        {/* <p>Login</p>
+        <form>
+          <input
+            type={"email"}
+            name="email"
+            placeholder="Email"
+            onChange={handleChangeEmail}
+          />
+          <br />
+          <input
+            type={"password"}
+            name="password"
+            placeholder="Password"
+            onBlur={handleChangePassword}
+          />
+        </form> */}
+        <Login />
+      </Modal>
       <AppRouter />
     </div>
   );

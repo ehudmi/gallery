@@ -21,7 +21,7 @@ function UserForm() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     console.log(JSON.stringify(data));
-    const response = await fetch("/write/user", {
+    const response = await fetch("/register", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -71,7 +71,7 @@ function UserForm() {
           placeholder="About"
           rows="4"
           cols="50"
-          inputChange={handleChange}
+          onChange={handleChange}
         ></textarea>
         <button type="submit">Submit</button>
       </form>
