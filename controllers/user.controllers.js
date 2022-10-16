@@ -3,26 +3,30 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const config = require("config/auth.config.json");
 
-const checkStudent = async (req, res) => {
-  const student = await _readDb("students", "*", {
-    email: req.body.email,
-  });
-  return student ? "user" : "author";
-};
-
 const register = async (req, res) => {
+  // console.log(req.body);
   const { first_name, last_name, email, password, birth_date, about } =
     req.body;
   const salt = await bcrypt.genSalt();
   const hashPassword = await bcrypt.hash(password, salt);
+  // console.log(hashPassword);
+  const isStudent = async () => {
+    const response = await _readDb("students", "*", {
+      email: email,
+    });
+    // console.log(response);
+    return response ? "author" : "user";
+  };
+  const role = await isStudent();
+  console.log(role);
   try {
     await _insertDb("users", {
       first_name: first_name,
       last_name: last_name,
       email: email,
       password: hashPassword,
+      role: role,
       birth_date: birth_date,
-      role: await checkStudent(),
       about: about,
     });
     res.json({ msg: "Registered Successfully" });
@@ -55,7 +59,14 @@ const login = async (req, res) => {
       httpOnly: true,
       maxAge: 60 * 1000,
     });
-    res.json({ accessToken });
+    res.json({
+      userId: userId,
+      first_name: first_name,
+      last_name: last_name,
+      email: email,
+      role: role,
+      accessToken: accessToken,
+    });
   } catch (e) {
     res.status(404).json({ msg: "Email not found" });
   }

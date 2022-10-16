@@ -2,6 +2,8 @@ import React from "react";
 import { useState } from "react";
 import Input from "../components/Input";
 
+let regexPass = new RegExp("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,15}$");
+
 function UserForm() {
   const [data, setData] = useState({
     first_name: "",
@@ -18,10 +20,19 @@ function UserForm() {
     setData(data);
   };
 
+  const handleChangePassword = (event) => {
+    if (event.target.value.match(regexPass) != null) {
+      data[event.target.name] = event.target.value;
+      setData(data);
+    } else {
+      alert(`1 Uppercase\n1 Lowercase\n1 Digit\n8-15 Characters`);
+    }
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     console.log(JSON.stringify(data));
-    const response = await fetch("/register", {
+    const response = await fetch("/users/register", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -57,7 +68,7 @@ function UserForm() {
           type={"password"}
           name="password"
           placeholder="Password"
-          inputChange={handleChange}
+          blurChange={handleChangePassword}
         />
         <Input
           type={"date"}

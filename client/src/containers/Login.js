@@ -1,12 +1,14 @@
 import React, { useState, useContext } from "react";
 import { AuthContext } from "../GlobalStates";
+import { useNavigate } from "react-router-dom";
 
 let regexPass = new RegExp("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,15}$");
 
 function Login() {
-  const [authState, setauthState] = useContext(AuthContext);
+  const [authState, setAuthState] = useContext(AuthContext);
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
+  const navigate = useNavigate();
 
   const handleChangeEmail = (e) => {
     console.log(e.target);
@@ -28,8 +30,9 @@ function Login() {
       password: password.password,
     };
     console.log(userLogin);
-    const response = await fetch("/login", {
+    const response = await fetch("/users/login", {
       method: "POST",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
@@ -37,11 +40,20 @@ function Login() {
     });
     let userLoggedIn = await response.json();
     console.log(await userLoggedIn);
-    // if (userLoggedIn.userId > 0) {
-    //   // sessionStorage.setItem("userid", userLoggedIn.userId);
-    // } else {
-    //   alert(userLoggedIn.msg);
-    // }
+    if (userLoggedIn.userId > 0) {
+      setAuthState({
+        ...authState,
+        userId: userLoggedIn.userId,
+        first_name: userLoggedIn.first_name,
+        last_name: userLoggedIn.last_name,
+        email: userLoggedIn.email,
+        role: userLoggedIn.role,
+      });
+      navigate("/home");
+      // sessionStorage.setItem("userid", userLoggedIn.userId);
+    } else {
+      alert(userLoggedIn.msg);
+    }
   };
 
   return (
