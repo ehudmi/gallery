@@ -1,5 +1,6 @@
 ﻿require("rootpath")();
 const express = require("express");
+const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const dotenv = require("dotenv");
 const bodyParser = require("body-parser");
@@ -12,7 +13,8 @@ dotenv.config({ path: "C:/Github/gallery/.env" });
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use(cors());
+app.use(cookieParser());
+app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
 
 // app.use("/", router);
 app.use("/users", require("routes/user.routes"));

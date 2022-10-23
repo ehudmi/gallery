@@ -42,25 +42,29 @@ const login = async (req, res) => {
     });
     const match = await bcrypt.compare(req.body.password, user[0].password);
     if (!match) return res.status(400).json({ msg: "Wrong password" });
-    const userId = user[0].id;
-    const first_name = user[0].first_name;
-    const last_name = user[0].last_name;
-    const email = user[0].email;
-    const role = user[0].role;
+    const { id, first_name, last_name, email, role } = user[0];
     const accessToken = jwt.sign(
-      { userId, first_name, last_name, email, role },
+      { id, first_name, last_name, email, role },
       config.secret,
       {
         expiresIn: "60s",
       }
     );
     console.log("accessToken", accessToken);
+    // const cookie = req.cookies.accessToken;
+
+    // if (cookie == undefined) {
+    //   res.cookie("accessToken", accessToken, {
+    //     httpOnly: true,
+    //     maxAge: 60 * 1000,
+    //   });
+    // }
     res.cookie("accessToken", accessToken, {
       httpOnly: true,
       maxAge: 60 * 1000,
     });
     res.json({
-      userId: userId,
+      userId: id,
       first_name: first_name,
       last_name: last_name,
       email: email,
@@ -69,6 +73,43 @@ const login = async (req, res) => {
     });
   } catch (e) {
     res.status(404).json({ msg: "Email not found" });
+  }
+};
+
+const checkToken = async (req, res) => {
+  console.log("Data 1", req.cookies.accessToken);
+  const req_token = req.cookies.accessToken;
+  let auth = false;
+  if (!req_token) {
+    return res.status(200).json({ message: "Please login" });
+  }
+  try {
+    if (!jwt.verify(req_token, config.secret)) {
+      throw "Token not valid";
+    } else {
+      auth = true;
+    }
+  } catch (error) {
+    console.log("invalid token");
+  }
+  if (!auth) {
+    return res.status(400).json({ message: "token verification failed" });
+  } else {
+    const data = jwt.verify(req_token, config.secret);
+    const user = await _readDb("users", "*", {
+      id: data.id,
+    });
+    if (!user) {
+      return res.status(400).json({ error: "user not found" });
+    }
+    const { id, first_name, last_name, email, role } = user[0];
+    return res.status(200).json({
+      userId: id,
+      first_name: first_name,
+      last_name: last_name,
+      email: email,
+      role: role,
+    });
   }
 };
 
@@ -165,6 +206,7 @@ module.exports = {
   // updateInfo,
   register,
   login,
+  checkToken,
   logout,
   getUsers,
 };
