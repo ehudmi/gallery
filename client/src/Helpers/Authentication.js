@@ -1,3 +1,5 @@
+// Authentication function - using fetch from backend
+
 const isAuthenticated = async () => {
   try {
     const response = await fetch("/users/auth", {

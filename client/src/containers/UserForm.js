@@ -4,6 +4,8 @@ import Input from "../components/Input";
 
 let regexPass = new RegExp("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,15}$");
 
+//User registration and modification form
+
 function UserForm() {
   const [data, setData] = useState({
     first_name: "",

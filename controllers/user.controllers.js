@@ -3,6 +3,8 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const config = require("config/auth.config.json");
 
+// function to register new user in DB
+
 const register = async (req, res) => {
   // console.log(req.body);
   const { first_name, last_name, email, password, birth_date, about } =
@@ -35,6 +37,8 @@ const register = async (req, res) => {
   }
 };
 
+// function to login existing user
+
 const login = async (req, res) => {
   try {
     const user = await _readDb("users", "*", {
@@ -51,14 +55,6 @@ const login = async (req, res) => {
       }
     );
     console.log("accessToken", accessToken);
-    // const cookie = req.cookies.accessToken;
-
-    // if (cookie == undefined) {
-    //   res.cookie("accessToken", accessToken, {
-    //     httpOnly: true,
-    //     maxAge: 60 * 1000,
-    //   });
-    // }
     res.cookie("accessToken", accessToken, {
       httpOnly: true,
       maxAge: 60 * 1000,
@@ -75,6 +71,8 @@ const login = async (req, res) => {
     res.status(404).json({ msg: "Email not found" });
   }
 };
+
+// function to verify token from front-end
 
 const checkToken = async (req, res) => {
   console.log("Data 1", req.cookies.accessToken);
@@ -113,9 +111,13 @@ const checkToken = async (req, res) => {
   }
 };
 
+// function for logout of current user
+
 const logout = (req, res) => {
   res.json({ msg: "logout" });
 };
+
+// test function to return list of users - can be used by admin
 
 const getUsers = async (req, res) => {
   try {
@@ -132,17 +134,6 @@ const getUsers = async (req, res) => {
     res.json({ msg: "not" });
   }
 };
-// const insertNewUser = async (req, res) => {
-//   console.log(await req.body);
-//   try {
-//     let result = await _insertDb("users", req.body);
-//     console.log(result);
-//     res.send("added info");
-//   } catch (error) {
-//     console.log(error);
-//     res.status(404).json({ msg: "couldn't insert" });
-//   }
-// };
 
 // const getInfo = async (req, res) => {
 //   try {
@@ -202,7 +193,6 @@ module.exports = {
   // getInfo,
   // getCourseList,
   // addInfo,
-  // insertNewUser,
   // updateInfo,
   register,
   login,

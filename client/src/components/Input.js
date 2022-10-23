@@ -1,5 +1,7 @@
 import React from "react";
 
+// Generic input to be used with props
+
 function Input({ type, name, placeholder, value, inputChange, blurChange }) {
   return (
     <div>

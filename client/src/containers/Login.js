@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 
 let regexPass = new RegExp("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,15}$");
 
+// Login page functions and render - as form
+
 function Login() {
   const [authState, setAuthState] = useContext(AuthContext);
   const [email, setEmail] = useState();
@@ -50,7 +52,6 @@ function Login() {
         role: userLoggedIn.role,
       });
       navigate("/home");
-      // sessionStorage.setItem("userid", userLoggedIn.userId);
     } else {
       alert(userLoggedIn.msg);
     }
