@@ -1,4 +1,32 @@
-const { _readDb, _insertDb, _updateDb } = require("../models/gallery.models");
+const {
+  _readDb,
+  _insertDb,
+  _updateDb,
+  _getJoinData,
+} = require("../models/gallery.models");
+const jwt = require("jsonwebtoken");
+const config = require("config/auth.config.json");
+
+const getUserProjects = async (req, res) => {
+  try {
+    const data = jwt.verify(req.cookies.accessToken, config.secret);
+    let result = await _getJoinData(
+      "project_authors",
+      "users",
+      "projects",
+      "project_authors.user_id",
+      "users.id",
+      "project_authors.project_id",
+      "projects.id",
+      { user_id: data.id }
+    );
+    console.log(result);
+    res.send(result);
+  } catch (error) {
+    console.log(error);
+    res.status(404).json({ msg: "couldn't read projects" });
+  }
+};
 
 const getInfo = async (req, res) => {
   try {
@@ -66,4 +94,10 @@ const updateInfo = async (req, res) => {
   }
 };
 
-module.exports = { getInfo, getCourseList, addInfo, updateInfo };
+module.exports = {
+  getUserProjects,
+  getInfo,
+  getCourseList,
+  addInfo,
+  updateInfo,
+};

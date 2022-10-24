@@ -74,41 +74,41 @@ const login = async (req, res) => {
 
 // function to verify token from front-end
 
-const checkToken = async (req, res) => {
+const authUser = async (req, res) => {
   console.log("Data 1", req.cookies.accessToken);
   const req_token = req.cookies.accessToken;
-  let auth = false;
-  if (!req_token) {
-    return res.status(200).json({ message: "Please login" });
+  // let auth = false;
+  // if (!req_token) {
+  //   return res.status(200).json({ message: "Please login" });
+  // }
+  // try {
+  //   if (!jwt.verify(req_token, config.secret)) {
+  //     throw "Token not valid";
+  //   } else {
+  //     auth = true;
+  //   }
+  // } catch (error) {
+  //   console.log("invalid token");
+  // }
+  // if (!auth) {
+  //   return res.status(400).json({ message: "token verification failed" });
+  // } else {
+  const data = jwt.verify(req_token, config.secret);
+  const user = await _readDb("users", "*", {
+    id: data.id,
+  });
+  if (!user) {
+    return res.status(400).json({ error: "user not found" });
   }
-  try {
-    if (!jwt.verify(req_token, config.secret)) {
-      throw "Token not valid";
-    } else {
-      auth = true;
-    }
-  } catch (error) {
-    console.log("invalid token");
-  }
-  if (!auth) {
-    return res.status(400).json({ message: "token verification failed" });
-  } else {
-    const data = jwt.verify(req_token, config.secret);
-    const user = await _readDb("users", "*", {
-      id: data.id,
-    });
-    if (!user) {
-      return res.status(400).json({ error: "user not found" });
-    }
-    const { id, first_name, last_name, email, role } = user[0];
-    return res.status(200).json({
-      userId: id,
-      first_name: first_name,
-      last_name: last_name,
-      email: email,
-      role: role,
-    });
-  }
+  const { id, first_name, last_name, email, role } = user[0];
+  return res.status(200).json({
+    userId: id,
+    first_name: first_name,
+    last_name: last_name,
+    email: email,
+    role: role,
+  });
+  // }
 };
 
 // function for logout of current user
@@ -196,7 +196,7 @@ module.exports = {
   // updateInfo,
   register,
   login,
-  checkToken,
+  authUser,
   logout,
   getUsers,
 };

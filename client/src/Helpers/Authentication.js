@@ -2,7 +2,7 @@
 
 const isAuthenticated = async () => {
   try {
-    const response = await fetch("/users/auth", {
+    const response = await fetch("/projects/auth", {
       method: "GET",
     });
     const userAuth = response.json();

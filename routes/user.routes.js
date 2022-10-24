@@ -8,7 +8,7 @@ const {
   login,
   logout,
   getUsers,
-  checkToken,
+  // checkToken,
 } = require("../controllers/user.controllers");
 
 const router = express.Router();
@@ -18,7 +18,7 @@ const router = express.Router();
 // router.get("/write", addInfo);
 // router.get("/update", updateInfo);
 router.get("/users", getUsers);
-router.get("/auth", checkToken);
+// router.get("/auth", checkToken);
 router.post("/register", register);
 router.post("/login", login);
 router.get("/logout", logout);

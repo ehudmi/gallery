@@ -4,6 +4,7 @@ import isAuthenticated from "../Helpers/Authentication";
 
 function Homepage() {
   const [authState, setAuthState] = useContext(AuthContext);
+
   const loadData = async () => {
     try {
       let userAuth = await isAuthenticated();
@@ -22,9 +23,12 @@ function Homepage() {
       console.log(error);
     }
   };
+
   useEffect(() => {
     loadData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
   return (
     <div>
       <p>Homepage</p>

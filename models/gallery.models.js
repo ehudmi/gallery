@@ -20,10 +20,28 @@ const _updateDb = (table, updatedData, criteria) => {
   return db(table).update(updatedData).where(criteria).returning("*");
 };
 
+const _getJoinData = (
+  table1,
+  table2,
+  table3,
+  column1,
+  column2,
+  column3,
+  column4,
+  criteria1
+) => {
+  return db(table1)
+    .join(table2, column1, "=", column2)
+    .join(table3, column3, "=", column4)
+    .select("*")
+    .where(criteria1);
+};
+
 module.exports = {
   _readDb,
   _insertDb,
   _updateDb,
   _readDb_Limited,
   _readDbNotNull,
+  _getJoinData,
 };
