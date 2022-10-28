@@ -1,9 +1,10 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../GlobalStates";
 import isAuthenticated from "../Helpers/Authentication";
 
 function UserProjects() {
   const [authState, setAuthState] = useContext(AuthContext);
+  const [projects, setProjects] = useState();
 
   const loadData = async () => {
     try {
@@ -24,11 +25,54 @@ function UserProjects() {
     }
   };
 
+  const getUserProjects = async () => {
+    try {
+      const response = await fetch("/projects/user_projects", {
+        method: "GET",
+      });
+      const json = await response.json();
+      console.log(json);
+      setProjects(json);
+      // console.log(projects.hello);
+      // return projects;
+      // const userProjects = response.json();
+      // return userProjects;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     loadData();
+    getUserProjects();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  return <div>UserProjects</div>;
+
+  // useEffect(() => {
+  //   if (authState !== "") {
+  //     getUserProjects();
+  //     console.log(userProjects);
+  //   } else {
+  //     console.log("loading");
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
+
+  if (authState !== "" && projects !== undefined) {
+    // getUserProjects();
+    // console.log(userProjects);
+    console.log(projects);
+    return (
+      <div>
+        My Projects
+        {projects.map((item, index) => {
+          return <div key={index}>UserProjects {item.project_name}</div>;
+        })}
+      </div>
+    );
+  } else {
+    return <div>Loading</div>;
+  }
 }
 
 export default UserProjects;

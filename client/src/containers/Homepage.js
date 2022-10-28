@@ -1,8 +1,10 @@
 import React, { useContext, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../GlobalStates";
 import isAuthenticated from "../Helpers/Authentication";
 
 function Homepage() {
+  const navigate = useNavigate();
   const [authState, setAuthState] = useContext(AuthContext);
 
   const loadData = async () => {
@@ -34,6 +36,7 @@ function Homepage() {
       <p>Homepage</p>
       Welcome
       {authState.email}
+      <button onClick={() => navigate("/my_projects")}>User Projects</button>
     </div>
   );
 }

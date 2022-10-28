@@ -15,7 +15,7 @@ function AppRouter() {
         <Route path="login" element={<Login />} />
         <Route path="register" element={<UserForm />} />
         <Route path="logout" element={<Modal />} />
-        <Route path="user_projects" element={<UserProjects />} />
+        <Route path="my_projects" element={<UserProjects />} />
         <Route path="project_list" element={<Projects />} />
       </Routes>
     </BrowserRouter>
