@@ -51,13 +51,13 @@ const login = async (req, res) => {
       { id, first_name, last_name, email, role },
       config.secret,
       {
-        expiresIn: "60s",
+        expiresIn: "300s",
       }
     );
     console.log("accessToken", accessToken);
     res.cookie("accessToken", accessToken, {
       httpOnly: true,
-      maxAge: 60 * 1000,
+      maxAge: 300 * 1000,
     });
     res.json({
       userId: id,
