@@ -4,8 +4,8 @@ import {
   BrowserRouter,
   Routes,
   Route,
-  // Navigate,
-  // Outlet,
+  Navigate,
+  Outlet,
 } from "react-router-dom";
 import { AuthContext } from "./GlobalStates";
 import isAuthenticated from "./Helpers/Authentication";
@@ -17,13 +17,13 @@ import Projects from "./containers/Projects";
 import Login from "./containers/Login";
 import Welcome from "./containers/Welcome";
 
-// const ProtectedRoute = ({ isAllowed, redirectPath = "/landing", children }) => {
-//   if (!isAllowed) {
-//     return <Navigate to={redirectPath} replace />;
-//   }
+const ProtectedRoute = ({ isAllowed, redirectPath = "/welcome", children }) => {
+  if (!isAllowed) {
+    return <Navigate to={redirectPath} replace />;
+  }
 
-//   return children ? children : <Outlet />;
-// };
+  return children ? children : <Outlet />;
+};
 
 function AppRouter() {
   const [authState, setAuthState] = useContext(AuthContext);
@@ -55,15 +55,29 @@ function AppRouter() {
       <Routes>
         <Route index element={<Welcome />} />
         <Route path="welcome" element={<Welcome />} />
-        <Route path="home" element={<Homepage loadData={loadData} />} />
+        <Route element={<ProtectedRoute isAllowed={!!authState.userId} />}>
+          <Route path="home" element={<Homepage loadData={loadData} />} />
+          <Route
+            path="project_list"
+            element={<Projects loadData={loadData} />}
+          />
+        </Route>
+        <Route
+          path="my_projects"
+          element={
+            <ProtectedRoute
+              redirectPath="/welcome"
+              isAllowed={
+                !!authState.userId && !!authState.role.includes("author")
+              }
+            >
+              <UserProjects loadData={loadData} />
+            </ProtectedRoute>
+          }
+        />
         <Route path="login" element={<Login />} />
         <Route path="signup" element={<UserForm />} />
         <Route path="logout" element={<Modal />} />
-        <Route
-          path="my_projects"
-          element={<UserProjects loadData={loadData} />}
-        />
-        <Route path="project_list" element={<Projects loadData={loadData} />} />
       </Routes>
     </BrowserRouter>
   );
