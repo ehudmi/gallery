@@ -3,6 +3,7 @@ const {
   _insertDb,
   _updateDb,
   _getJoinData,
+  _readDbNotNull,
 } = require("../models/gallery.models");
 const jwt = require("jsonwebtoken");
 const config = require("config/auth.config.json");
@@ -28,6 +29,18 @@ const getUserProjects = async (req, res) => {
   }
 };
 
+const getProjectsList = async (req, res) => {
+  try {
+    // const data = jwt.verify(req.cookies.accessToken, config.secret);
+    let result = await _readDbNotNull("projects", "*", "id");
+    console.log(result);
+    res.send(result);
+  } catch (error) {
+    console.log(error);
+    res.status(404).json({ msg: "couldn't read projects" });
+  }
+};
+
 const getInfo = async (req, res) => {
   try {
     let result = await _readDb("users", "*", { first_name: "Ehud" });
@@ -41,7 +54,7 @@ const getInfo = async (req, res) => {
 
 const getCourseList = async (req, res) => {
   try {
-    let result = await _readDb("courses", "*", { id: "1" }, null, null);
+    let result = await _readDbNotNull("courses", "*", "id");
     console.log(result);
     res.send(result);
   } catch (error) {
@@ -50,17 +63,25 @@ const getCourseList = async (req, res) => {
   }
 };
 
-const addInfo = async (req, res) => {
+const addProject = async (req, res) => {
+  const { project_name, course_id, description } = req.body;
+  const data = jwt.verify(req.cookies.accessToken, config.secret);
   try {
-    let result = await _insertDb("authors", {
-      first_name: "Ehud",
-      last_name: "Miron",
-      email: "ehudmi1@yahoo.com",
-      birthdate: "1966-12-03",
-      about: "the new guy",
+    let insertProj = await _insertDb("projects", {
+      project_name: project_name,
+      course_id: course_id,
+      description: description,
     });
-    console.log(result);
-    res.send("added info");
+    console.log(insertProj);
+    if (insertProj.length > 0) {
+      let insertProjAuthor = await _insertDb("project_authors", {
+        project_id: insertProj.id,
+        user_id: data.id,
+      });
+      console.log(insertProjAuthor);
+      res.send({ msg: "added info" });
+    }
+    // res.send({ msg: "added info" });
   } catch (error) {
     console.log(error);
     res.status(404).json({ msg: "couldn't insert" });
@@ -96,8 +117,9 @@ const updateInfo = async (req, res) => {
 
 module.exports = {
   getUserProjects,
+  getProjectsList,
   getInfo,
   getCourseList,
-  addInfo,
+  addProject,
   updateInfo,
 };

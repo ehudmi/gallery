@@ -1,9 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../GlobalStates";
 
 function UserProjects(props) {
   const [authState] = useContext(AuthContext);
   const [projects, setProjects] = useState();
+  const navigate = useNavigate();
 
   const getUserProjects = async () => {
     try {
@@ -44,10 +46,13 @@ function UserProjects(props) {
     console.log(projects);
     return (
       <div>
-        My Projects
-        {projects.map((item, index) => {
-          return <div key={index}>UserProjects {item.project_name}</div>;
-        })}
+        <div>
+          My Projects
+          {projects.map((item, index) => {
+            return <div key={index}>UserProjects {item.project_name}</div>;
+          })}
+        </div>
+        <button onClick={() => navigate("/project_form")}>Add Project</button>
       </div>
     );
   } else {

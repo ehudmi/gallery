@@ -11,13 +11,24 @@ function Homepage(props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (authState.userId !== "") {
+  if (authState.userId !== "" && authState.role === "author") {
     return (
       <div>
         <p>Homepage</p>
         Welcome
         {authState.email}
         <button onClick={() => navigate("/my_projects")}>User Projects</button>
+      </div>
+    );
+  } else if (authState.userId !== "" && authState.role === "user") {
+    return (
+      <div>
+        <p>Homepage</p>
+        Welcome
+        {authState.email}
+        <button onClick={() => navigate("/project_list")}>
+          List of Projects
+        </button>
       </div>
     );
   } else if (authState.message === "failed") {

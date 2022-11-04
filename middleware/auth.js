@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 const config = require("config/auth.config.json");
 
 const checkToken = async (req, res, next) => {
-  console.log("Data 1", req.cookies.accessToken);
+  // console.log("Data 1", req.cookies.accessToken);
   const req_token = req.cookies.accessToken;
   let auth = false;
   if (!req_token) {

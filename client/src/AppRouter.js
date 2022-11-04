@@ -1,4 +1,3 @@
-// import React from "react";
 import React, { useContext } from "react";
 import {
   BrowserRouter,
@@ -16,6 +15,7 @@ import UserProjects from "./containers/UserProjects";
 import Projects from "./containers/Projects";
 import Login from "./containers/Login";
 import Welcome from "./containers/Welcome";
+import ProjectForm from "./containers/ProjectForm";
 
 const ProtectedRoute = ({ isAllowed, redirectPath = "/welcome", children }) => {
   if (!isAllowed) {
@@ -27,6 +27,8 @@ const ProtectedRoute = ({ isAllowed, redirectPath = "/welcome", children }) => {
 
 function AppRouter() {
   const [authState, setAuthState] = useContext(AuthContext);
+
+  // check authentication status and set context if authenticated to use with routes and protected routes
 
   const loadData = async () => {
     try {
@@ -72,6 +74,19 @@ function AppRouter() {
               }
             >
               <UserProjects loadData={loadData} />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="project_form"
+          element={
+            <ProtectedRoute
+              redirectPath="/home"
+              isAllowed={
+                !!authState.userId && !!authState.role.includes("author")
+              }
+            >
+              <ProjectForm loadData={loadData} />
             </ProtectedRoute>
           }
         />

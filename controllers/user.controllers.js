@@ -16,8 +16,8 @@ const register = async (req, res) => {
     const response = await _readDb("students", "*", {
       email: email,
     });
-    // console.log(response);
-    return response ? "author" : "user";
+    console.log(response);
+    return response.length == 0 ? "user" : "author";
   };
   const role = await isStudent();
   console.log(role);
@@ -32,7 +32,7 @@ const register = async (req, res) => {
       about: about,
     });
     res.json({ msg: "Registered Successfully" });
-  } catch (e) {
+  } catch (error) {
     res.status(404).json({ msg: "Email already exists" });
   }
 };
@@ -67,7 +67,7 @@ const login = async (req, res) => {
       role: role,
       accessToken: accessToken,
     });
-  } catch (e) {
+  } catch (error) {
     res.status(404).json({ msg: "Email not found" });
   }
 };
@@ -75,7 +75,7 @@ const login = async (req, res) => {
 // function to verify token from front-end
 
 const authUser = async (req, res) => {
-  console.log("Data 1", req.cookies.accessToken);
+  // console.log("Data 1", req.cookies.accessToken);
   const req_token = req.cookies.accessToken;
   // let auth = false;
   // if (!req_token) {

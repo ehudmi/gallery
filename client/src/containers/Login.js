@@ -13,7 +13,7 @@ function Login() {
   const navigate = useNavigate();
 
   const handleChangeEmail = (e) => {
-    console.log(e.target);
+    // console.log(e.target);
     setEmail(e.target.value);
   };
 

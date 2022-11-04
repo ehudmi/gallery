@@ -1,5 +1,6 @@
 import React from "react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Input from "../components/Input";
 
 let regexPass = new RegExp("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,15}$");
@@ -7,6 +8,8 @@ let regexPass = new RegExp("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,15}$");
 //User registration and modification form
 
 function UserForm() {
+  const navigate = useNavigate();
+
   const [data, setData] = useState({
     first_name: "",
     last_name: "",
@@ -33,7 +36,7 @@ function UserForm() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log(JSON.stringify(data));
+    // console.log(JSON.stringify(data));
     const response = await fetch("/users/register", {
       method: "POST",
       headers: {
@@ -41,7 +44,13 @@ function UserForm() {
       },
       body: JSON.stringify(data),
     });
-    console.log(await response.text());
+    const signIn = await response.json();
+    // console.log(signIn.msg);
+    if (signIn.msg === "Registered Successfully") {
+      navigate("/login");
+    } else {
+      alert("Error in registration");
+    }
   };
 
   return (
