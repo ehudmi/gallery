@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import styles from "./Navbar.css";
+import styles from "./Navbar.module.css";
 
 function Navbar() {
   return (
@@ -10,7 +10,7 @@ function Navbar() {
           Dragon Productions
         </Link>
         <input className={styles.menuBtn} type="checkbox" id={styles.menuBtn} />
-        <label className={styles.menuIcon} for={styles.menuBtn}>
+        <label className={styles.menuIcon} htmlFor={styles.menuBtn}>
           <span className={styles.navicon}></span>
         </label>
         <ul className={styles.menu}>

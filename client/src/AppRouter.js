@@ -18,11 +18,13 @@ import Welcome from "./containers/Welcome";
 import ProjectForm from "./containers/ProjectForm";
 import Navbar from "./components/Navbar";
 
+let showNav = false;
+
 const ProtectedRoute = ({
   isAllowed,
   redirectPath = "/welcome",
   children,
-  showNav = true,
+  showNav,
 }) => {
   if (!isAllowed) {
     return <Navigate to={redirectPath} replace />;
@@ -60,13 +62,17 @@ function AppRouter() {
 
   return (
     <BrowserRouter>
-      <Navbar />
+      <>{showNav ? <Navbar /> : null}</>
+      {/* <Navbar /> */}
       <Routes>
         <Route index element={<Welcome />} />
         <Route path="welcome" element={<Welcome />} />
         {/* <Route path="home" element={<Homepage loadData={loadData} />} /> */}
         <Route element={<ProtectedRoute isAllowed={!!authState.userId} />}>
-          <Route path="home" element={<Homepage loadData={loadData} />} />
+          <Route
+            path="home"
+            element={<Homepage loadData={loadData} showNav={true} />}
+          />
           <Route
             path="project_list"
             element={<Projects loadData={loadData} />}
