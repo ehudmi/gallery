@@ -16,8 +16,14 @@ import Projects from "./containers/Projects";
 import Login from "./containers/Login";
 import Welcome from "./containers/Welcome";
 import ProjectForm from "./containers/ProjectForm";
+import Navbar from "./components/Navbar";
 
-const ProtectedRoute = ({ isAllowed, redirectPath = "/welcome", children }) => {
+const ProtectedRoute = ({
+  isAllowed,
+  redirectPath = "/welcome",
+  children,
+  showNav = true,
+}) => {
   if (!isAllowed) {
     return <Navigate to={redirectPath} replace />;
   }
@@ -54,6 +60,7 @@ function AppRouter() {
 
   return (
     <BrowserRouter>
+      <Navbar />
       <Routes>
         <Route index element={<Welcome />} />
         <Route path="welcome" element={<Welcome />} />
@@ -64,8 +71,21 @@ function AppRouter() {
             path="project_list"
             element={<Projects loadData={loadData} />}
           />
+          <Route
+            path="my_projects"
+            element={
+              <ProtectedRoute
+                redirectPath="/welcome"
+                isAllowed={
+                  !!authState.userId && !!authState.role.includes("author")
+                }
+              >
+                <UserProjects loadData={loadData} />
+              </ProtectedRoute>
+            }
+          />
         </Route>
-        <Route
+        {/* <Route
           path="my_projects"
           element={
             <ProtectedRoute
@@ -77,7 +97,7 @@ function AppRouter() {
               <UserProjects loadData={loadData} />
             </ProtectedRoute>
           }
-        />
+        /> */}
         <Route
           path="project_form"
           element={

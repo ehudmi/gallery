@@ -9,7 +9,7 @@ const bodyParser = require("body-parser");
 const app = express();
 // const { getUsers } = require("users/user.service");
 
-dotenv.config({ path: "C:/Github/gallery/.env" });
+dotenv.config({ path: "C:/GitHub/gallery/gallery/.env" });
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
