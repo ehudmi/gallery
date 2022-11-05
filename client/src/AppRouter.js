@@ -57,6 +57,7 @@ function AppRouter() {
       <Routes>
         <Route index element={<Welcome />} />
         <Route path="welcome" element={<Welcome />} />
+        {/* <Route path="home" element={<Homepage loadData={loadData} />} /> */}
         <Route element={<ProtectedRoute isAllowed={!!authState.userId} />}>
           <Route path="home" element={<Homepage loadData={loadData} />} />
           <Route

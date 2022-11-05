@@ -72,10 +72,10 @@ const addProject = async (req, res) => {
       course_id: course_id,
       description: description,
     });
-    console.log(insertProj);
+    console.log(insertProj[0].id);
     if (insertProj.length > 0) {
       let insertProjAuthor = await _insertDb("project_authors", {
-        project_id: insertProj.id,
+        project_id: insertProj[0].id,
         user_id: data.id,
       });
       console.log(insertProjAuthor);
