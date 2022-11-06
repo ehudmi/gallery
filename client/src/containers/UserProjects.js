@@ -56,6 +56,7 @@ function UserProjects(props) {
       </div>
     );
   } else {
+    console.log(projects);
     return <div>Loading</div>;
   }
 }

@@ -7,7 +7,7 @@ let regexPass = new RegExp("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,15}$");
 
 //User registration and modification form
 
-function UserForm() {
+function Signup() {
   const navigate = useNavigate();
 
   const [data, setData] = useState({
@@ -101,4 +101,4 @@ function UserForm() {
   );
 }
 
-export default UserForm;
+export default Signup;
