@@ -7,13 +7,13 @@ import {
   Outlet,
 } from "react-router-dom";
 import { AuthContext } from "./GlobalStates";
-import Signup from "./containers/Signup";
+import Signup from "./components/Signup";
 import Modal from "./containers/Modal";
 import Homepage from "./containers/Homepage";
 import UserProjects from "./containers/UserProjects";
 import Projects from "./containers/Projects";
-import Login from "./containers/Login";
-import Welcome from "./containers/Welcome";
+import Login from "./components/Login";
+import Welcome from "./components/Welcome";
 import ProjectForm from "./containers/ProjectForm";
 import Layout from "./components/Layout";
 
