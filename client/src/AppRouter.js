@@ -7,7 +7,6 @@ import {
   Outlet,
 } from "react-router-dom";
 import { AuthContext } from "./GlobalStates";
-import isAuthenticated from "./Helpers/Authentication";
 import Signup from "./containers/Signup";
 import Modal from "./containers/Modal";
 import Homepage from "./containers/Homepage";
@@ -18,6 +17,8 @@ import Welcome from "./containers/Welcome";
 import ProjectForm from "./containers/ProjectForm";
 import Layout from "./components/Layout";
 
+// Define protected route wrapping routes by authentication and role based authorization
+
 const ProtectedRoute = ({ isAllowed, redirectPath = "/welcome", children }) => {
   if (!isAllowed) {
     return <Navigate to={redirectPath} replace />;
@@ -25,32 +26,8 @@ const ProtectedRoute = ({ isAllowed, redirectPath = "/welcome", children }) => {
   return children ? children : <Outlet />;
 };
 
-function AppRouter() {
-  const [authState, setAuthState] = useContext(AuthContext);
-
-  // check authentication status and set context if authenticated to use with routes and protected routes
-
-  const loadData = async () => {
-    try {
-      let userAuth = await isAuthenticated();
-      console.log(await userAuth);
-      if (userAuth.userId > 0) {
-        setAuthState({
-          ...authState,
-          userId: userAuth.userId,
-          first_name: userAuth.first_name,
-          last_name: userAuth.last_name,
-          email: userAuth.email,
-          role: userAuth.role,
-        });
-      } else {
-        setAuthState({ ...authState, message: "failed" });
-        console.log(authState.message);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
+function AppRouter({ loadData }) {
+  const [authState] = useContext(AuthContext);
 
   return (
     <BrowserRouter>
