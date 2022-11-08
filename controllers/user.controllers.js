@@ -33,7 +33,7 @@ const register = async (req, res) => {
     });
     res.json({ msg: "Registered Successfully" });
   } catch (error) {
-    res.status(404).json({ msg: "Email already exists" });
+    res.status(409).json({ msg: "Email already exists" });
   }
 };
 

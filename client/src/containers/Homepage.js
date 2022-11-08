@@ -2,12 +2,12 @@ import React, { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../GlobalStates";
 
-function Homepage(props) {
+function Homepage({ loadData }) {
   const navigate = useNavigate();
   const [authState] = useContext(AuthContext);
 
   useEffect(() => {
-    props.loadData();
+    loadData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
 import {
   faCheck,
   faTimes,
@@ -10,37 +9,26 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 const NAME_REGEX = new RegExp("^[A-Z][A-z]{3,23}$");
 const EMAIL_REGEX = new RegExp("^\\S+@\\S+\\.\\S+$");
 const PWD_REGEX = new RegExp("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,15}$");
-const DATE_REGEX = new RegExp(
-  "^[0-3][0-9]/[0-3][0-9]/(?:[0-9][0-9])?[0-9][0-9]$"
-);
 
 //User registration form
 
 function Signup() {
-  const navigate = useNavigate();
-
   const fNameRef = useRef();
   const errRef = useRef();
 
-  const [data, setData] = useState({
-    first_name: "",
-    last_name: "",
-    email: "",
-    password: "",
-    role: "",
-    birth_date: "",
-    about: "",
-  });
-
+  const [fName, setFName] = useState("");
   const [validFName, setValidFName] = useState();
   const [fNameFocus, setFNameFocus] = useState(false);
 
+  const [lName, setLName] = useState("");
   const [validLName, setValidLName] = useState();
   const [lNameFocus, setLNameFocus] = useState(false);
 
+  const [email, setEmail] = useState("");
   const [validEmail, setValidEmail] = useState();
   const [emailFocus, setEmailFocus] = useState(false);
 
+  const [password, setPwd] = useState("");
   const [validPwd, setValidPwd] = useState(false);
   const [pwdFocus, setPwdFocus] = useState(false);
 
@@ -48,8 +36,9 @@ function Signup() {
   const [validMatch, setValidMatch] = useState(false);
   const [matchFocus, setMatchFocus] = useState(false);
 
-  const [validDate, setValidDate] = useState();
-  const [dateFocus, setDateFocus] = useState(false);
+  const [bDate, setBDate] = useState("");
+
+  const [about, setAbout] = useState("");
 
   const [errMsg, setErrMsg] = useState("");
   const [success, setSuccess] = useState(false);
@@ -59,42 +48,32 @@ function Signup() {
   }, []);
 
   useEffect(() => {
-    setValidFName(NAME_REGEX.test(data.first_name));
-  }, [data.first_name]);
+    setValidFName(NAME_REGEX.test(fName));
+  }, [fName]);
 
   useEffect(() => {
-    setValidLName(NAME_REGEX.test(data.last_name));
-  }, [data.last_name]);
+    setValidLName(NAME_REGEX.test(lName));
+  }, [lName]);
 
   useEffect(() => {
-    setValidEmail(EMAIL_REGEX.test(data.email));
-  }, [data.email]);
+    setValidEmail(EMAIL_REGEX.test(email));
+  }, [email]);
 
   useEffect(() => {
-    setValidPwd(PWD_REGEX.test(data.password));
-    setValidMatch(data.password === matchPwd);
-  }, [data.password, matchPwd]);
-
-  useEffect(() => {
-    setValidDate(DATE_REGEX.test(data.birth_date));
-  }, [data.birth_date]);
+    setValidPwd(PWD_REGEX.test(password));
+    setValidMatch(password === matchPwd);
+  }, [password, matchPwd]);
 
   useEffect(() => {
     setErrMsg("");
-  }, [data.first_name, data.password, matchPwd]);
-
-  const handleChange = (event) => {
-    data[event.target.name] = event.target.value;
-    console.log(data[event.target.name]);
-    setData(data);
-  };
+  }, [fName, password, matchPwd]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const v1 = NAME_REGEX.test(data.first_name);
-    const v2 = NAME_REGEX.test(data.last_name);
-    const v3 = EMAIL_REGEX.test(data.email);
-    const v4 = PWD_REGEX.test(data.password);
+    const v1 = NAME_REGEX.test(fName);
+    const v2 = NAME_REGEX.test(lName);
+    const v3 = EMAIL_REGEX.test(email);
+    const v4 = PWD_REGEX.test(password);
     if (!v1 || !v2 || !v3 || !v4) {
       setErrMsg("Invalid Entry");
       return;
@@ -105,20 +84,32 @@ function Signup() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify({
+          first_name: fName,
+          last_name: lName,
+          email: email,
+          password: password,
+          birth_date: bDate,
+          about: about,
+        }),
       });
       const signIn = await response.json();
       if (signIn.msg === "Registered Successfully") {
         setSuccess(true);
-        navigate("/login");
-      } else {
-        alert("Error in registration");
+        setFName("");
+        setLName("");
+        setEmail("");
+        setPwd("");
+        setMatchPwd("");
+        setBDate("");
+        setAbout("");
+      } else if (signIn.msg === "Email already exists") {
+        setErrMsg("email already exists");
       }
     } catch (error) {
+      console.log("error");
       if (!error?.response) {
         setErrMsg("No Server Response");
-      } else if (error.response?.status === 409) {
-        setErrMsg("Username Taken");
       } else {
         setErrMsg("Registration Failed");
       }
@@ -153,7 +144,7 @@ function Signup() {
               />
               <FontAwesomeIcon
                 icon={faTimes}
-                className={validFName || !data.first_name ? "hide" : "invalid"}
+                className={validFName || !fName ? "hide" : "invalid"}
               />
             </label>
             <input
@@ -163,7 +154,8 @@ function Signup() {
               placeholder="First Name"
               ref={fNameRef}
               autoComplete="off"
-              onChange={handleChange}
+              onChange={(e) => setFName(e.target.value)}
+              value={fName}
               required
               aria-invalid={validFName ? "false" : "true"}
               aria-describedby="uidNote"
@@ -173,7 +165,7 @@ function Signup() {
             <p
               id="uidNote"
               className={
-                fNameFocus && data.first_name && !validFName
+                fNameFocus && fName && !validFName
                   ? "instructions"
                   : "offscreen"
               }
@@ -194,7 +186,7 @@ function Signup() {
               />
               <FontAwesomeIcon
                 icon={faTimes}
-                className={validLName || !data.last_name ? "hide" : "invalid"}
+                className={validLName || !lName ? "hide" : "invalid"}
               />
             </label>
             <input
@@ -203,7 +195,8 @@ function Signup() {
               name="last_name"
               placeholder="Last Name"
               autoComplete="off"
-              onChange={handleChange}
+              onChange={(e) => setLName(e.target.value)}
+              value={lName}
               required
               aria-invalid={validLName ? "false" : "true"}
               aria-describedby="uidNote"
@@ -213,7 +206,7 @@ function Signup() {
             <p
               id="uidNote"
               className={
-                lNameFocus && data.last_name && !validLName
+                lNameFocus && lName && !validLName
                   ? "instructions"
                   : "offscreen"
               }
@@ -234,7 +227,7 @@ function Signup() {
               />
               <FontAwesomeIcon
                 icon={faTimes}
-                className={validEmail || !data.email ? "hide" : "invalid"}
+                className={validEmail || !email ? "hide" : "invalid"}
               />
             </label>
             <input
@@ -243,7 +236,8 @@ function Signup() {
               name="email"
               placeholder="Email"
               autoComplete="off"
-              onChange={handleChange}
+              onChange={(e) => setEmail(e.target.value)}
+              value={email}
               required
               aria-invalid={validEmail ? "false" : "true"}
               aria-describedby="uidNote"
@@ -253,7 +247,7 @@ function Signup() {
             <p
               id="uidNote"
               className={
-                emailFocus && data.email && !validEmail
+                emailFocus && email && !validEmail
                   ? "instructions"
                   : "offscreen"
               }
@@ -272,7 +266,7 @@ function Signup() {
               />
               <FontAwesomeIcon
                 icon={faTimes}
-                className={validPwd || !data.password ? "hide" : "invalid"}
+                className={validPwd || !password ? "hide" : "invalid"}
               />
             </label>
             <input
@@ -281,7 +275,8 @@ function Signup() {
               name="password"
               placeholder="Password"
               autoComplete="off"
-              onChange={handleChange}
+              onChange={(e) => setPwd(e.target.value)}
+              value={password}
               required
               aria-invalid={validPwd ? "false" : "true"}
               aria-describedby="uidNote"
@@ -291,17 +286,13 @@ function Signup() {
             <p
               id="uidNote"
               className={
-                pwdFocus && data.last_name && !validPwd
-                  ? "instructions"
-                  : "offscreen"
+                pwdFocus && lName && !validPwd ? "instructions" : "offscreen"
               }
             >
               <FontAwesomeIcon icon={faInfoCircle} />
-              4 to 24 characters.
+              8 to 15 characters.
               <br />
-              Must begin with a Capital letter.
-              <br />
-              Only letters allowed.
+              Must include uppercase, lowercase and digits.
             </p>
 
             <label htmlFor="confirm_pwd">
@@ -335,44 +326,16 @@ function Signup() {
               Must match the first password input field.
             </p>
 
-            <label htmlFor="birthDate">
-              Birth Date:
-              <FontAwesomeIcon
-                icon={faCheck}
-                className={validDate ? "valid" : "hide"}
-              />
-              <FontAwesomeIcon
-                icon={faTimes}
-                className={validDate || !data.birth_date ? "hide" : "invalid"}
-              />
-            </label>
+            <label htmlFor="birthDate">Birth Date:</label>
             <input
               type="date"
               id="birthDate"
               name="birth_date"
               placeholder="Birth Date"
               autoComplete="off"
-              onChange={handleChange}
-              aria-invalid={validDate ? "false" : "true"}
-              aria-describedby="uidNote"
-              onFocus={() => setDateFocus(true)}
-              onBlur={() => setDateFocus(false)}
+              onChange={(e) => setBDate(e.target.value)}
+              value={bDate}
             />
-            <p
-              id="uidNote"
-              className={
-                dateFocus && data.birth_date && !validDate
-                  ? "instructions"
-                  : "offscreen"
-              }
-            >
-              <FontAwesomeIcon icon={faInfoCircle} />
-              4 to 24 characters.
-              <br />
-              Must begin with a Capital letter.
-              <br />
-              Only letters allowed.
-            </p>
 
             <label htmlFor="about">About</label>
             <textarea
@@ -380,7 +343,8 @@ function Signup() {
               placeholder="About"
               rows="4"
               cols="50"
-              onChange={handleChange}
+              onChange={(e) => setAbout(e.target.value)}
+              value={about}
             ></textarea>
             <button
               disabled={
