@@ -103,16 +103,10 @@ function Signup() {
         setMatchPwd("");
         setBDate("");
         setAbout("");
-      } else if (signIn.msg === "Email already exists") {
-        setErrMsg("email already exists");
-      }
+      } else if (signIn.error) throw signIn.error;
     } catch (error) {
       console.log("error");
-      if (!error?.response) {
-        setErrMsg("No Server Response");
-      } else {
-        setErrMsg("Registration Failed");
-      }
+      setErrMsg(error);
       errRef.current.focus();
     }
   };
@@ -135,6 +129,7 @@ function Signup() {
           >
             {errMsg}
           </p>
+          <h1>Sign Up</h1>
           <form onSubmit={handleSubmit}>
             <label htmlFor="firstName">
               First Name:
@@ -150,7 +145,6 @@ function Signup() {
             <input
               type="text"
               id="firstName"
-              name="first_name"
               placeholder="First Name"
               ref={fNameRef}
               autoComplete="off"
@@ -192,7 +186,6 @@ function Signup() {
             <input
               type="text"
               id="lastName"
-              name="last_name"
               placeholder="Last Name"
               autoComplete="off"
               onChange={(e) => setLName(e.target.value)}
@@ -233,7 +226,6 @@ function Signup() {
             <input
               type="email"
               id="email"
-              name="email"
               placeholder="Email"
               autoComplete="off"
               onChange={(e) => setEmail(e.target.value)}
@@ -272,7 +264,6 @@ function Signup() {
             <input
               type="password"
               id="password"
-              name="password"
               placeholder="Password"
               autoComplete="off"
               onChange={(e) => setPwd(e.target.value)}
@@ -330,7 +321,6 @@ function Signup() {
             <input
               type="date"
               id="birthDate"
-              name="birth_date"
               placeholder="Birth Date"
               autoComplete="off"
               onChange={(e) => setBDate(e.target.value)}
@@ -339,7 +329,7 @@ function Signup() {
 
             <label htmlFor="about">About</label>
             <textarea
-              name="about"
+              id="about"
               placeholder="About"
               rows="4"
               cols="50"
@@ -364,7 +354,6 @@ function Signup() {
             Already registered?
             <br />
             <span className="line">
-              {/*put router link here*/}
               <a href="login">Sign In</a>
             </span>
           </p>

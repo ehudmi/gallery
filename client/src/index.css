@@ -51,8 +51,6 @@ a:visited {
 }
 
 input,
-/* input[type="text"], */
-/* input[type="password"], */
 button,
 textarea {
   font-family: "Nunito", sans-serif;

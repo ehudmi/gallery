@@ -33,7 +33,7 @@ const register = async (req, res) => {
     });
     res.json({ msg: "Registered Successfully" });
   } catch (error) {
-    res.status(409).json({ msg: "Email already exists" });
+    res.status(409).json({ error: "Email already exists" });
   }
 };
 
@@ -45,7 +45,7 @@ const login = async (req, res) => {
       email: req.body.email,
     });
     const match = await bcrypt.compare(req.body.password, user[0].password);
-    if (!match) return res.status(400).json({ msg: "Wrong password" });
+    if (!match) return res.status(400).json({ error: "Wrong password" });
     const { id, first_name, last_name, email, role } = user[0];
     const accessToken = jwt.sign(
       { id, first_name, last_name, email, role },
@@ -68,7 +68,8 @@ const login = async (req, res) => {
       accessToken: accessToken,
     });
   } catch (error) {
-    res.status(404).json({ msg: "Email not found" });
+    res.status(404).json({ error: "Email not found" });
+    // res.sendStatus(404);
   }
 };
 

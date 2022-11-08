@@ -25,7 +25,7 @@ const getUserProjects = async (req, res) => {
     res.send(result);
   } catch (error) {
     console.log(error);
-    res.status(404).json({ msg: "couldn't read projects" });
+    res.status(404).json({ error: "couldn't read projects" });
   }
 };
 
@@ -37,7 +37,7 @@ const getProjectsList = async (req, res) => {
     res.send(result);
   } catch (error) {
     console.log(error);
-    res.status(404).json({ msg: "couldn't read projects" });
+    res.status(404).json({ error: "couldn't read projects" });
   }
 };
 
@@ -48,7 +48,7 @@ const getInfo = async (req, res) => {
     res.send(result);
   } catch (error) {
     console.log(error);
-    res.status(404).json({ msg: "couldn't read" });
+    res.status(404).json({ error: "couldn't read" });
   }
 };
 
@@ -59,7 +59,7 @@ const getCourseList = async (req, res) => {
     res.send(result);
   } catch (error) {
     console.log(error);
-    res.status(404).json({ msg: "couldn't read" });
+    res.status(404).json({ error: "couldn't read" });
   }
 };
 
@@ -84,7 +84,7 @@ const addProject = async (req, res) => {
     // res.send({ msg: "added info" });
   } catch (error) {
     console.log(error);
-    res.status(404).json({ msg: "couldn't insert" });
+    res.status(404).json({ error: "couldn't insert" });
   }
 };
 
@@ -111,7 +111,7 @@ const updateInfo = async (req, res) => {
     res.send("info updated");
   } catch (error) {
     console.log(error);
-    res.status(404).json({ msg: "couldn't update" });
+    res.status(404).json({ error: "couldn't update" });
   }
 };
 

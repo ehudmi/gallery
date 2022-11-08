@@ -31,9 +31,9 @@ function App() {
   };
 
   return (
-    <div className="App">
+    <main className="App">
       <AppRouter loadData={loadData} />
-    </div>
+    </main>
   );
 }
 

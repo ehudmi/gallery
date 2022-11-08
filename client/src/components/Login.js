@@ -1,82 +1,106 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useRef, useEffect, useContext } from "react";
 import { AuthContext } from "../GlobalStates";
 import { useNavigate } from "react-router-dom";
-
-let regexPass = new RegExp("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,15}$");
 
 // Login page functions and render - as form
 
 function Login() {
   const [authState, setAuthState] = useContext(AuthContext);
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
+
+  const emailRef = useRef();
+  const errRef = useRef();
+
+  const [email, setEmail] = useState("");
+  const [password, setPwd] = useState("");
+
+  const [errMsg, setErrMsg] = useState("");
+
+  useEffect(() => {
+    emailRef.current.focus();
+  }, []);
+
+  useEffect(() => {
+    setErrMsg("");
+  }, [email, password]);
+
   const navigate = useNavigate();
-
-  const handleChangeEmail = (e) => {
-    // console.log(e.target);
-    setEmail(e.target.value);
-  };
-
-  const handleChangePassword = (e) => {
-    if (e.target.value.match(regexPass) != null) {
-      setPassword({ password: e.target.value });
-    } else {
-      alert(`1 Uppercase\n1 Lowercase\n1 Digit\n8-15 Characters`);
-    }
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    let userLogin = {
-      email: email,
-      password: password.password,
-    };
-    console.log(userLogin);
-    const response = await fetch("/users/login", {
-      method: "POST",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(userLogin),
-    });
-    let userLoggedIn = await response.json();
-    console.log(await userLoggedIn);
-    if (userLoggedIn.userId > 0) {
-      setAuthState({
-        ...authState,
-        userId: userLoggedIn.userId,
-        first_name: userLoggedIn.first_name,
-        last_name: userLoggedIn.last_name,
-        email: userLoggedIn.email,
-        role: userLoggedIn.role,
+
+    try {
+      const response = await fetch("/users/login", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email: email, password: password }),
       });
-      navigate("/home");
-    } else {
-      alert(userLoggedIn.msg);
+      let userLoggedIn = await response.json();
+      // console.log(userLoggedIn);
+      setEmail("");
+      setPwd("");
+      if (userLoggedIn.userId) {
+        setAuthState({
+          ...authState,
+          userId: userLoggedIn.userId,
+          first_name: userLoggedIn.first_name,
+          last_name: userLoggedIn.last_name,
+          email: userLoggedIn.email,
+          role: userLoggedIn.role,
+        });
+        navigate("/home");
+      } else if (userLoggedIn.error) throw userLoggedIn.error;
+    } catch (error) {
+      setErrMsg(error);
+      console.log(error);
+      errRef.current.focus();
     }
   };
 
   return (
-    <div>
-      <p>Login</p>
+    <section>
+      <p
+        ref={errRef}
+        className={errMsg ? "errMsg" : "offscreen"}
+        aria-live="assertive"
+      >
+        {errMsg}
+      </p>
+      <h1>Login</h1>
       <form onSubmit={handleSubmit}>
+        <label htmlFor="email">Email:</label>
         <input
           type={"email"}
-          name="email"
+          id="email"
           placeholder="Email"
-          onChange={handleChangeEmail}
+          ref={emailRef}
+          autoComplete="off"
+          onChange={(e) => setEmail(e.target.value)}
+          value={email}
+          required
         />
-        <br />
+        <label htmlFor="password">Password:</label>
         <input
           type={"password"}
-          name="password"
+          id="password"
           placeholder="Password"
-          onBlur={handleChangePassword}
+          onChange={(e) => setPwd(e.target.value)}
+          value={password}
+          required
         />
-        <button type="submit">Submit</button>
+
+        <button>Log In</button>
       </form>
-    </div>
+      <p>
+        Need an account?
+        <br />
+        <span className="line">
+          <a href="signup">Sign Up</a>
+        </span>
+      </p>
+    </section>
   );
 }
 
