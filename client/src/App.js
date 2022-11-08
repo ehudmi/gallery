@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { AuthContext } from "./GlobalStates";
+import { AuthContext } from "./context/GlobalStates";
 import isAuthenticated from "./Helpers/Authentication";
 import AppRouter from "./AppRouter";
 

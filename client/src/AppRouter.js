@@ -6,7 +6,7 @@ import {
   Navigate,
   Outlet,
 } from "react-router-dom";
-import { AuthContext } from "./GlobalStates";
+import { AuthContext } from "./context/GlobalStates";
 import Signup from "./components/Signup";
 import Modal from "./containers/Modal";
 import Homepage from "./containers/Homepage";

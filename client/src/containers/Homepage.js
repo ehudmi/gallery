@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../GlobalStates";
+import { AuthContext } from "../context/GlobalStates";
 
 function Homepage({ loadData }) {
   const navigate = useNavigate();

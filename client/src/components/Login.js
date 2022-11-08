@@ -1,11 +1,13 @@
 import React, { useState, useRef, useEffect, useContext } from "react";
-import { AuthContext } from "../GlobalStates";
+import { AuthContext } from "../context/GlobalStates";
 import { useNavigate } from "react-router-dom";
 
 // Login page functions and render - as form
 
 function Login() {
   const [authState, setAuthState] = useContext(AuthContext);
+
+  const navigate = useNavigate();
 
   const emailRef = useRef();
   const errRef = useRef();
@@ -22,8 +24,6 @@ function Login() {
   useEffect(() => {
     setErrMsg("");
   }, [email, password]);
-
-  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();

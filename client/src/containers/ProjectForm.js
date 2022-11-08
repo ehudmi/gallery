@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
-import { AuthContext } from "../GlobalStates";
+import { AuthContext } from "../context/GlobalStates";
 // import Input from "../components/Input";
 
 function ProjectForm(props) {

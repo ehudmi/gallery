@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../GlobalStates";
+import { AuthContext } from "../context/GlobalStates";
 
 function UserProjects(props) {
   const [authState] = useContext(AuthContext);
