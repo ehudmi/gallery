@@ -1,9 +1,9 @@
 import React, { useContext, useState, useEffect } from "react";
 // import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../context/GlobalStates";
+import AuthContext from "../context/GlobalStates";
 
 function Projects(props) {
-  const [authState] = useContext(AuthContext);
+  const { authState } = useContext(AuthContext);
   const [projects, setProjects] = useState();
 
   const getProjectsList = async () => {

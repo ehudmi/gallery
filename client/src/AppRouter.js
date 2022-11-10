@@ -6,7 +6,7 @@ import {
   Navigate,
   Outlet,
 } from "react-router-dom";
-import { AuthContext } from "./context/GlobalStates";
+import AuthContext from "./context/GlobalStates";
 import Signup from "./components/Signup";
 import Modal from "./containers/Modal";
 import Homepage from "./containers/Homepage";
@@ -27,7 +27,7 @@ const ProtectedRoute = ({ isAllowed, redirectPath = "/welcome", children }) => {
 };
 
 function AppRouter({ loadData }) {
-  const [authState] = useContext(AuthContext);
+  const { authState } = useContext(AuthContext);
 
   return (
     <BrowserRouter>

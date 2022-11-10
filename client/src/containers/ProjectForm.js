@@ -1,9 +1,9 @@
 import React, { useContext, useState, useEffect } from "react";
-import { AuthContext } from "../context/GlobalStates";
+import AuthContext from "../context/GlobalStates";
 // import Input from "../components/Input";
 
 function ProjectForm(props) {
-  const [authState] = useContext(AuthContext);
+  const { authState } = useContext(AuthContext);
   const [courseData, setCourseData] = useState();
   const [data, setData] = useState({
     project_name: "",

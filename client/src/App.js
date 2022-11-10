@@ -1,10 +1,10 @@
 import React, { useContext } from "react";
-import { AuthContext } from "./context/GlobalStates";
+import AuthContext from "./context/GlobalStates";
 import isAuthenticated from "./Helpers/Authentication";
 import AppRouter from "./AppRouter";
 
 function App() {
-  const [authState, setAuthState] = useContext(AuthContext);
+  const { authState, setAuthState } = useContext(AuthContext);
 
   // check authentication status and set context if authenticated to use with routes and protected routes
 

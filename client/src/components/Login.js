@@ -1,11 +1,11 @@
-import React, { useState, useRef, useEffect, useContext } from "react";
-import { AuthContext } from "../context/GlobalStates";
+import React, { useState, useRef, useEffect } from "react";
+import useAuth from "../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 
 // Login page functions and render - as form
 
 function Login() {
-  const [authState, setAuthState] = useContext(AuthContext);
+  const { setAuthState } = useAuth();
 
   const navigate = useNavigate();
 
@@ -27,7 +27,6 @@ function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
       const response = await fetch("/users/login", {
         method: "POST",
@@ -39,22 +38,21 @@ function Login() {
       });
       let userLoggedIn = await response.json();
       // console.log(userLoggedIn);
-      setEmail("");
-      setPwd("");
       if (userLoggedIn.userId) {
         setAuthState({
-          ...authState,
           userId: userLoggedIn.userId,
           first_name: userLoggedIn.first_name,
           last_name: userLoggedIn.last_name,
           email: userLoggedIn.email,
           role: userLoggedIn.role,
         });
+        setEmail("");
+        setPwd("");
         navigate("/home");
       } else if (userLoggedIn.error) throw userLoggedIn.error;
     } catch (error) {
+      // console.log(error);
       setErrMsg(error);
-      console.log(error);
       errRef.current.focus();
     }
   };
