@@ -1,9 +1,9 @@
-import React, { useContext, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 // import { useNavigate } from "react-router-dom";
-import AuthContext from "../context/GlobalStates";
+import useAuth from "../hooks/useAuth";
 
-function Projects(props) {
-  const { authState } = useContext(AuthContext);
+function Projects() {
+  const { authState } = useAuth();
   const [projects, setProjects] = useState();
 
   const getProjectsList = async () => {
@@ -24,7 +24,7 @@ function Projects(props) {
   };
 
   useEffect(() => {
-    props.loadData();
+    // props.loadData();
     getProjectsList();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

@@ -1,9 +1,9 @@
-import React, { useContext, useState, useEffect } from "react";
-import AuthContext from "../context/GlobalStates";
+import { useState, useEffect } from "react";
+import useAuth from "../hooks/useAuth";
 // import Input from "../components/Input";
 
-function ProjectForm(props) {
-  const { authState } = useContext(AuthContext);
+function ProjectForm() {
+  const { authState } = useAuth();
   const [courseData, setCourseData] = useState();
   const [data, setData] = useState({
     project_name: "",
@@ -48,7 +48,7 @@ function ProjectForm(props) {
   };
 
   useEffect(() => {
-    props.loadData();
+    // props.loadData();
     getCourseData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

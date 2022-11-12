@@ -5,7 +5,7 @@ const isAuthenticated = async () => {
     const response = await fetch("/projects/auth", {
       method: "GET",
     });
-    const userAuth = response.json();
+    const userAuth = await response.json();
     return userAuth;
   } catch (error) {
     console.log(error);
