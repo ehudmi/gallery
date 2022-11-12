@@ -13,36 +13,19 @@ function UserProjects() {
         method: "GET",
       });
       const json = await response.json();
-      console.log(json);
+      // console.log(json);
       setProjects(json);
-      // console.log(projects.hello);
-      // return projects;
-      // const userProjects = response.json();
-      // return userProjects;
     } catch (error) {
       console.log(error);
     }
   };
 
   useEffect(() => {
-    // props.loadData();
     getUserProjects();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // useEffect(() => {
-  //   if (authState !== "") {
-  //     getUserProjects();
-  //     console.log(userProjects);
-  //   } else {
-  //     console.log("loading");
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
-
   if (authState !== "" && projects !== undefined) {
-    // getUserProjects();
-    // console.log(userProjects);
     console.log(projects);
     return (
       <div>
@@ -56,7 +39,7 @@ function UserProjects() {
       </div>
     );
   } else {
-    console.log(projects);
+    // console.log(projects);
     return <div>Loading</div>;
   }
 }

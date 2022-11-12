@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import useAuth from "../hooks/useAuth";
-// import Input from "../components/Input";
 
 function ProjectForm() {
   const { authState } = useAuth();
@@ -48,7 +47,6 @@ function ProjectForm() {
   };
 
   useEffect(() => {
-    // props.loadData();
     getCourseData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

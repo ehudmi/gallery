@@ -32,11 +32,10 @@ const PersistLogin = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  useEffect(() => {
-    console.log(`isLoading: ${isLoading}`);
-    console.log(`aT: ${JSON.stringify(authState?.userId)}`);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isLoading]);
+  //   useEffect(() => {
+  //     console.log(`isLoading: ${isLoading}`);
+  //     console.log(`aT: ${JSON.stringify(authState?.userId)}`);
+  //   }, [isLoading]);
 
   return (
     <>

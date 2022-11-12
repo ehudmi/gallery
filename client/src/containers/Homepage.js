@@ -1,16 +1,9 @@
-// import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 
-// function Homepage({ loadData })
 function Homepage() {
   const navigate = useNavigate();
   const { authState } = useAuth();
-
-  // useEffect(() => {
-  //   loadData();
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
 
   if (authState.userId !== "" && authState.role === "author") {
     return (

@@ -11,7 +11,7 @@ const useAccessToken = () => {
       const userAuth = await response.json();
       if (userAuth.userId > 0) {
         setAuthState((prev) => {
-          console.log(JSON.stringify(prev));
+          //   console.log(JSON.stringify(prev));
           return {
             ...prev,
             userId: userAuth.userId,
