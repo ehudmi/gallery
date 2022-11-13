@@ -7,7 +7,7 @@ import {
 } from "react-router-dom";
 import useAuth from "./hooks/useAuth";
 import Signup from "./components/Signup";
-import Modal from "./containers/Modal";
+// import Modal from "./containers/Modal";
 import Homepage from "./containers/Homepage";
 import UserProjects from "./containers/UserProjects";
 import Projects from "./containers/Projects";
@@ -36,7 +36,8 @@ function AppRouter() {
         <Route path="welcome" element={<Welcome />} />
         <Route path="login" element={<Login />} />
         <Route path="signup" element={<Signup />} />
-        <Route path="logout" element={<Modal />} />
+        {/* <Route path="logout" element={<Modal />} /> */}
+
         <Route element={<PersistLogin />}>
           <Route element={<Layout />}>
             <Route element={<ProtectedRoute isAllowed={!!authState.userId} />}>
@@ -44,6 +45,7 @@ function AppRouter() {
               <Route path="project_list" element={<Projects />} />
             </Route>
           </Route>
+
           <Route
             element={
               <ProtectedRoute
