@@ -1,9 +1,7 @@
 import { useState, useEffect } from "react";
 // import { useNavigate } from "react-router-dom";
-import useAuth from "../hooks/useAuth";
 
 function Projects() {
-  const { authState } = useAuth();
   const [projects, setProjects] = useState();
 
   const getProjectsList = async () => {
@@ -23,7 +21,7 @@ function Projects() {
     getProjectsList();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  if (authState !== "" && projects !== undefined) {
+  if (projects !== undefined) {
     console.log(projects);
     return (
       <div>

@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
-import useAuth from "../hooks/useAuth";
+import ImageForm from "./ImageForm";
 
 function ProjectForm() {
-  const { authState } = useAuth();
   const [courseData, setCourseData] = useState();
   const [data, setData] = useState({
     project_name: "",
@@ -51,7 +50,7 @@ function ProjectForm() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (authState !== "" && courseData !== undefined) {
+  if (courseData !== undefined) {
     return (
       <div>
         <form onSubmit={handleSubmit}>
@@ -82,6 +81,9 @@ function ProjectForm() {
           ></textarea>
           <button type="submit">Submit</button>
         </form>
+        <div>
+          <ImageForm projectName={data.project_name} />
+        </div>
       </div>
     );
   } else {
