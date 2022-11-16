@@ -23,9 +23,10 @@ function ImageForm({ projectName }) {
             userId: authState.userId,
             projectId: projectName,
           })}
+          multipleMax="3"
           onFileSelect={(file) => {
-            // console.log(metadata);
-            console.log("File changed: ", file);
+            // console.log();
+            console.log("File changed: ", file.name);
 
             // if (files) {
             //   //   files.progress((info) => console.log("File progress: ", info));
@@ -34,7 +35,7 @@ function ImageForm({ projectName }) {
             //   //   );
             // }
           }}
-          onChange={(info) => console.log("Upload completed:", info)}
+          onChange={(info) => console.log("Upload completed:", info.count)}
         />
       </p>
     </section>

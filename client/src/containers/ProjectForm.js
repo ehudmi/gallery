@@ -3,11 +3,13 @@ import ImageForm from "./ImageForm";
 
 function ProjectForm() {
   const [courseData, setCourseData] = useState();
-  const [data, setData] = useState({
-    project_name: "",
-    course_id: "",
-    description: "",
-  });
+
+  const [projectName, setProjectName] = useState("");
+  const [validProjName, setValidProjName] = useState(false);
+
+  const [courseId, setCourseId] = useState("");
+
+  const [description, setDescription] = useState("");
 
   const getCourseData = async () => {
     const result = await fetch("/projects/read_course", {
@@ -21,11 +23,6 @@ function ProjectForm() {
     console.log(courseData);
   };
 
-  const handleChange = (event) => {
-    data[event.target.name] = event.target.value;
-    setData(data);
-  };
-
   const handleSubmit = async (event) => {
     event.preventDefault();
     // console.log(JSON.stringify(data));
@@ -34,21 +31,24 @@ function ProjectForm() {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(data),
+      body: JSON.stringify({
+        project_name: projectName,
+        course_id: courseId,
+        description: description,
+      }),
     });
     const projectAdd = await response.json();
     console.log(projectAdd);
-    //   if (signIn.msg === "Registered Successfully") {
-    //     navigate("/login");
-    //   } else {
-    //     alert("Error in registration");
-    //   }
   };
 
   useEffect(() => {
     getCourseData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    !!projectName ? setValidProjName(true) : setValidProjName(false);
+  }, [projectName]);
 
   if (courseData !== undefined) {
     return (
@@ -58,13 +58,13 @@ function ProjectForm() {
             type={"text"}
             name="project_name"
             placeholder="Project Name"
-            onChange={handleChange}
+            onChange={(e) => setProjectName(e.target.value)}
           />
           <input
             list="courses"
             name="course_id"
             placeholder="Course"
-            onChange={handleChange}
+            onChange={(e) => setCourseId(e.target.value)}
           />
           <datalist id="courses">
             {courseData.map((item, index) => (
@@ -77,13 +77,15 @@ function ProjectForm() {
             placeholder="Description"
             rows="4"
             cols="50"
-            onChange={handleChange}
+            onChange={(e) => setDescription(e.target.value)}
           ></textarea>
           <button type="submit">Submit</button>
+          {!!validProjName ? (
+            <div>
+              <ImageForm projectName={projectName} />
+            </div>
+          ) : null}
         </form>
-        <div>
-          <ImageForm projectName={data.project_name} />
-        </div>
       </div>
     );
   } else {
