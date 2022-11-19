@@ -9,7 +9,7 @@ import useAuth from "./hooks/useAuth";
 import Signup from "./components/Signup";
 // import Modal from "./containers/Modal";
 import Homepage from "./containers/Homepage";
-import UserProjects from "./containers/UserProjects";
+import AuthorProjects from "./containers/AuthorProjects";
 import Projects from "./containers/Projects";
 import Login from "./components/Login";
 import Welcome from "./components/Welcome";
@@ -56,7 +56,7 @@ function AppRouter() {
               />
             }
           >
-            <Route path="user_projects" element={<UserProjects />} />
+            <Route path="my_projects" element={<AuthorProjects />} />
             <Route path="project_form" element={<ProjectForm />} />
           </Route>
         </Route>

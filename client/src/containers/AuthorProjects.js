@@ -3,11 +3,12 @@ import { useNavigate } from "react-router-dom";
 
 function UserProjects() {
   const [projects, setProjects] = useState();
+  // const[images,setImages]=useState()
   const navigate = useNavigate();
 
   const getUserProjects = async () => {
     try {
-      const response = await fetch("/projects/user_projects", {
+      const response = await fetch("/projects/author_projects", {
         method: "GET",
       });
       const json = await response.json();
@@ -17,6 +18,14 @@ function UserProjects() {
       console.log(error);
     }
   };
+
+  // const getProjectImages=async()=>{
+  //   try {
+  //     const response=await fetch()
+  //   } catch (error) {
+
+  //   }
+  // }
 
   useEffect(() => {
     getUserProjects();

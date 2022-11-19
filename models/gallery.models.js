@@ -12,6 +12,10 @@ const _readDb_Limited = (table, data, criteria, limit, offset) => {
   return db(table).select(data).where(criteria).limit(limit).offset(offset);
 };
 
+const _countRows = (table, data, criteria) => {
+  return db(table).count(data).where(criteria);
+};
+
 const _insertDb = (table, inputData) => {
   return db(table).insert(inputData).returning("*");
 };
@@ -39,9 +43,10 @@ const _getJoinData = (
 
 module.exports = {
   _readDb,
+  _readDbNotNull,
+  _readDb_Limited,
+  _countRows,
   _insertDb,
   _updateDb,
-  _readDb_Limited,
-  _readDbNotNull,
   _getJoinData,
 };

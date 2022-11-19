@@ -3,7 +3,6 @@ const jwt = require("jsonwebtoken");
 const config = require("config/auth.config.json");
 
 const checkToken = async (req, res, next) => {
-  // console.log("Data 1", req.cookies.accessToken);
   const req_token = req.cookies.accessToken;
   let auth = false;
   if (!req_token) {
@@ -24,21 +23,6 @@ const checkToken = async (req, res, next) => {
     return res.status(400).json({ message: "token verification failed" });
   } else {
     next();
-    //     const data = jwt.verify(req_token, config.secret);
-    //     const user = await _readDb("users", "*", {
-    //       id: data.id,
-    //     });
-    //     if (!user) {
-    //       return res.status(400).json({ error: "user not found" });
-    //     }
-    //     const { id, first_name, last_name, email, role } = user[0];
-    //     return res.status(200).json({
-    //       userId: id,
-    //       first_name: first_name,
-    //       last_name: last_name,
-    //       email: email,
-    //       role: role,
-    //     });
   }
 };
 
@@ -73,6 +57,7 @@ const isAuthor = async (req, res, next) => {
   });
   return;
 };
+
 const isUser = async (req, res, next) => {
   const data = jwt.verify(req.cookies.accessToken, config.secret);
   const user = await _readDb("users", "*", {
@@ -96,10 +81,3 @@ const authJwt = {
   isUser: isUser,
 };
 module.exports = { authJwt };
-
-// module.exports = {
-//   checkToken,
-//   isAdmin,
-//   isAuthor,
-//   isUser,
-// };

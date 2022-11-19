@@ -11,9 +11,7 @@ function Homepage() {
         <p>Homepage</p>
         Welcome
         {authState.email}
-        <button onClick={() => navigate("/user_projects")}>
-          User Projects
-        </button>
+        <button onClick={() => navigate("/my_projects")}>My Projects</button>
       </div>
     );
   } else if (authState.userId !== "" && authState.role === "user") {

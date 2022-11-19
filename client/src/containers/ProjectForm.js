@@ -1,16 +1,19 @@
 import { useState, useEffect } from "react";
-import ImageForm from "./ImageForm";
+import useAuth from "../hooks/useAuth";
+import { Widget } from "@uploadcare/react-widget";
 
 function ProjectForm() {
+  const { authState } = useAuth();
+
   const [courseData, setCourseData] = useState();
-
   const [projectName, setProjectName] = useState("");
-  const [validProjName, setValidProjName] = useState(false);
-
+  const [projectId, setProjectId] = useState("");
+  const [validProjectId, setValidProjectId] = useState(false);
   const [courseId, setCourseId] = useState("");
-
   const [description, setDescription] = useState("");
+  const [imageFiles, setImageFiles] = useState([]);
 
+  // check what courses are in the db to populate list of courses
   const getCourseData = async () => {
     const result = await fetch("/projects/read_course", {
       method: "GET",
@@ -20,12 +23,12 @@ function ProjectForm() {
     });
     const json = await result.json();
     setCourseData(json);
-    console.log(courseData);
+    console.log(json);
   };
 
+  // function to submit form
   const handleSubmit = async (event) => {
     event.preventDefault();
-    // console.log(JSON.stringify(data));
     const response = await fetch("/projects/add_project", {
       method: "POST",
       headers: {
@@ -39,6 +42,19 @@ function ProjectForm() {
     });
     const projectAdd = await response.json();
     console.log(projectAdd);
+    setProjectId(projectAdd[0].project_id);
+  };
+
+  // function to add image data to the db using fileInfo from Uploadcare
+  const insertImages = async () => {
+    const response = await fetch("/projects/add_images", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(imageFiles),
+    });
+    console.log(await response.json());
   };
 
   useEffect(() => {
@@ -47,8 +63,16 @@ function ProjectForm() {
   }, []);
 
   useEffect(() => {
-    !!projectName ? setValidProjName(true) : setValidProjName(false);
-  }, [projectName]);
+    projectId !== "" ? setValidProjectId(true) : setValidProjectId(false);
+  }, [projectId]);
+
+  useEffect(() => {
+    console.log(imageFiles);
+    if (imageFiles.length > 0) {
+      insertImages();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [imageFiles]);
 
   if (courseData !== undefined) {
     return (
@@ -80,10 +104,41 @@ function ProjectForm() {
             onChange={(e) => setDescription(e.target.value)}
           ></textarea>
           <button type="submit">Submit</button>
-          {!!validProjName ? (
-            <div>
-              <ImageForm projectName={projectName} />
-            </div>
+          {!!validProjectId ? (
+            <p>
+              <label htmlFor="file">Your file:</label>{" "}
+              <Widget
+                publicKey="a8a3d493f7784d19923f"
+                id="file"
+                imagesOnly="true"
+                previewStep="true"
+                multiple="true"
+                imageShrink="800X600"
+                metadata={JSON.stringify({
+                  userId: authState.userId,
+                  projectName: projectName,
+                  projectId: projectId,
+                })}
+                multipleMax="3"
+                onDialogOpen={(dialog) => {
+                  // fires when a user closes the widget's dialog (clicks Done)
+                  dialog.done(async (group) => {
+                    // get an array of file instances and fileInfo objects
+                    const fileInfos = await Promise.all(group.files());
+                    console.log(fileInfos);
+                    const images = fileInfos.map((item) => {
+                      return {
+                        uuid: item.uuid,
+                        url: item.cdnUrl,
+                        project_id: projectId,
+                        name: item.name,
+                      };
+                    });
+                    setImageFiles(images);
+                  });
+                }}
+              />
+            </p>
           ) : null}
         </form>
       </div>
