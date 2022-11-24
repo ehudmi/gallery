@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import useAuth from "../hooks/useAuth";
 import { Widget } from "@uploadcare/react-widget";
 
@@ -12,6 +12,10 @@ function ProjectForm() {
   const [courseId, setCourseId] = useState("");
   const [description, setDescription] = useState("");
   const [imageFiles, setImageFiles] = useState([]);
+  // const [files,setFiles]=useState()
+  const filesRef = useRef(null);
+  const [files, setFiles] = useState(null);
+  // const fileRef = useRef(null);
 
   // check what courses are in the db to populate list of courses
   const getCourseData = async () => {
@@ -57,6 +61,27 @@ function ProjectForm() {
     console.log(await response.json());
   };
 
+  const uploadFiles = async () => {
+    // event.preventDefault();
+    // setState(true)
+    const data = new FormData();
+    // data.append("project_id", projectId);
+    data.append("project_id", "3");
+    let i = 0;
+    console.log(files);
+    for (const item of files) {
+      data.append(`image_${i}`, item);
+      i++;
+    }
+    // console.log(files);
+    const response = fetch("/projects/send_images", {
+      method: "POST",
+      body: data,
+    });
+    // const json = await response.json();
+    console.log(response);
+  };
+
   useEffect(() => {
     getCourseData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -74,19 +99,25 @@ function ProjectForm() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [imageFiles]);
 
+  // useEffect(() => {
+  //   console.log(file);
+  // }, [file]);
+
   if (courseData !== undefined) {
     return (
       <div>
         <form onSubmit={handleSubmit}>
+          <label htmlFor="project_name">Project Name</label>
           <input
             type={"text"}
-            name="project_name"
+            id="project_name"
             placeholder="Project Name"
             onChange={(e) => setProjectName(e.target.value)}
           />
+
           <input
             list="courses"
-            name="course_id"
+            id="course_id"
             placeholder="Course"
             onChange={(e) => setCourseId(e.target.value)}
           />
@@ -97,13 +128,14 @@ function ProjectForm() {
           </datalist>
           <label htmlFor="description">Description</label>
           <textarea
-            name="description"
+            id="description"
             placeholder="Description"
             rows="4"
             cols="50"
             onChange={(e) => setDescription(e.target.value)}
           ></textarea>
           <button type="submit">Submit</button>
+
           {!!validProjectId ? (
             <p>
               <label htmlFor="file">Your file:</label>{" "}
@@ -141,6 +173,37 @@ function ProjectForm() {
             </p>
           ) : null}
         </form>
+        <label htmlFor="addImages">
+          <button component="span" onClick={() => filesRef.current.click()}>
+            <span>Select Images</span>
+          </button>
+        </label>
+        <input
+          ref={filesRef}
+          accept=".jpg, .jpeg, .png, .gif"
+          style={{ display: "none" }}
+          id="addImages"
+          multiple
+          type="file"
+          onChange={(e) => {
+            setFiles(e.target.files);
+          }}
+        />
+        <button onClick={uploadFiles}>Upload Files</button>
+        {/* <form onSubmit={uploadFile}>
+          <label htmlFor="image_file">Select Images</label>
+          <input
+            type={"file"}
+            multiple
+            accept=".jpg, .jpeg, .png, .gif"
+            // id="image_file"
+            name="image_file"
+            ref={fileRef}
+            placeholder="Image File"
+            // onChange={(e) => setProjectName(e.target.value)}
+          />
+          <button type="submit">Upload</button>
+        </form> */}
       </div>
     );
   } else {

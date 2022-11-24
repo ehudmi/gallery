@@ -1,26 +1,34 @@
 const express = require("express");
 const {
+  authUser,
   getAuthorProjects,
   getProjectsList,
   getInfo,
   getCourseList,
   addProject,
   addImages,
+  getProjectImages,
+  deleteImages,
   updateInfo,
+  imagesToAPI,
 } = require("../controllers/project.controllers");
-const { authUser } = require("../controllers/user.controllers");
+
 const { authJwt } = require("../middleware/auth");
 
 const router = express.Router();
 
-router.use(authJwt.checkToken);
-router.get("/auth", authUser);
-router.get("/author_projects", [authJwt.isAuthor], getAuthorProjects);
+router.get("/auth", [authJwt.checkToken], authUser);
+
 router.get("/list_projects", [authJwt.isUser], getProjectsList);
-router.get("/read", getInfo);
+router.post("/project_images", [authJwt.isUser], getProjectImages);
+router.post("/delete_images", [authJwt.isUser], deleteImages);
+
+router.get("/author_projects", [authJwt.isAuthor], getAuthorProjects);
 router.get("/read_course", [authJwt.isAuthor], getCourseList);
 router.post("/add_project", [authJwt.isAuthor], addProject);
 router.post("/add_images", [authJwt.isAuthor], addImages);
+router.post("/send_images", [authJwt.isAuthor], imagesToAPI);
 router.get("/update", updateInfo);
+router.get("/read", getInfo);
 
 module.exports = router;

@@ -4,22 +4,10 @@ const config = require("config/auth.config.json");
 
 const checkToken = async (req, res, next) => {
   const req_token = req.cookies.accessToken;
-  let auth = false;
   if (!req_token) {
     return res.status(200).json({ message: "Please login" });
   }
-
-  try {
-    if (!jwt.verify(req_token, config.secret)) {
-      throw "Token not valid";
-    } else {
-      auth = true;
-    }
-  } catch (error) {
-    console.log("invalid token");
-  }
-
-  if (!auth) {
+  if (!jwt.verify(req_token, config.secret)) {
     return res.status(400).json({ message: "token verification failed" });
   } else {
     next();

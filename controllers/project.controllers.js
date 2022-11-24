@@ -1,3 +1,6 @@
+const multer = require("multer");
+const upload = multer({ storage: multer.memoryStorage(), limits: 1024 * 1024 });
+
 const {
   _readDb,
   _readDbNotNull,
@@ -5,10 +8,32 @@ const {
   _countRows,
   _insertDb,
   _updateDb,
+  _deleteDb,
   _getJoinData,
 } = require("../models/gallery.models");
 const jwt = require("jsonwebtoken");
 const config = require("config/auth.config.json");
+
+// function to verify token from front-end
+
+const authUser = async (req, res) => {
+  const req_token = req.cookies.accessToken;
+  const data = jwt.verify(req_token, config.secret);
+  const user = await _readDb("users", "*", {
+    id: data.id,
+  });
+  if (!user) {
+    return res.status(400).json({ error: "user not found" });
+  }
+  const { id, first_name, last_name, email, role } = user[0];
+  return res.status(200).json({
+    userId: id,
+    first_name: first_name,
+    last_name: last_name,
+    email: email,
+    role: role,
+  });
+};
 
 const getAuthorProjects = async (req, res) => {
   try {
@@ -112,6 +137,57 @@ const addImages = async (req, res) => {
   }
 };
 
+const imagesToAPI = async (req, res) => {
+  try {
+    upload.array("photos", 3);
+    console.log(req.body);
+    res.send();
+  } catch (error) {
+    console.log(error);
+    res.status(404).json({ error: "didn't get the files" });
+  }
+
+  // const response=fetch("https://upload.uploadcare.com/base/",
+  // {
+  //   "UPLOADCARE_PUB_KEY": UPLOADCARE_PUB_KEY,
+  //   "UPLOADCARE_STORE": "auto",
+
+  //   "my_file.jpg": "@my_file.jpg",
+  //   "another_file.jpg": "@another_file.jpg",
+  //   "metadata[subsystem]": "uploader"
+  // }
+  // )
+};
+
+const getProjectImages = async (req, res) => {
+  try {
+    let result = await _readDb("project_images", "*", {
+      project_id: req.body.project_id,
+    });
+    console.log(result);
+    if (result.length === 0) throw error;
+    else {
+      res.send(result);
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(404).json({ error: "couldn't retrieve images" });
+  }
+};
+
+const deleteImages = async (req, res) => {
+  try {
+    let result = await _deleteDb("project_images", {
+      uuid: req.body.uuid,
+    });
+    console.log(result);
+    res.send({ message: "deleted the image" });
+  } catch (error) {
+    console.log(error);
+    res.status(404).json({ error: "couldn't delete images" });
+  }
+};
+
 const updateInfo = async (req, res) => {
   try {
     let result = await _updateDb(
@@ -128,11 +204,15 @@ const updateInfo = async (req, res) => {
 };
 
 module.exports = {
+  authUser,
   getAuthorProjects,
   getProjectsList,
   getInfo,
   getCourseList,
   addProject,
   addImages,
+  getProjectImages,
+  deleteImages,
   updateInfo,
+  imagesToAPI,
 };

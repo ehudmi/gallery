@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function Projects() {
   const [projects, setProjects] = useState();
+
+  const navigate = useNavigate();
 
   const getProjectsList = async () => {
     try {
@@ -27,7 +29,18 @@ function Projects() {
       <div>
         List of Projects
         {projects.map((item, index) => {
-          return <div key={index}>Project Name {item.project_name}</div>;
+          return (
+            <div key={index}>
+              <p
+                onClick={
+                  () => navigate("/project_details", { state: item })
+                  // console.log(item)
+                }
+              >
+                Project Name {item.project_name}
+              </p>
+            </div>
+          );
         })}
       </div>
     );

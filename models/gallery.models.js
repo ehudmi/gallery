@@ -20,6 +20,10 @@ const _insertDb = (table, inputData) => {
   return db(table).insert(inputData).returning("*");
 };
 
+const _deleteDb = (table, criteria) => {
+  return db(table).where(criteria).del();
+};
+
 const _updateDb = (table, updatedData, criteria) => {
   return db(table).update(updatedData).where(criteria).returning("*");
 };
@@ -47,6 +51,7 @@ module.exports = {
   _readDb_Limited,
   _countRows,
   _insertDb,
+  _deleteDb,
   _updateDb,
   _getJoinData,
 };

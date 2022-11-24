@@ -70,28 +70,6 @@ const login = async (req, res) => {
   }
 };
 
-// function to verify token from front-end
-
-const authUser = async (req, res) => {
-  const req_token = req.cookies.accessToken;
-  const data = jwt.verify(req_token, config.secret);
-  const user = await _readDb("users", "*", {
-    id: data.id,
-  });
-  if (!user) {
-    return res.status(400).json({ error: "user not found" });
-  }
-  const { id, first_name, last_name, email, role } = user[0];
-  return res.status(200).json({
-    userId: id,
-    first_name: first_name,
-    last_name: last_name,
-    email: email,
-    role: role,
-  });
-  // }
-};
-
 // function for logout of current user
 
 const logout = (req, res) => {
@@ -119,7 +97,6 @@ const getUsers = async (req, res) => {
 module.exports = {
   register,
   login,
-  authUser,
   logout,
   getUsers,
 };
