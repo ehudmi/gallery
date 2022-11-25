@@ -1,6 +1,3 @@
-const multer = require("multer");
-const upload = multer({ storage: multer.memoryStorage(), limits: 1024 * 1024 });
-
 const {
   _readDb,
   _readDbNotNull,
@@ -138,14 +135,17 @@ const addImages = async (req, res) => {
 };
 
 const imagesToAPI = async (req, res) => {
-  try {
-    upload.array("photos", 3);
-    console.log(req.body);
-    res.send();
-  } catch (error) {
-    console.log(error);
-    res.status(404).json({ error: "didn't get the files" });
-  }
+  console.log(req.files);
+  console.log(req.body.project_id);
+  res.send("Multiple Files Upload Success");
+  // try {
+  //   // upload.array("photos", 3);
+  //   console.log(req.files);
+  //   res.send("I have uploaded the files");
+  // } catch (error) {
+  //   console.log(error);
+  //   res.status(404).json({ error: "where am I?" });
+  // }
 
   // const response=fetch("https://upload.uploadcare.com/base/",
   // {

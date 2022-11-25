@@ -14,7 +14,7 @@ function ProjectForm() {
   const [imageFiles, setImageFiles] = useState([]);
   // const [files,setFiles]=useState()
   const filesRef = useRef(null);
-  const [files, setFiles] = useState(null);
+  const [files, setFiles] = useState();
   // const fileRef = useRef(null);
 
   // check what courses are in the db to populate list of courses
@@ -62,23 +62,18 @@ function ProjectForm() {
   };
 
   const uploadFiles = async () => {
-    // event.preventDefault();
-    // setState(true)
     const data = new FormData();
     // data.append("project_id", projectId);
     data.append("project_id", "3");
-    let i = 0;
     console.log(files);
     for (const item of files) {
-      data.append(`image_${i}`, item);
-      i++;
+      data.append("images", item);
     }
-    // console.log(files);
-    const response = fetch("/projects/send_images", {
+    console.log(data.get("project_id"));
+    const response = await fetch("/projects/send_images", {
       method: "POST",
       body: data,
     });
-    // const json = await response.json();
     console.log(response);
   };
 
@@ -183,6 +178,7 @@ function ProjectForm() {
           accept=".jpg, .jpeg, .png, .gif"
           style={{ display: "none" }}
           id="addImages"
+          // name="images"
           multiple
           type="file"
           onChange={(e) => {
