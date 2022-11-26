@@ -12,7 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "@uploadcare/rest-client": "^5.1.1",
-    "@uploadcare/upload-client": "^5.1.1",
+    "@uploadcare/upload-client": "^3.1.1",
     "bcrypt": "^5.1.0",
     "body-parser": "^1.20.0",
     "cookie-parser": "^1.4.6",
@@ -22,6 +22,7 @@
     "jsonwebtoken": "^8.5.1",
     "knex": "^2.2.0",
     "multer": "^1.4.5-lts.1",
+    "multer-storage-uploadcare": "^3.0.1",
     "pg": "^8.7.3",
     "rootpath": "^0.1.2"
   },

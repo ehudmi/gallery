@@ -30,20 +30,20 @@ function ProjectDetails() {
 
   const deleteImage = async (uuid) => {
     try {
-      const responseAPI = await fetch(
-        `https://api.uploadcare.com/files/${uuid}/storage/`,
-        {
-          method: "DELETE",
-          headers: {
-            Accept: "application/vnd.uploadcare-v0.7+json",
-            Authorization:
-              "Uploadcare.Simple a8a3d493f7784d19923f:7504d155b72e01f55dbf",
-          },
-        }
-      );
-      const jsonAPI = await responseAPI.json();
-      console.log(jsonAPI);
-
+      // const responseAPI = await fetch(
+      //   `https://api.uploadcare.com/files/${uuid}/storage/`,
+      //   {
+      //     method: "DELETE",
+      //     headers: {
+      //       Accept: "application/vnd.uploadcare-v0.7+json",
+      //       Authorization:
+      //         "Uploadcare.Simple a8a3d493f7784d19923f:7504d155b72e01f55dbf",
+      //     },
+      //   }
+      // );
+      // const jsonAPI = await responseAPI.json();
+      // console.log(jsonAPI);
+      console.log(uuid);
       const response = await fetch("/projects/delete_images", {
         method: "POST",
         headers: {
@@ -69,7 +69,7 @@ function ProjectDetails() {
     []
   );
 
-  if (authState.role === "user") {
+  if (authState.role === "author") {
     return (
       <div>
         <p>Project</p>
@@ -78,7 +78,13 @@ function ProjectDetails() {
           ? images.map((item, index) => {
               return (
                 <div key={index}>
-                  <img alt="pic" src={item.url} id={item.uuid} />
+                  <img
+                    alt="pic"
+                    src={item.url}
+                    id={item.uuid}
+                    width={300}
+                    height={300}
+                  />
                   <button onClick={() => deleteImage(item.uuid)}>
                     Delete Image
                   </button>
@@ -91,13 +97,29 @@ function ProjectDetails() {
             </button> */}
       </div>
     );
-  } else if (authState.role === "author") {
+  } else if (authState.role === "user") {
     return (
       <div>
         <p>Project</p>
-        Welcome
         {location.state.id}
-        {/* <button onClick={() => navigate("/my_projects")}>My Projects</button> */}
+        {!!images
+          ? images.map((item, index) => {
+              return (
+                <div key={index}>
+                  <img
+                    alt="pic"
+                    src={item.url}
+                    id={item.uuid}
+                    width={300}
+                    height={300}
+                  />
+                </div>
+              );
+            })
+          : null}
+        {/* <button onClick={() => navigate("/project_list")}>
+              List of Projects
+            </button> */}
       </div>
     );
   } else if (authState.message === "failed") {

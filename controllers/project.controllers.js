@@ -111,52 +111,38 @@ const addProject = async (req, res) => {
 };
 
 const addImages = async (req, res) => {
-  console.log(req.body);
-  const fieldsToInsert = req.body.map((field) => ({
-    uuid: field.uuid,
-    url: field.url,
-    project_id: field.project_id,
-    name: field.name,
+  console.log(req.body.project_id);
+  for (const item of req.files) {
+    console.log(item.uploadcare_file_id);
+  }
+  const fieldsToInsert = req.files.map((field) => ({
+    uuid: field.uploadcare_file_id,
+    url: `https://ucarecdn.com/${field.uploadcare_file_id}/`,
+    project_id: req.body.project_id,
+    name: field.originalname,
   }));
   try {
-    let checkImageCount = await _countRows("project_images", "uuid", {
-      project_id: req.body[0].project_id,
+    let isProjectExist = await _readDb("projects", "*", {
+      id: req.body.project_id,
     });
-    console.log(checkImageCount[0].count);
-    if (checkImageCount[0].count < 3) {
-      let insertImage = await _insertDb("project_images", fieldsToInsert);
-      console.log(insertImage);
-      res.send({ message: `inserted ${insertImage.length} images` });
+    console.log(isProjectExist);
+    if (isProjectExist.length > 0) {
+      let checkImageCount = await _countRows("project_images", "uuid", {
+        project_id: req.body.project_id,
+      });
+      console.log(checkImageCount[0].count);
+      if (checkImageCount[0].count < 3) {
+        let insertImage = await _insertDb("project_images", fieldsToInsert);
+        console.log(insertImage);
+        res.send({ message: `inserted ${insertImage.length} images` });
+      }
+    } else {
+      res.send({ error: "The project id is not in the database" });
     }
   } catch (error) {
     console.log(error);
     res.status(404).json({ error: "couldn't insert images" });
   }
-};
-
-const imagesToAPI = async (req, res) => {
-  console.log(req.files);
-  console.log(req.body.project_id);
-  res.send("Multiple Files Upload Success");
-  // try {
-  //   // upload.array("photos", 3);
-  //   console.log(req.files);
-  //   res.send("I have uploaded the files");
-  // } catch (error) {
-  //   console.log(error);
-  //   res.status(404).json({ error: "where am I?" });
-  // }
-
-  // const response=fetch("https://upload.uploadcare.com/base/",
-  // {
-  //   "UPLOADCARE_PUB_KEY": UPLOADCARE_PUB_KEY,
-  //   "UPLOADCARE_STORE": "auto",
-
-  //   "my_file.jpg": "@my_file.jpg",
-  //   "another_file.jpg": "@another_file.jpg",
-  //   "metadata[subsystem]": "uploader"
-  // }
-  // )
 };
 
 const getProjectImages = async (req, res) => {
@@ -214,5 +200,4 @@ module.exports = {
   getProjectImages,
   deleteImages,
   updateInfo,
-  imagesToAPI,
 };

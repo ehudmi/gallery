@@ -1,9 +1,8 @@
 import { useState, useEffect, useRef } from "react";
-import useAuth from "../hooks/useAuth";
-import { Widget } from "@uploadcare/react-widget";
+// import useAuth from "../hooks/useAuth";
 
 function ProjectForm() {
-  const { authState } = useAuth();
+  // const { authState } = useAuth();
 
   const [courseData, setCourseData] = useState();
   const [projectName, setProjectName] = useState("");
@@ -11,11 +10,8 @@ function ProjectForm() {
   const [validProjectId, setValidProjectId] = useState(false);
   const [courseId, setCourseId] = useState("");
   const [description, setDescription] = useState("");
-  const [imageFiles, setImageFiles] = useState([]);
-  // const [files,setFiles]=useState()
   const filesRef = useRef(null);
   const [files, setFiles] = useState();
-  // const fileRef = useRef(null);
 
   // check what courses are in the db to populate list of courses
   const getCourseData = async () => {
@@ -50,31 +46,21 @@ function ProjectForm() {
   };
 
   // function to add image data to the db using fileInfo from Uploadcare
-  const insertImages = async () => {
-    const response = await fetch("/projects/add_images", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(imageFiles),
-    });
-    console.log(await response.json());
-  };
 
   const uploadFiles = async () => {
     const data = new FormData();
-    // data.append("project_id", projectId);
-    data.append("project_id", "3");
+    data.append("project_id", projectId);
+    // data.append("project_id", 65);
     console.log(files);
     for (const item of files) {
       data.append("images", item);
     }
     console.log(data.get("project_id"));
-    const response = await fetch("/projects/send_images", {
+    const response = await fetch("/projects/add_images", {
       method: "POST",
       body: data,
     });
-    console.log(response);
+    console.log(await response.json());
   };
 
   useEffect(() => {
@@ -85,18 +71,6 @@ function ProjectForm() {
   useEffect(() => {
     projectId !== "" ? setValidProjectId(true) : setValidProjectId(false);
   }, [projectId]);
-
-  useEffect(() => {
-    console.log(imageFiles);
-    if (imageFiles.length > 0) {
-      insertImages();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [imageFiles]);
-
-  // useEffect(() => {
-  //   console.log(file);
-  // }, [file]);
 
   if (courseData !== undefined) {
     return (
@@ -131,7 +105,7 @@ function ProjectForm() {
           ></textarea>
           <button type="submit">Submit</button>
 
-          {!!validProjectId ? (
+          {/* {!!validProjectId ? (
             <p>
               <label htmlFor="file">Your file:</label>{" "}
               <Widget
@@ -166,40 +140,30 @@ function ProjectForm() {
                 }}
               />
             </p>
-          ) : null}
+          ) : null} */}
         </form>
-        <label htmlFor="addImages">
-          <button component="span" onClick={() => filesRef.current.click()}>
-            <span>Select Images</span>
-          </button>
-        </label>
-        <input
-          ref={filesRef}
-          accept=".jpg, .jpeg, .png, .gif"
-          style={{ display: "none" }}
-          id="addImages"
-          // name="images"
-          multiple
-          type="file"
-          onChange={(e) => {
-            setFiles(e.target.files);
-          }}
-        />
-        <button onClick={uploadFiles}>Upload Files</button>
-        {/* <form onSubmit={uploadFile}>
-          <label htmlFor="image_file">Select Images</label>
-          <input
-            type={"file"}
-            multiple
-            accept=".jpg, .jpeg, .png, .gif"
-            // id="image_file"
-            name="image_file"
-            ref={fileRef}
-            placeholder="Image File"
-            // onChange={(e) => setProjectName(e.target.value)}
-          />
-          <button type="submit">Upload</button>
-        </form> */}
+        {!!validProjectId ? (
+          <>
+            <label htmlFor="addImages">
+              <button component="span" onClick={() => filesRef.current.click()}>
+                <span>Select Images</span>
+              </button>
+            </label>
+            <input
+              ref={filesRef}
+              accept=".jpg, .jpeg, .png, .gif"
+              style={{ display: "none" }}
+              id="addImages"
+              // name="images"
+              multiple
+              type="file"
+              onChange={(e) => {
+                setFiles(e.target.files);
+              }}
+            />
+            <button onClick={uploadFiles}>Upload Files</button>
+          </>
+        ) : null}
       </div>
     );
   } else {

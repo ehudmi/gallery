@@ -38,8 +38,22 @@ function UserProjects() {
       <div>
         <div>
           My Projects
-          {projects.map((item, index) => {
+          {/* {projects.map((item, index) => {
             return <div key={index}>UserProjects {item.project_name}</div>;
+          })} */}
+          {projects.map((item, index) => {
+            return (
+              <div key={index}>
+                <p
+                  onClick={
+                    () => navigate("/project_details", { state: item })
+                    // console.log(item)
+                  }
+                >
+                  Project Name {item.project_name}
+                </p>
+              </div>
+            );
           })}
         </div>
         <button onClick={() => navigate("/project_form")}>Add Project</button>
