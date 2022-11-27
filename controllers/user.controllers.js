@@ -1,7 +1,7 @@
 const { _readDb, _insertDb, _updateDb } = require("../models/gallery.models");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const config = require("config/auth.config.json");
+const config = require("../config/auth.config.json");
 
 // function to register new user in DB
 

@@ -1,4 +1,4 @@
-const { db } = require("config/heroku-gallery-local");
+const { db } = require("../config/heroku-gallery-local");
 
 const _readDb = (table, data, criteria) => {
   return db(table).select(data).where(criteria);

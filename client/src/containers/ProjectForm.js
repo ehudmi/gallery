@@ -52,15 +52,19 @@ function ProjectForm() {
     data.append("project_id", projectId);
     // data.append("project_id", 65);
     console.log(files);
-    for (const item of files) {
-      data.append("images", item);
+    if (files.length > 3) {
+      console.log("too many files");
+    } else {
+      for (const item of files) {
+        data.append("images", item);
+      }
+      console.log(data.get("project_id"));
+      const response = await fetch("/projects/add_images", {
+        method: "POST",
+        body: data,
+      });
+      console.log(await response.json());
     }
-    console.log(data.get("project_id"));
-    const response = await fetch("/projects/add_images", {
-      method: "POST",
-      body: data,
-    });
-    console.log(await response.json());
   };
 
   useEffect(() => {

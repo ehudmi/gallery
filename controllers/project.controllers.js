@@ -4,38 +4,45 @@ const {
   // _readDb_Limited,
   _countRows,
   _insertDb,
-  _updateDb,
+  // _updateDb,
   _deleteDb,
   _getJoinData,
 } = require("../models/gallery.models");
 const jwt = require("jsonwebtoken");
-const config = require("config/auth.config.json");
+const config = require("../config/auth.config.json");
 
 // function to verify token from front-end
 
 const authUser = async (req, res) => {
   const req_token = req.cookies.accessToken;
   const data = jwt.verify(req_token, config.secret);
-  const user = await _readDb("users", "*", {
-    id: data.id,
-  });
-  if (!user) {
-    return res.status(400).json({ error: "user not found" });
+  try {
+    const user = await _readDb("users", "*", {
+      id: data.id,
+    });
+    if (!user) {
+      return res.status(400).json({ error: "user not found" });
+    }
+    const { id, first_name, last_name, email, role } = user[0];
+    return res.status(200).json({
+      userId: id,
+      first_name: first_name,
+      last_name: last_name,
+      email: email,
+      role: role,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(404).json({ error: "can't authenticate" });
   }
-  const { id, first_name, last_name, email, role } = user[0];
-  return res.status(200).json({
-    userId: id,
-    first_name: first_name,
-    last_name: last_name,
-    email: email,
-    role: role,
-  });
 };
 
+// function to retrieve list of projects authored by author
+
 const getAuthorProjects = async (req, res) => {
+  const data = jwt.verify(req.cookies.accessToken, config.secret);
   try {
-    const data = jwt.verify(req.cookies.accessToken, config.secret);
-    let result = await _getJoinData(
+    const result = await _getJoinData(
       "project_authors",
       "users",
       "projects",
@@ -46,69 +53,68 @@ const getAuthorProjects = async (req, res) => {
       { user_id: data.id }
     );
     console.log(result);
-    res.send(result);
+    return res.send(result);
   } catch (error) {
     console.log(error);
     res.status(404).json({ error: "couldn't read projects" });
   }
 };
+
+// function to retrieve list of all projects for user
 
 const getProjectsList = async (req, res) => {
   try {
-    let result = await _readDbNotNull("projects", "*", "id");
+    const result = await _readDbNotNull("projects", "*", "id");
     console.log(result);
-    res.send(result);
+    return res.send(result);
   } catch (error) {
     console.log(error);
     res.status(404).json({ error: "couldn't read projects" });
   }
 };
 
-const getInfo = async (req, res) => {
+// function to retrieve list of courses in db to populate option list
+
+const getCourseList = async (req, res) => {
   try {
-    let result = await _readDb("users", "*", { first_name: "Ehud" });
+    const result = await _readDbNotNull("courses", "*", "id");
     console.log(result);
-    res.send(result);
+    return res.send(result);
   } catch (error) {
     console.log(error);
     res.status(404).json({ error: "couldn't read" });
   }
 };
 
-const getCourseList = async (req, res) => {
-  try {
-    let result = await _readDbNotNull("courses", "*", "id");
-    console.log(result);
-    res.send(result);
-  } catch (error) {
-    console.log(error);
-    res.status(404).json({ error: "couldn't read" });
-  }
-};
+// function to insert new project into DB
 
 const addProject = async (req, res) => {
   const { project_name, course_id, description } = req.body;
   const data = jwt.verify(req.cookies.accessToken, config.secret);
   try {
-    let insertProj = await _insertDb("projects", {
+    const result = await _insertDb("projects", {
       project_name: project_name,
       course_id: course_id,
       description: description,
     });
-    console.log(insertProj[0].id);
-    if (insertProj.length > 0) {
-      let insertProjAuthor = await _insertDb("project_authors", {
-        project_id: insertProj[0].id,
+    console.log(result[0].id);
+    if (result.length > 0) {
+      const addProjAuth = await _insertDb("project_authors", {
+        project_id: result[0].id,
         user_id: data.id,
       });
-      console.log(insertProjAuthor);
-      res.send(insertProjAuthor);
+      console.log(addProjAuth);
+      return res.send(addProjAuth);
+    } else {
+      return res.send({ error: "failed to add project" });
     }
   } catch (error) {
     console.log(error);
     res.status(404).json({ error: "couldn't insert" });
   }
 };
+
+// function to add new images to DB
 
 const addImages = async (req, res) => {
   console.log(req.body.project_id);
@@ -122,22 +128,24 @@ const addImages = async (req, res) => {
     name: field.originalname,
   }));
   try {
-    let isProjectExist = await _readDb("projects", "*", {
+    const isProjectExist = await _readDb("projects", "*", {
       id: req.body.project_id,
     });
     console.log(isProjectExist);
     if (isProjectExist.length > 0) {
-      let checkImageCount = await _countRows("project_images", "uuid", {
+      const checkImageCount = await _countRows("project_images", "uuid", {
         project_id: req.body.project_id,
       });
       console.log(checkImageCount[0].count);
       if (checkImageCount[0].count < 3) {
-        let insertImage = await _insertDb("project_images", fieldsToInsert);
+        const insertImage = await _insertDb("project_images", fieldsToInsert);
         console.log(insertImage);
-        res.send({ message: `inserted ${insertImage.length} images` });
+        return res.send({ message: `inserted ${insertImage.length} images` });
+      } else {
+        return res.send({ error: "more than 3 images exist" });
       }
     } else {
-      res.send({ error: "The project id is not in the database" });
+      return res.send({ error: "The project id is not in the database" });
     }
   } catch (error) {
     console.log(error);
@@ -145,59 +153,73 @@ const addImages = async (req, res) => {
   }
 };
 
+// function to retrieve list of images for project
+
 const getProjectImages = async (req, res) => {
   try {
-    let result = await _readDb("project_images", "*", {
+    const result = await _readDb("project_images", "*", {
       project_id: req.body.project_id,
     });
     console.log(result);
-    if (result.length === 0) throw error;
-    else {
-      res.send(result);
-    }
+    result.length !== 0
+      ? res.send(result)
+      : res.send({ error: "no images for this project" });
   } catch (error) {
     console.log(error);
     res.status(404).json({ error: "couldn't retrieve images" });
   }
 };
 
+// function to delete images from db
+
 const deleteImages = async (req, res) => {
   try {
-    let result = await _deleteDb("project_images", {
+    const result = await _deleteDb("project_images", {
       uuid: req.body.uuid,
     });
     console.log(result);
-    res.send({ message: "deleted the image" });
+    return res.send({ message: "deleted the image" });
   } catch (error) {
     console.log(error);
     res.status(404).json({ error: "couldn't delete images" });
   }
 };
 
-const updateInfo = async (req, res) => {
-  try {
-    let result = await _updateDb(
-      "authors",
-      { email: "ehudmi12@gmail.com" },
-      { first_name: "Ehud" }
-    );
-    console.log(result);
-    res.send("info updated");
-  } catch (error) {
-    console.log(error);
-    res.status(404).json({ error: "couldn't update" });
-  }
-};
+// const updateInfo = async (req, res) => {
+//   try {
+//     let result = await _updateDb(
+//       "authors",
+//       { email: "ehudmi12@gmail.com" },
+//       { first_name: "Ehud" }
+//     );
+//     console.log(result);
+//     res.send("info updated");
+//   } catch (error) {
+//     console.log(error);
+//     res.status(404).json({ error: "couldn't update" });
+//   }
+// };
+
+// const getInfo = async (req, res) => {
+//   try {
+//     const result = await _readDb("users", "*", { first_name: "Ehud" });
+//     console.log(result);
+//     return res.send(result);
+//   } catch (error) {
+//     console.log(error);
+//     res.status(404).json({ error: "couldn't read" });
+//   }
+// };
 
 module.exports = {
   authUser,
   getAuthorProjects,
   getProjectsList,
-  getInfo,
+  // getInfo,
   getCourseList,
   addProject,
   addImages,
   getProjectImages,
   deleteImages,
-  updateInfo,
+  // updateInfo,
 };

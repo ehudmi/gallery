@@ -7,7 +7,7 @@ function ProjectDetails() {
 
   const location = useLocation();
 
-  const [images, setImages] = useState();
+  const [images, setImages] = useState([]);
 
   const getProjectImages = async () => {
     try {
@@ -74,7 +74,7 @@ function ProjectDetails() {
       <div>
         <p>Project</p>
         {location.state.id}
-        {!!images
+        {images.length > 0
           ? images.map((item, index) => {
               return (
                 <div key={index}>
@@ -102,7 +102,7 @@ function ProjectDetails() {
       <div>
         <p>Project</p>
         {location.state.id}
-        {!!images
+        {images.length > 0
           ? images.map((item, index) => {
               return (
                 <div key={index}>

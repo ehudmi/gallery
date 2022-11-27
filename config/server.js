@@ -1,4 +1,4 @@
-﻿require("rootpath")();
+﻿// require("rootpath")();
 const express = require("express");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
@@ -14,8 +14,8 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
 
-app.use("/users", require("routes/user.routes"));
-app.use("/projects", require("routes/project.routes"));
+app.use("/users", require("../routes/user.routes"));
+app.use("/projects", require("../routes/project.routes"));
 
 // global error handler
 // app.use(errorHandler);

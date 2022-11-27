@@ -1,6 +1,6 @@
 const { _readDb } = require("../models/gallery.models");
 const jwt = require("jsonwebtoken");
-const config = require("config/auth.config.json");
+const config = require("../config/auth.config.json");
 
 const checkToken = async (req, res, next) => {
   const req_token = req.cookies.accessToken;

@@ -4,37 +4,43 @@ const {
   authUser,
   getAuthorProjects,
   getProjectsList,
-  getInfo,
+  // getInfo,
   getCourseList,
   addProject,
   addImages,
   getProjectImages,
   deleteImages,
-  updateInfo,
+  // updateInfo,
 } = require("../controllers/project.controllers");
 
 const { authJwt } = require("../middleware/auth");
-const { upload, deleteFromAPI } = require("../middleware/uploadcare.api");
+const { handleAPI } = require("../middleware/uploadcare.api");
 
 const router = express.Router();
 
+// authentication route for persistent
+
 router.get("/auth", [authJwt.checkToken], authUser);
+
+// routes available to User
 
 router.get("/list_projects", [authJwt.isUser], getProjectsList);
 router.post("/project_images", [authJwt.checkToken], getProjectImages);
-router.post("/delete_images", [authJwt.isAuthor], deleteFromAPI, deleteImages);
+
+// routes available to Author
 
 router.get("/author_projects", [authJwt.isAuthor], getAuthorProjects);
 router.get("/read_course", [authJwt.isAuthor], getCourseList);
 router.post("/add_project", [authJwt.isAuthor], addProject);
+router.post("/add_images", [authJwt.isAuthor], [handleAPI.upload], addImages);
 router.post(
-  "/add_images",
+  "/delete_images",
   [authJwt.isAuthor],
-  upload.array("images", 3),
-  addImages
+  [handleAPI.delete],
+  deleteImages
 );
 
-router.get("/update", updateInfo);
-router.get("/read", getInfo);
+// router.get("/update", updateInfo);
+// router.get("/read", getInfo);
 
 module.exports = router;

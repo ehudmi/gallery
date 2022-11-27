@@ -11,8 +11,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@uploadcare/rest-client": "^5.1.1",
-    "@uploadcare/upload-client": "^3.1.1",
     "bcrypt": "^5.1.0",
     "body-parser": "^1.20.0",
     "cookie-parser": "^1.4.6",
