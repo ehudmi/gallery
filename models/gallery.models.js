@@ -28,7 +28,14 @@ const _updateDb = (table, updatedData, criteria) => {
   return db(table).update(updatedData).where(criteria).returning("*");
 };
 
-const _getJoinData = (
+const _get2TabJoinData = (table1, table2, column1, column2, criteria1) => {
+  return db(table1)
+    .join(table2, column1, "=", column2)
+    .select("*")
+    .where(criteria1);
+};
+
+const _get3TabJoinData = (
   table1,
   table2,
   table3,
@@ -53,5 +60,6 @@ module.exports = {
   _insertDb,
   _deleteDb,
   _updateDb,
-  _getJoinData,
+  _get2TabJoinData,
+  _get3TabJoinData,
 };

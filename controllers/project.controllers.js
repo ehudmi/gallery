@@ -6,7 +6,8 @@ const {
   _insertDb,
   // _updateDb,
   _deleteDb,
-  _getJoinData,
+  _get2TabJoinData,
+  _get3TabJoinData,
 } = require("../models/gallery.models");
 const jwt = require("jsonwebtoken");
 const config = require("../config/auth.config.json");
@@ -42,7 +43,7 @@ const authUser = async (req, res) => {
 const getAuthorProjects = async (req, res) => {
   const data = jwt.verify(req.cookies.accessToken, config.secret);
   try {
-    const result = await _getJoinData(
+    const result = await _get3TabJoinData(
       "project_authors",
       "users",
       "projects",
@@ -52,7 +53,7 @@ const getAuthorProjects = async (req, res) => {
       "projects.id",
       { user_id: data.id }
     );
-    console.log(result);
+    // console.log(result);
     return res.send(result);
   } catch (error) {
     console.log(error);
@@ -65,7 +66,7 @@ const getAuthorProjects = async (req, res) => {
 const getProjectsList = async (req, res) => {
   try {
     const result = await _readDbNotNull("projects", "*", "id");
-    console.log(result);
+    // console.log(result);
     return res.send(result);
   } catch (error) {
     console.log(error);
@@ -78,7 +79,7 @@ const getProjectsList = async (req, res) => {
 const getCourseList = async (req, res) => {
   try {
     const result = await _readDbNotNull("courses", "*", "id");
-    console.log(result);
+    // console.log(result);
     return res.send(result);
   } catch (error) {
     console.log(error);
@@ -97,7 +98,7 @@ const addProject = async (req, res) => {
       course_id: course_id,
       description: description,
     });
-    console.log(result[0].id);
+    // console.log(result[0].id);
     if (result.length > 0) {
       const addProjAuth = await _insertDb("project_authors", {
         project_id: result[0].id,
@@ -117,9 +118,9 @@ const addProject = async (req, res) => {
 // function to add new images to DB
 
 const addImages = async (req, res) => {
-  console.log(req.body.project_id);
+  // console.log(req.body.project_id);
   for (const item of req.files) {
-    console.log(item.uploadcare_file_id);
+    // console.log(item.uploadcare_file_id);
   }
   const fieldsToInsert = req.files.map((field) => ({
     uuid: field.uploadcare_file_id,
@@ -131,15 +132,15 @@ const addImages = async (req, res) => {
     const isProjectExist = await _readDb("projects", "*", {
       id: req.body.project_id,
     });
-    console.log(isProjectExist);
+    // console.log(isProjectExist);
     if (isProjectExist.length > 0) {
       const checkImageCount = await _countRows("project_images", "uuid", {
         project_id: req.body.project_id,
       });
-      console.log(checkImageCount[0].count);
+      // console.log(checkImageCount[0].count);
       if (checkImageCount[0].count < 3) {
         const insertImage = await _insertDb("project_images", fieldsToInsert);
-        console.log(insertImage);
+        // console.log(insertImage);
         return res.send({ message: `inserted ${insertImage.length} images` });
       } else {
         return res.send({ error: "more than 3 images exist" });
@@ -160,13 +161,45 @@ const getProjectImages = async (req, res) => {
     const result = await _readDb("project_images", "*", {
       project_id: req.body.project_id,
     });
-    console.log(result);
     result.length !== 0
       ? res.send(result)
       : res.send({ error: "no images for this project" });
   } catch (error) {
     console.log(error);
     res.status(404).json({ error: "couldn't retrieve images" });
+  }
+};
+
+// function to retrieve list of comments for project
+
+const getProjectComments = async (req, res) => {
+  const selectedData = [];
+  try {
+    const result = await _get2TabJoinData(
+      "user_comments",
+      "users",
+      "user_id",
+      "users.id",
+      {
+        project_id: req.body.project_id,
+      }
+    );
+    result.map((item) => {
+      selectedData.push({
+        comment_id: item.comment_id,
+        user_id: item.user_id,
+        project_id: item.project_id,
+        first_name: item.first_name,
+        last_name: item.last_name,
+        user_comment: item.user_comment,
+      });
+    });
+    result.length !== 0
+      ? res.send(selectedData)
+      : res.send({ error: "no comments for this project" });
+  } catch (error) {
+    console.log(error);
+    res.status(404).json({ error: "couldn't retrieve comments" });
   }
 };
 
@@ -177,11 +210,43 @@ const deleteImages = async (req, res) => {
     const result = await _deleteDb("project_images", {
       uuid: req.body.uuid,
     });
-    console.log(result);
+    // console.log(result);
     return res.send({ message: "deleted the image" });
   } catch (error) {
     console.log(error);
     res.status(404).json({ error: "couldn't delete images" });
+  }
+};
+
+// function to add a user comment on project by logged-in user
+
+const addComment = async (req, res) => {
+  // console.log(req.body);
+  try {
+    const result = await _insertDb("user_comments", {
+      project_id: req.body.project_id,
+      user_id: req.body.user_id,
+      user_comment: req.body.user_comment,
+    });
+    // console.log(result);
+  } catch (error) {
+    console.log(error);
+    res.status(404).json({ error: "couldn't add comment" });
+  }
+};
+
+// function to delete user comments on project by creating user
+
+const deleteComment = async (req, res) => {
+  try {
+    const result = await _deleteDb("user_comments", {
+      comment_id: req.body.comment_id,
+    });
+    // console.log(result);
+    return res.send({ message: "deleted the comment" });
+  } catch (error) {
+    console.log(error);
+    res.status(404).json({ error: "couldn't delete comment" });
   }
 };
 
@@ -220,6 +285,9 @@ module.exports = {
   addProject,
   addImages,
   getProjectImages,
+  getProjectComments,
   deleteImages,
+  addComment,
+  deleteComment,
   // updateInfo,
 };

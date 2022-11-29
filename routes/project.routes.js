@@ -9,7 +9,10 @@ const {
   addProject,
   addImages,
   getProjectImages,
+  getProjectComments,
   deleteImages,
+  addComment,
+  deleteComment,
   // updateInfo,
 } = require("../controllers/project.controllers");
 
@@ -26,6 +29,9 @@ router.get("/auth", [authJwt.checkToken], authUser);
 
 router.get("/list_projects", [authJwt.isUser], getProjectsList);
 router.post("/project_images", [authJwt.checkToken], getProjectImages);
+router.post("/project_comments", [authJwt.checkToken], getProjectComments);
+router.post("/add_comment", [authJwt.checkToken], addComment);
+router.post("/delete_comment", [authJwt.checkToken], deleteComment);
 
 // routes available to Author
 

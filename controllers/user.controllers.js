@@ -1,7 +1,39 @@
-const { _readDb, _insertDb, _updateDb } = require("../models/gallery.models");
+const {
+  _readDb,
+  _insertDb,
+  _get2TabJoinData,
+  _deleteDb,
+  _updateDb,
+} = require("../models/gallery.models");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const config = require("../config/auth.config.json");
+
+// function to verify token from front-end
+
+const authUser = async (req, res) => {
+  const req_token = req.cookies.accessToken;
+  const data = jwt.verify(req_token, config.secret);
+  try {
+    const user = await _readDb("users", "*", {
+      id: data.id,
+    });
+    if (!user) {
+      return res.status(400).json({ error: "user not found" });
+    }
+    const { id, first_name, last_name, email, role } = user[0];
+    return res.status(200).json({
+      userId: id,
+      first_name: first_name,
+      last_name: last_name,
+      email: email,
+      role: role,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(404).json({ error: "can't authenticate" });
+  }
+};
 
 // function to register new user in DB
 
@@ -18,7 +50,7 @@ const register = async (req, res) => {
     return response.length == 0 ? "user" : "author";
   };
   const role = await isStudent();
-  console.log(role);
+  // console.log(role);
   try {
     await _insertDb("users", {
       first_name: first_name,
@@ -52,7 +84,7 @@ const login = async (req, res) => {
         expiresIn: "900s",
       }
     );
-    console.log("accessToken", accessToken);
+    // console.log("accessToken", accessToken);
     res.cookie("accessToken", accessToken, {
       httpOnly: true,
       maxAge: 900 * 1000,
@@ -94,9 +126,47 @@ const getUsers = async (req, res) => {
   }
 };
 
+// function to retrieve list of projects authored by author
+
+const getUserComments = async (req, res) => {
+  const data = jwt.verify(req.cookies.accessToken, config.secret);
+  try {
+    const result = await _get2TabJoinData(
+      "user_comments",
+      "projects",
+      "user_comments.project_id",
+      "projects.id",
+      { user_id: data.id }
+    );
+    // console.log(result);
+    return res.send(result);
+  } catch (error) {
+    console.log(error);
+    res.status(404).json({ error: "couldn't read my comments" });
+  }
+};
+
+// function to delete user comments
+
+const deleteComment = async (req, res) => {
+  try {
+    const result = await _deleteDb("user_comments", {
+      comment_id: req.body.comment_id,
+    });
+    // console.log(result);
+    return res.send({ message: "deleted the comment" });
+  } catch (error) {
+    console.log(error);
+    res.status(404).json({ error: "couldn't delete comment" });
+  }
+};
+
 module.exports = {
   register,
   login,
   logout,
   getUsers,
+  getUserComments,
+  deleteComment,
+  authUser,
 };

@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
+import ProjectComments from "./ProjectComments";
 
 function ProjectDetails() {
   const { authState } = useAuth();
 
-  const location = useLocation();
-
   const [images, setImages] = useState([]);
+
+  // retrieve images from DB
 
   const getProjectImages = async () => {
     try {
@@ -17,7 +17,7 @@ function ProjectDetails() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          project_id: location.state.id,
+          project_id: sessionStorage.getItem("project_id"),
         }),
       });
       const json = await response.json();
@@ -28,21 +28,10 @@ function ProjectDetails() {
     }
   };
 
+  // delete images from DB
+
   const deleteImage = async (uuid) => {
     try {
-      // const responseAPI = await fetch(
-      //   `https://api.uploadcare.com/files/${uuid}/storage/`,
-      //   {
-      //     method: "DELETE",
-      //     headers: {
-      //       Accept: "application/vnd.uploadcare-v0.7+json",
-      //       Authorization:
-      //         "Uploadcare.Simple a8a3d493f7784d19923f:7504d155b72e01f55dbf",
-      //     },
-      //   }
-      // );
-      // const jsonAPI = await responseAPI.json();
-      // console.log(jsonAPI);
       console.log(uuid);
       const response = await fetch("/projects/delete_images", {
         method: "POST",
@@ -63,68 +52,41 @@ function ProjectDetails() {
   useEffect(
     () => {
       getProjectImages();
-      //   console.log(location.state);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   );
 
-  if (authState.role === "author") {
-    return (
-      <div>
-        <p>Project</p>
-        {location.state.id}
-        {images.length > 0
-          ? images.map((item, index) => {
-              return (
-                <div key={index}>
-                  <img
-                    alt="pic"
-                    src={item.url}
-                    id={item.uuid}
-                    width={300}
-                    height={300}
-                  />
-                  <button onClick={() => deleteImage(item.uuid)}>
-                    Delete Image
-                  </button>
-                </div>
-              );
-            })
-          : null}
-        {/* <button onClick={() => navigate("/project_list")}>
-              List of Projects
-            </button> */}
-      </div>
-    );
-  } else if (authState.role === "user") {
-    return (
-      <div>
-        <p>Project</p>
-        {location.state.id}
-        {images.length > 0
-          ? images.map((item, index) => {
-              return (
-                <div key={index}>
-                  <img
-                    alt="pic"
-                    src={item.url}
-                    id={item.uuid}
-                    width={300}
-                    height={300}
-                  />
-                </div>
-              );
-            })
-          : null}
-        {/* <button onClick={() => navigate("/project_list")}>
-              List of Projects
-            </button> */}
-      </div>
-    );
-  } else if (authState.message === "failed") {
+  if (authState.message === "failed") {
     window.location.href = "/welcome";
-  }
+  } else
+    return (
+      <div>
+        <p>Project</p>
+        {sessionStorage.getItem("project_id")}
+        {images.length > 0
+          ? images.map((item, index) => {
+              return (
+                <div key={index}>
+                  <img
+                    alt="pic"
+                    src={item.url}
+                    id={item.uuid}
+                    width={300}
+                    height={300}
+                  />
+                  {authState.userId === sessionStorage.getItem("author_id") ? (
+                    <button onClick={() => deleteImage(item.uuid)}>
+                      Delete Image
+                    </button>
+                  ) : null}
+                </div>
+              );
+            })
+          : null}
+        <ProjectComments project_id={sessionStorage.getItem("project_id")} />
+      </div>
+    );
 }
 
 export default ProjectDetails;

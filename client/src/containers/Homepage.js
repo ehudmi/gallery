@@ -14,6 +14,7 @@ function Homepage() {
         <button onClick={() => navigate("/project_list")}>
           List of Projects
         </button>
+        <button onClick={() => navigate("/user_comments")}>My Comments</button>
       </div>
     );
   } else if (authState.role === "author") {
@@ -23,6 +24,7 @@ function Homepage() {
         Welcome
         {authState.email}
         <button onClick={() => navigate("/my_projects")}>My Projects</button>
+        <button onClick={() => navigate("/user_comments")}>My Comments</button>
       </div>
     );
   } else if (authState.message === "failed") {

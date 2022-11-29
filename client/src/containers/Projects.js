@@ -6,13 +6,15 @@ function Projects() {
 
   const navigate = useNavigate();
 
+  // retrieve list of projects to display
+
   const getProjectsList = async () => {
     try {
       const response = await fetch("/projects/list_projects", {
         method: "GET",
       });
       const json = await response.json();
-      console.log(json);
+      // console.log(json);
       setProjects(json);
     } catch (error) {
       console.log(error);
@@ -23,6 +25,7 @@ function Projects() {
     getProjectsList();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
   if (projects !== undefined) {
     console.log(projects);
     return (
@@ -32,10 +35,12 @@ function Projects() {
           return (
             <div key={index}>
               <p
-                onClick={
-                  () => navigate("/project_details", { state: item })
-                  // console.log(item)
-                }
+                onClick={() => {
+                  sessionStorage.setItem("project_id", item.id);
+                  sessionStorage.setItem("author_id", item.user_id);
+                  console.log(sessionStorage.getItem("project_id"));
+                  return navigate("/project_details");
+                }}
               >
                 Project Name {item.project_name}
               </p>

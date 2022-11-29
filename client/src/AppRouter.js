@@ -17,6 +17,8 @@ import ProjectForm from "./containers/ProjectForm";
 import Layout from "./components/Layout";
 import PersistLogin from "./components/PersistLogin";
 import ProjectDetails from "./containers/ProjectDetails";
+import ProjectComments from "./containers/ProjectComments";
+import UserComments from "./containers/UserComments";
 
 // Define protected route wrapping routes by authentication and role based authorization
 
@@ -43,8 +45,10 @@ function AppRouter() {
           <Route element={<Layout />}>
             <Route element={<ProtectedRoute isAllowed={!!authState.userId} />}>
               <Route path="home" element={<Homepage />} />
+              <Route path="user_comments" element={<UserComments />} />
               <Route path="project_list" element={<Projects />} />
               <Route path="project_details" element={<ProjectDetails />} />
+              <Route path="project_comments" element={<ProjectComments />} />
             </Route>
           </Route>
 
