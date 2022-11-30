@@ -1,26 +1,19 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-function AuthorProjects(props) {
+function MyProjects() {
   const [projects, setProjects] = useState();
 
   const navigate = useNavigate();
 
   // retrieve list of projects authored by current user
 
-  const getAuthorProjects = async (props) => {
+  const getMyProjects = async () => {
     try {
-      const response = await fetch("/projects/author_projects", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          user_id: props.id,
-        }),
+      const response = await fetch("/projects/my_projects", {
+        method: "GET",
       });
       const json = await response.json();
-      console.log(json);
       setProjects(json);
     } catch (error) {
       console.log(error);
@@ -28,7 +21,7 @@ function AuthorProjects(props) {
   };
 
   useEffect(() => {
-    getAuthorProjects();
+    getMyProjects();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -61,4 +54,4 @@ function AuthorProjects(props) {
   }
 }
 
-export default AuthorProjects;
+export default MyProjects;

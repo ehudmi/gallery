@@ -3,6 +3,7 @@ const {
   _readDbNotNull,
   // _readDb_Limited,
   _countRows,
+  _searchDb,
   _insertDb,
   // _updateDb,
   _deleteDb,
@@ -40,7 +41,34 @@ const authUser = async (req, res) => {
 
 // function to retrieve list of projects authored by author
 
-const getAuthorProjects = async (req, res) => {
+const searchProjects = async (req, res) => {
+  // console.log(req.body.search_term);
+  const selectedData = [];
+  try {
+    const result = await _searchDb(
+      "projects",
+      "project_name",
+      `%${req.body.search_term}%`,
+      "description"
+    );
+    // console.log(result);
+    result.map((item) => {
+      selectedData.push({
+        id: item.id,
+        name: item.project_name,
+        about: item.description,
+      });
+    });
+    result.length !== 0
+      ? res.send(selectedData)
+      : res.send({ error: "no project matches search term" });
+  } catch (error) {
+    console.log(error);
+    res.status(404).json({ error: "couldn't read projects" });
+  }
+};
+
+const getMyProjects = async (req, res) => {
   const data = jwt.verify(req.cookies.accessToken, config.secret);
   try {
     const result = await _get3TabJoinData(
@@ -278,7 +306,8 @@ const deleteComment = async (req, res) => {
 
 module.exports = {
   authUser,
-  getAuthorProjects,
+  searchProjects,
+  getMyProjects,
   getProjectsList,
   // getInfo,
   getCourseList,

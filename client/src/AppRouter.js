@@ -9,7 +9,7 @@ import useAuth from "./hooks/useAuth";
 import Signup from "./components/Signup";
 // import Modal from "./containers/Modal";
 import Homepage from "./containers/Homepage";
-import AuthorProjects from "./containers/AuthorProjects";
+import MyProjects from "./containers/MyProjects";
 import Projects from "./containers/Projects";
 import Login from "./components/Login";
 import Welcome from "./components/Welcome";
@@ -19,6 +19,7 @@ import PersistLogin from "./components/PersistLogin";
 import ProjectDetails from "./containers/ProjectDetails";
 import ProjectComments from "./containers/ProjectComments";
 import UserComments from "./containers/UserComments";
+import Search from "./components/Search";
 
 // Define protected route wrapping routes by authentication and role based authorization
 
@@ -45,6 +46,7 @@ function AppRouter() {
           <Route element={<Layout />}>
             <Route element={<ProtectedRoute isAllowed={!!authState.userId} />}>
               <Route path="home" element={<Homepage />} />
+              <Route path="search" element={<Search />} />
               <Route path="user_comments" element={<UserComments />} />
               <Route path="project_list" element={<Projects />} />
               <Route path="project_details" element={<ProjectDetails />} />
@@ -62,7 +64,7 @@ function AppRouter() {
               />
             }
           >
-            <Route path="my_projects" element={<AuthorProjects />} />
+            <Route path="my_projects" element={<MyProjects />} />
             <Route path="project_form" element={<ProjectForm />} />
           </Route>
         </Route>

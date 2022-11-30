@@ -4,6 +4,7 @@ const {
   login,
   logout,
   getUsers,
+  searchAuthors,
   authUser,
   getUserComments,
   deleteComment,
@@ -24,5 +25,6 @@ router.get("/logout", logout);
 
 router.get("/user_comments", [authJwt.checkToken], getUserComments);
 router.post("/delete_comment", [authJwt.checkToken], deleteComment);
+router.post("/search", [authJwt.checkToken], searchAuthors);
 
 module.exports = router;

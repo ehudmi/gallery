@@ -1,5 +1,6 @@
 const {
   _readDb,
+  _searchAuthorsDb,
   _insertDb,
   _get2TabJoinData,
   _deleteDb,
@@ -126,6 +127,35 @@ const getUsers = async (req, res) => {
   }
 };
 
+const searchAuthors = async (req, res) => {
+  const selectedData = [];
+  try {
+    const result = await _searchAuthorsDb(
+      "users",
+      ["id", "first_name", "last_name", "role", "about"],
+      { role: "author" },
+      "first_name",
+      `%${req.body.search_term}%`,
+      "last_name"
+    );
+    // console.log(result);
+    result.map((item) => {
+      selectedData.push({
+        id: item.id,
+        name: `${item.first_name} ${item.last_name}`,
+        role: item.role,
+        about: item.about,
+      });
+    });
+    result.length !== 0
+      ? res.send(selectedData)
+      : res.send({ error: "no project matches search term" });
+  } catch (error) {
+    console.log(error);
+    res.status(404).json({ error: "couldn't search users" });
+  }
+};
+
 // function to retrieve list of projects authored by author
 
 const getUserComments = async (req, res) => {
@@ -166,6 +196,7 @@ module.exports = {
   login,
   logout,
   getUsers,
+  searchAuthors,
   getUserComments,
   deleteComment,
   authUser,
