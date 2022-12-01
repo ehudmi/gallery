@@ -21,6 +21,7 @@ import UserComments from "./containers/UserComments";
 import Search from "./components/Search";
 import AuthorProjects from "./containers/AuthorProjects";
 import ProjectsList from "./containers/ProjectsList";
+import Logout from "./components/Logout";
 
 // Define protected route wrapping routes by authentication and role based authorization
 
@@ -41,6 +42,7 @@ function AppRouter() {
         <Route path="welcome" element={<Welcome />} />
         <Route path="login" element={<Login />} />
         <Route path="signup" element={<Signup />} />
+        <Route path="logout" element={<Logout />} />
         {/* <Route path="logout" element={<Modal />} /> */}
 
         <Route element={<PersistLogin />}>
@@ -53,6 +55,7 @@ function AppRouter() {
               <Route path="project_details" element={<ProjectDetails />} />
               <Route path="project_comments" element={<ProjectComments />} />
               <Route path="author_projects" element={<AuthorProjects />} />
+              {/* <Route path="logout" element={<Logout />} /> */}
             </Route>
           </Route>
 

@@ -106,7 +106,8 @@ const login = async (req, res) => {
 // function for logout of current user
 
 const logout = (req, res) => {
-  res.json({ msg: "logout" });
+  res.clearCookie("accessToken");
+  return res.json({ msg: "logging you out" });
 };
 
 // test function to return list of users - can be used by admin
