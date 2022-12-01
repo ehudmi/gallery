@@ -20,6 +20,7 @@ import ProjectDetails from "./containers/ProjectDetails";
 import ProjectComments from "./containers/ProjectComments";
 import UserComments from "./containers/UserComments";
 import Search from "./components/Search";
+import AuthorProjects from "./containers/AuthorProjects";
 
 // Define protected route wrapping routes by authentication and role based authorization
 
@@ -51,6 +52,7 @@ function AppRouter() {
               <Route path="project_list" element={<Projects />} />
               <Route path="project_details" element={<ProjectDetails />} />
               <Route path="project_comments" element={<ProjectComments />} />
+              <Route path="author_projects" element={<AuthorProjects />} />
             </Route>
           </Route>
 

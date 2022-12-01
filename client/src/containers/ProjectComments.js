@@ -7,6 +7,8 @@ function ProjectComments({ project_id }) {
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");
 
+  // retrieve list of comments for current project
+
   const getProjectComments = async () => {
     try {
       const response = await fetch("/projects/project_comments", {
@@ -25,6 +27,8 @@ function ProjectComments({ project_id }) {
       console.log(error);
     }
   };
+
+  // delete comment from list of comments for current project
 
   const deleteComment = async (id) => {
     try {

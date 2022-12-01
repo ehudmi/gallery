@@ -16,9 +16,6 @@ const _countRows = (table, data, criteria) => {
   return db(table).count(data).where(criteria);
 };
 
-// const _searchDb = (table, data, criteria1, criteria2) => {
-//   return db(table).select(data).where(criteria1).orWhere(criteria2);
-// };
 const _searchDb = (table, column1, value1, column2) => {
   return db(table).whereILike(column1, value1).orWhereILike(column2, value1);
 };

@@ -1,9 +1,12 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function Search() {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchField, setSearchField] = useState("");
   const [resultList, setResultList] = useState([]);
+
+  const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -73,7 +76,22 @@ function Search() {
       </form>
       {resultList.length > 0
         ? resultList.map((item, index) => {
-            return <p key={index}>{item.name}</p>;
+            return (
+              <p
+                key={index}
+                onClick={() => {
+                  if (item.role !== undefined) {
+                    sessionStorage.setItem("author_id", item.id);
+                    return navigate("/author_projects");
+                  } else {
+                    sessionStorage.setItem("project_id", item.id);
+                    return navigate("/project_details");
+                  }
+                }}
+              >
+                {item.name}
+              </p>
+            );
           })
         : null}
     </>

@@ -127,6 +127,8 @@ const getUsers = async (req, res) => {
   }
 };
 
+// function to retrieve list of authors by search term
+
 const searchAuthors = async (req, res) => {
   const selectedData = [];
   try {
@@ -156,7 +158,7 @@ const searchAuthors = async (req, res) => {
   }
 };
 
-// function to retrieve list of projects authored by author
+// function to retrieve list of comments authored by user
 
 const getUserComments = async (req, res) => {
   const data = jwt.verify(req.cookies.accessToken, config.secret);

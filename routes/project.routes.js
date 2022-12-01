@@ -3,6 +3,7 @@ const express = require("express");
 const {
   authUser,
   searchProjects,
+  getAuthorProjects,
   getMyProjects,
   getProjectsList,
   // getInfo,
@@ -34,6 +35,7 @@ router.post("/project_comments", [authJwt.checkToken], getProjectComments);
 router.post("/add_comment", [authJwt.checkToken], addComment);
 router.post("/delete_comment", [authJwt.checkToken], deleteComment);
 router.post("/search", [authJwt.checkToken], searchProjects);
+router.post("/author_projects", [authJwt.checkToken], getAuthorProjects);
 
 // routes available to Author
 

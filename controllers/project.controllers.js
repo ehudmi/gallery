@@ -39,7 +39,7 @@ const authUser = async (req, res) => {
   }
 };
 
-// function to retrieve list of projects authored by author
+// function to retrieve list of projects by search term
 
 const searchProjects = async (req, res) => {
   // console.log(req.body.search_term);
@@ -68,7 +68,49 @@ const searchProjects = async (req, res) => {
   }
 };
 
+// function to retrieve list of projects authored by author
+
+const getAuthorProjects = async (req, res) => {
+  const selectedData = [];
+  try {
+    const result = await _get3TabJoinData(
+      "project_authors",
+      "users",
+      "projects",
+      "project_authors.user_id",
+      "users.id",
+      "project_authors.project_id",
+      "projects.id",
+      { user_id: req.body.user_id }
+    );
+    // console.log(result);
+    result.map((item) => {
+      selectedData.push({
+        user_id: item.user_id,
+        first_name: item.first_name,
+        last_name: item.last_name,
+        birth_date: item.birth_date,
+        about: item.about,
+        role: item.role,
+        id: item.project_id,
+        project_name: item.project_name,
+        course_id: item.course_id,
+        description: item.description,
+      });
+    });
+    result.length !== 0
+      ? res.send(selectedData)
+      : res.send({ error: "Author has no projects" });
+  } catch (error) {
+    console.log(error);
+    res.status(404).json({ error: "couldn't read projects" });
+  }
+};
+
+// function to retrieve list of projects authored by current logged-in author
+
 const getMyProjects = async (req, res) => {
+  const selectedData = [];
   const data = jwt.verify(req.cookies.accessToken, config.secret);
   try {
     const result = await _get3TabJoinData(
@@ -82,7 +124,23 @@ const getMyProjects = async (req, res) => {
       { user_id: data.id }
     );
     // console.log(result);
-    return res.send(result);
+    result.map((item) => {
+      selectedData.push({
+        user_id: item.user_id,
+        first_name: item.first_name,
+        last_name: item.last_name,
+        birth_date: item.birth_date,
+        about: item.about,
+        role: item.role,
+        id: item.project_id,
+        project_name: item.project_name,
+        course_id: item.course_id,
+        description: item.description,
+      });
+    });
+    result.length !== 0
+      ? res.send(selectedData)
+      : res.send({ error: "I have no projects" });
   } catch (error) {
     console.log(error);
     res.status(404).json({ error: "couldn't read projects" });
@@ -307,6 +365,7 @@ const deleteComment = async (req, res) => {
 module.exports = {
   authUser,
   searchProjects,
+  getAuthorProjects,
   getMyProjects,
   getProjectsList,
   // getInfo,

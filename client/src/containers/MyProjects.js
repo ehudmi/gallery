@@ -26,7 +26,7 @@ function MyProjects() {
   }, []);
 
   if (projects !== undefined) {
-    console.log(projects);
+    // console.log(projects);
     return (
       <div>
         <div>
