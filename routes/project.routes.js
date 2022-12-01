@@ -29,7 +29,7 @@ router.get("/auth", [authJwt.checkToken], authUser);
 
 // routes available to User
 
-router.get("/list_projects", [authJwt.isUser], getProjectsList);
+router.post("/projects_list", [authJwt.isUser], getProjectsList);
 router.post("/project_images", [authJwt.checkToken], getProjectImages);
 router.post("/project_comments", [authJwt.checkToken], getProjectComments);
 router.post("/add_comment", [authJwt.checkToken], addComment);

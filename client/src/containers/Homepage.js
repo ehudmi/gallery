@@ -11,7 +11,7 @@ function Homepage() {
         <p>Homepage</p>
         Welcome
         {authState.email}
-        <button onClick={() => navigate("/project_list")}>
+        <button onClick={() => navigate("/projects_list")}>
           List of Projects
         </button>
         <button onClick={() => navigate("/user_comments")}>My Comments</button>

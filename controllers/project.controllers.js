@@ -1,7 +1,7 @@
 const {
   _readDb,
   _readDbNotNull,
-  // _readDb_Limited,
+  _readDb_Limited,
   _countRows,
   _searchDb,
   _insertDb,
@@ -150,8 +150,14 @@ const getMyProjects = async (req, res) => {
 // function to retrieve list of all projects for user
 
 const getProjectsList = async (req, res) => {
+  // console.log(req.body.limit, req.body.offset);
   try {
-    const result = await _readDbNotNull("projects", "*", "id");
+    const result = await _readDb_Limited(
+      "projects",
+      "*",
+      req.body.limit,
+      req.body.offset
+    );
     // console.log(result);
     return res.send(result);
   } catch (error) {

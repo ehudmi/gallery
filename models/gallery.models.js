@@ -8,8 +8,8 @@ const _readDbNotNull = (table, data, criteria) => {
   return db(table).select(data).whereNotNull(criteria);
 };
 
-const _readDb_Limited = (table, data, criteria, limit, offset) => {
-  return db(table).select(data).where(criteria).limit(limit).offset(offset);
+const _readDb_Limited = (table, data, limit, offset) => {
+  return db(table).select(data).limit(limit).offset(offset);
 };
 
 const _countRows = (table, data, criteria) => {
