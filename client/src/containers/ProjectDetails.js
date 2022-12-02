@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import useAuth from "../hooks/useAuth";
 import ProjectComments from "./ProjectComments";
 
@@ -6,6 +6,10 @@ function ProjectDetails() {
   const { authState } = useAuth();
 
   const [images, setImages] = useState([]);
+  const countImages = useRef(0);
+
+  const filesRef = useRef(null);
+  const [files, setFiles] = useState();
 
   // retrieve images from DB
 
@@ -21,8 +25,10 @@ function ProjectDetails() {
         }),
       });
       const json = await response.json();
-      console.log(json);
+      // console.log(json);
       setImages(json);
+      countImages.current = json.length;
+      // console.log(countImages.current);
     } catch (error) {
       console.log(error);
     }
@@ -32,7 +38,8 @@ function ProjectDetails() {
 
   const deleteImage = async (uuid) => {
     try {
-      console.log(uuid);
+      // console.log(uuid);
+      // console.log(authState.userId);
       const response = await fetch("/projects/delete_images", {
         method: "POST",
         headers: {
@@ -42,10 +49,38 @@ function ProjectDetails() {
           uuid: uuid,
         }),
       });
-      const json = await response.json();
-      console.log(json);
+      await response.json();
+      // console.log(json);
+      countImages.current = countImages.current - 1;
+      getProjectImages();
     } catch (error) {
       console.log(error);
+    }
+  };
+
+  const uploadFiles = async () => {
+    // console.log(countImages.current);
+    if (files.length > 3 - countImages.current) {
+      console.log("too many files");
+    }
+    if (countImages.current >= 3) {
+      alert("You already have 3 images for the project");
+    } else {
+      const data = new FormData();
+      data.append("project_id", sessionStorage.getItem("project_id"));
+      // console.log(files);
+      data.append("file_count", files.length);
+      for (const item of files) {
+        data.append("images", item);
+      }
+      // console.log(data.get("project_id"));
+      // console.log(data.get("file_count"));
+      const response = await fetch("/projects/add_images", {
+        method: "POST",
+        body: data,
+      });
+      await response.json();
+      getProjectImages();
     }
   };
 
@@ -75,7 +110,8 @@ function ProjectDetails() {
                     width={300}
                     height={300}
                   />
-                  {authState.userId === sessionStorage.getItem("author_id") ? (
+                  {authState.userId ===
+                  Number(sessionStorage.getItem("author_id")) ? (
                     <button onClick={() => deleteImage(item.uuid)}>
                       Delete Image
                     </button>
@@ -84,6 +120,24 @@ function ProjectDetails() {
               );
             })
           : null}
+        <label htmlFor="addImages">
+          <button component="span" onClick={() => filesRef.current.click()}>
+            <span>Select Images</span>
+          </button>
+        </label>
+        <input
+          ref={filesRef}
+          accept=".jpg, .jpeg, .png, .gif"
+          style={{ display: "none" }}
+          id="addImages"
+          name="images"
+          multiple
+          type="file"
+          onChange={(e) => {
+            setFiles(e.target.files);
+          }}
+        />
+        <button onClick={uploadFiles}>Upload Files</button>
         <ProjectComments project_id={sessionStorage.getItem("project_id")} />
       </div>
     );

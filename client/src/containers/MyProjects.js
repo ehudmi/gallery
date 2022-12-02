@@ -37,7 +37,9 @@ function MyProjects() {
                 <p
                   onClick={() => {
                     sessionStorage.setItem("project_id", item.id);
-                    navigate("/project_details");
+                    sessionStorage.setItem("author_id", item.user_id);
+                    console.log(item.user_id);
+                    return navigate("/project_details");
                   }}
                 >
                   Project Name {item.project_name}

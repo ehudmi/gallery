@@ -210,9 +210,10 @@ const addProject = async (req, res) => {
 // function to add new images to DB
 
 const addImages = async (req, res) => {
+  // console.log(req.body);
   // console.log(req.body.project_id);
   for (const item of req.files) {
-    // console.log(item.uploadcare_file_id);
+    console.log(item.uploadcare_file_id);
   }
   const fieldsToInsert = req.files.map((field) => ({
     uuid: field.uploadcare_file_id,

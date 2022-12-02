@@ -108,43 +108,6 @@ function ProjectForm() {
             onChange={(e) => setDescription(e.target.value)}
           ></textarea>
           <button type="submit">Submit</button>
-
-          {/* {!!validProjectId ? (
-            <p>
-              <label htmlFor="file">Your file:</label>{" "}
-              <Widget
-                publicKey="a8a3d493f7784d19923f"
-                id="file"
-                imagesOnly="true"
-                previewStep="true"
-                multiple="true"
-                imageShrink="800X600"
-                metadata={JSON.stringify({
-                  userId: authState.userId,
-                  projectName: projectName,
-                  projectId: projectId,
-                })}
-                multipleMax="3"
-                onDialogOpen={(dialog) => {
-                  // fires when a user closes the widget's dialog (clicks Done)
-                  dialog.done(async (group) => {
-                    // get an array of file instances and fileInfo objects
-                    const fileInfos = await Promise.all(group.files());
-                    console.log(fileInfos);
-                    const images = fileInfos.map((item) => {
-                      return {
-                        uuid: item.uuid,
-                        url: item.cdnUrl,
-                        project_id: projectId,
-                        name: item.name,
-                      };
-                    });
-                    setImageFiles(images);
-                  });
-                }}
-              />
-            </p>
-          ) : null} */}
         </form>
         {!!validProjectId ? (
           <>

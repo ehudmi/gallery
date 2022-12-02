@@ -9,19 +9,6 @@ function ProjectsList() {
 
   // retrieve list of projects to display
 
-  // const getProjectsList = async () => {
-  //   try {
-  //     const response = await fetch("/projects/projects_list", {
-  //       method: "GET",
-  //     });
-  //     const json = await response.json();
-  //     // console.log(json);
-  //     setProjects(json);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-
   const getProjectsList = async (limit, offset) => {
     try {
       const response = await fetch("/projects/projects_list", {
@@ -37,7 +24,6 @@ function ProjectsList() {
       const json = await response.json();
       // console.log(json);
       setProjects(json);
-      // countProj.current = countProj.current + 3;
     } catch (error) {
       console.log(error);
     }
@@ -86,7 +72,6 @@ function ProjectsList() {
           onClick={() => {
             countProj.current = countProj.current + 3;
             getProjectsList(3, countProj.current);
-            // countProj.current = countProj.current + 3;
           }}
         >
           Next
