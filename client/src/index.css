@@ -23,7 +23,7 @@ body {
 }
 
 section {
-  width: 100%;
+  width: 800px;
   min-height: 400px;
   display: flex;
   flex-direction: column;
@@ -61,8 +61,11 @@ textarea {
   color: #fff;
   padding: 0.25rem;
   position: relative;
-  bottom: -10px;
-  width: 40%;
+  bottom: 20px;
+  width: 100%;
+  height: fit-content;
+  z-index: 100;
+  grid-column: 4/5;
 }
 
 .instructions > svg {

@@ -165,14 +165,9 @@ function Signup() {
                   : "offscreen"
               }
             >
-              <FontAwesomeIcon icon={faInfoCircle} />
-              4 to 24 characters.
-              <br />
-              Must begin with a Capital letter.
-              <br />
-              Only letters allowed.
+              <FontAwesomeIcon icon={faInfoCircle} />4 to 24 characters. Must
+              begin with a Capital letter. Only letters allowed.
             </p>
-
             <label htmlFor="lastName">
               Last Name:
               <FontAwesomeIcon
@@ -205,12 +200,8 @@ function Signup() {
                   : "offscreen"
               }
             >
-              <FontAwesomeIcon icon={faInfoCircle} />
-              4 to 24 characters.
-              <br />
-              Must begin with a Capital letter.
-              <br />
-              Only letters allowed.
+              <FontAwesomeIcon icon={faInfoCircle} />4 to 24 characters. Must
+              begin with a Capital letter. Only letters allowed.
             </p>
 
             <label htmlFor="email">
@@ -246,9 +237,8 @@ function Signup() {
               }
             >
               <FontAwesomeIcon icon={faInfoCircle} />
-              Must include the characters "@" and "."
-              <br />
-              Make sure the email is valid
+              Must include the characters "@" and "." Make sure the email is
+              valid
             </p>
 
             <label htmlFor="password">
@@ -281,10 +271,8 @@ function Signup() {
                 pwdFocus && lName && !validPwd ? "instructions" : "offscreen"
               }
             >
-              <FontAwesomeIcon icon={faInfoCircle} />
-              8 to 15 characters.
-              <br />
-              Must include uppercase, lowercase and digits.
+              <FontAwesomeIcon icon={faInfoCircle} />8 to 15 characters. Must
+              include uppercase, lowercase and digits.
             </p>
 
             <label htmlFor="confirm_pwd">
@@ -354,7 +342,6 @@ function Signup() {
           </form>
           <p>
             Already registered?
-            <br />
             <span className="line">
               <a href="login">Sign In</a>
             </span>
