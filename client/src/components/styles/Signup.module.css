@@ -1,0 +1,39 @@
+.signUpGrid {
+  margin: 30px auto;
+  background-color: rgb(10, 133, 157);
+  border-radius: 20px;
+  justify-content: center;
+  box-sizing: border-box;
+  height: fit-content;
+  padding: auto 30px;
+  width: 600px;
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px,
+    rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+}
+
+form {
+  display: grid;
+  grid-template-columns: 1fr, 1fr;
+  grid-template-rows: repeat(5, 1fr);
+  text-align: flex-start;
+  padding: auto 30px;
+}
+
+input,
+label {
+  margin-top: 10px;
+  width: 100%;
+}
+
+input,
+textarea,
+label {
+  font-family: "Nunito", sans-serif;
+  font-size: 20px;
+  padding: 0.25rem;
+  border-radius: 0.5rem;
+}
+
+textarea {
+  grid-column: span 2;
+}

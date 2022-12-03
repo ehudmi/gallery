@@ -5,6 +5,7 @@ import {
   faInfoCircle,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import styles from "./styles/Signup.module.css";
 
 const NAME_REGEX = new RegExp("^[A-Z][A-z]{3,23}$");
 const EMAIL_REGEX = new RegExp("^\\S+@\\S+\\.\\S+$");
@@ -121,7 +122,7 @@ function Signup() {
           </p>
         </section>
       ) : (
-        <section>
+        <section className={styles.signUpGrid}>
           <p
             ref={errRef}
             className={errMsg ? "errMsg" : "offscreen"}
@@ -130,7 +131,7 @@ function Signup() {
             {errMsg}
           </p>
           <h1>Sign Up</h1>
-          <form onSubmit={handleSubmit}>
+          <form className={styles.signUpForm} onSubmit={handleSubmit}>
             <label htmlFor="firstName">
               First Name:
               <FontAwesomeIcon
@@ -300,6 +301,7 @@ function Signup() {
             <input
               type="password"
               id="confirm_pwd"
+              placeholder="Confirm Password"
               onChange={(e) => setMatchPwd(e.target.value)}
               required
               aria-invalid={validMatch ? "false" : "true"}
