@@ -120,24 +120,28 @@ function ProjectDetails() {
               );
             })
           : null}
-        <label htmlFor="addImages">
-          <button component="span" onClick={() => filesRef.current.click()}>
-            <span>Select Images</span>
-          </button>
-        </label>
-        <input
-          ref={filesRef}
-          accept=".jpg, .jpeg, .png, .gif"
-          style={{ display: "none" }}
-          id="addImages"
-          name="images"
-          multiple
-          type="file"
-          onChange={(e) => {
-            setFiles(e.target.files);
-          }}
-        />
-        <button onClick={uploadFiles}>Upload Files</button>
+        {authState.userId === Number(sessionStorage.getItem("author_id")) ? (
+          <>
+            <label htmlFor="addImages">
+              <button component="span" onClick={() => filesRef.current.click()}>
+                <span>Select Images</span>
+              </button>
+            </label>
+            <input
+              ref={filesRef}
+              accept=".jpg, .jpeg, .png, .gif"
+              style={{ display: "none" }}
+              id="addImages"
+              name="images"
+              multiple
+              type="file"
+              onChange={(e) => {
+                setFiles(e.target.files);
+              }}
+            />
+            <button onClick={uploadFiles}>Upload Files</button>
+          </>
+        ) : null}
         <ProjectComments project_id={sessionStorage.getItem("project_id")} />
       </div>
     );

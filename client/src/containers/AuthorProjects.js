@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import useAuth from "../hooks/useAuth";
 
 function AuthorProjects() {
+  const { authState } = useAuth();
   const [projects, setProjects] = useState();
 
   const navigate = useNavigate();
@@ -53,7 +55,9 @@ function AuthorProjects() {
             );
           })}
         </div>
-        <button onClick={() => navigate("/project_form")}>Add Project</button>
+        {authState.userId === Number(sessionStorage.getItem("author_id")) ? (
+          <button onClick={() => navigate("/project_form")}>Add Project</button>
+        ) : null}
       </div>
     );
   } else {
