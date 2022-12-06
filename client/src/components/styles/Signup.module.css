@@ -1,19 +1,20 @@
-.signUpGrid {
+.signUpContainer {
   margin: 30px auto;
   background-color: rgb(10, 133, 157);
   border-radius: 20px;
+  display: flex;
   justify-content: center;
   box-sizing: border-box;
   height: fit-content;
   padding: auto 30px;
-  /* width: 600px; */
+  width: 600px;
   box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px,
     rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
 }
 
-form {
+.signUpForm {
   display: grid;
-  grid-template-columns: 1fr, 1fr, 1fr, 1fr;
+  grid-template-columns: 200px 200px 100px 100px;
   text-align: flex-start;
   padding: auto 30px;
 }
@@ -21,7 +22,7 @@ form {
 input,
 label {
   margin-top: 17px;
-  width: 100%;
+  /* width: 200px; */
 }
 
 input,
@@ -38,18 +39,19 @@ label {
 }
 
 input {
-  grid-column: 2/4;
+  grid-column: 2/3;
 }
 
 textarea {
-  grid-column: span 4;
+  margin-top: 17px;
+  grid-column: span 2;
 }
 
 .instructions {
-  grid-column: 4/5;
+  grid-column: 3/4;
 }
 
-button {
+.signUpBtn {
   grid-column: 1/2;
   width: 80%;
 }

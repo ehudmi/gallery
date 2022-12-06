@@ -122,7 +122,7 @@ function Signup() {
           </p>
         </section>
       ) : (
-        <section className={styles.signUpGrid}>
+        <section className={styles.signUpContainer}>
           <p
             ref={errRef}
             className={errMsg ? "errMsg" : "offscreen"}
@@ -327,6 +327,7 @@ function Signup() {
               value={about}
             ></textarea>
             <button
+              className={styles.signUpBtn}
               disabled={
                 !validFName ||
                 !validLName ||

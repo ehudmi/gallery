@@ -1,0 +1,37 @@
+@import "https://fonts.googleapis.com/css?family=Roboto:100,300";
+@import "https://fonts.googleapis.com/css?family=Roboto+Mono:300,700";
+
+.navContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: rgba(255, 255, 255, 0.333);
+  width: 100%;
+  position: sticky;
+  /* float: initial; */
+  top: 0;
+  left: 0;
+}
+
+.logo {
+  padding: 13px;
+}
+
+ul {
+  display: flex;
+}
+
+li,
+a {
+  color: rgb(34, 46, 75);
+  display: inline-block;
+  list-style: none;
+  text-decoration: none;
+  padding: 13px;
+  font-family: "Nunito", sans-serif;
+}
+
+a:hover {
+  background-color: rgb(143, 129, 129);
+  border-radius: 5px;
+}

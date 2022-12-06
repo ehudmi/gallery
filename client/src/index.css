@@ -42,7 +42,7 @@ section {
 
 a,
 a:visited {
-  color: #fff;
+  /* color: #fff; */
 }
 
 input,
@@ -62,10 +62,10 @@ textarea {
   padding: 0.25rem;
   position: relative;
   bottom: 20px;
-  width: 100%;
-  height: fit-content;
-  z-index: 100;
-  grid-column: 4/5;
+  width: 80%;
+  height: 53px;
+  /* z-index: 100; */
+  grid-column: 3/5;
 }
 
 .instructions > svg {
