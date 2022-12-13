@@ -52,10 +52,6 @@ textarea {
   grid-column: span 2;
 }
 
-.instructions {
-  grid-column: 3/4;
-}
-
 .signUpBtn {
   grid-column: 1/2;
   width: 80%;

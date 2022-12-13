@@ -10,10 +10,16 @@ function Navbar() {
       </Link>
       <ul>
         <li>
-          <Link to="/plan">My Plans</Link>
+          <Link to="/home">Homepage</Link>
         </li>
         <li>
-          <Link to="/profile">Equipment & Purpose</Link>
+          <Link to="/my_projects">My Projects</Link>
+        </li>
+        <li>
+          <Link to="/user_comments">My Comments</Link>
+        </li>
+        <li>
+          <Link to="/search">Search</Link>
         </li>
         <li>
           <Link to="/logout">Logout</Link>
