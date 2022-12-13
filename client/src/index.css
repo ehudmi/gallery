@@ -8,13 +8,11 @@
 
 html {
   font-family: "Nunito", sans-serif;
-  font-size: 22px;
-  color: white;
 }
 
 body {
   min-height: 100vh;
-  background-color: dodgerblue;
+  background-color: #066274;
 }
 
 .App {
@@ -22,50 +20,38 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
-  padding: 1rem 0.5rem;
 }
 
 section {
-  width: 100%;
-  max-width: 420px;
+  width: 800px;
   min-height: 400px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  padding: 1rem;
+  padding: 1.5rem;
   background-color: rgba(0, 0, 0, 0.4);
 }
 
-form {
+/* form {
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
   flex-grow: 1;
   padding-bottom: 1rem;
-}
+} */
 
 a,
 a:visited {
-  color: #fff;
+  /* color: #fff; */
 }
 
 input,
 button,
 textarea {
   font-family: "Nunito", sans-serif;
-  font-size: 22px;
+  font-size: 20px;
   padding: 0.25rem;
   border-radius: 0.5rem;
-}
-
-label,
-button {
-  margin-top: 1rem;
-}
-
-button {
-  padding: 0.5rem;
 }
 
 .instructions {
@@ -75,7 +61,11 @@ button {
   color: #fff;
   padding: 0.25rem;
   position: relative;
-  bottom: -10px;
+  bottom: 20px;
+  width: 80%;
+  height: 53px;
+  /* z-index: 100; */
+  grid-column: 3/5;
 }
 
 .instructions > svg {

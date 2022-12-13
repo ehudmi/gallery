@@ -5,6 +5,7 @@ import {
   faInfoCircle,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import styles from "./styles/Signup.module.css";
 
 const NAME_REGEX = new RegExp("^[A-Z][A-z]{3,23}$");
 const EMAIL_REGEX = new RegExp("^\\S+@\\S+\\.\\S+$");
@@ -121,7 +122,7 @@ function Signup() {
           </p>
         </section>
       ) : (
-        <section>
+        <section className={styles.signUpContainer}>
           <p
             ref={errRef}
             className={errMsg ? "errMsg" : "offscreen"}
@@ -130,7 +131,7 @@ function Signup() {
             {errMsg}
           </p>
           <h1>Sign Up</h1>
-          <form onSubmit={handleSubmit}>
+          <form className={styles.signUpForm} onSubmit={handleSubmit}>
             <label htmlFor="firstName">
               First Name:
               <FontAwesomeIcon
@@ -164,14 +165,9 @@ function Signup() {
                   : "offscreen"
               }
             >
-              <FontAwesomeIcon icon={faInfoCircle} />
-              4 to 24 characters.
-              <br />
-              Must begin with a Capital letter.
-              <br />
-              Only letters allowed.
+              <FontAwesomeIcon icon={faInfoCircle} />4 to 24 characters. Must
+              begin with a Capital letter. Only letters allowed.
             </p>
-
             <label htmlFor="lastName">
               Last Name:
               <FontAwesomeIcon
@@ -204,12 +200,8 @@ function Signup() {
                   : "offscreen"
               }
             >
-              <FontAwesomeIcon icon={faInfoCircle} />
-              4 to 24 characters.
-              <br />
-              Must begin with a Capital letter.
-              <br />
-              Only letters allowed.
+              <FontAwesomeIcon icon={faInfoCircle} />4 to 24 characters. Must
+              begin with a Capital letter. Only letters allowed.
             </p>
 
             <label htmlFor="email">
@@ -245,9 +237,8 @@ function Signup() {
               }
             >
               <FontAwesomeIcon icon={faInfoCircle} />
-              Must include the characters "@" and "."
-              <br />
-              Make sure the email is valid
+              Must include the characters "@" and "." Make sure the email is
+              valid
             </p>
 
             <label htmlFor="password">
@@ -280,10 +271,8 @@ function Signup() {
                 pwdFocus && lName && !validPwd ? "instructions" : "offscreen"
               }
             >
-              <FontAwesomeIcon icon={faInfoCircle} />
-              8 to 15 characters.
-              <br />
-              Must include uppercase, lowercase and digits.
+              <FontAwesomeIcon icon={faInfoCircle} />8 to 15 characters. Must
+              include uppercase, lowercase and digits.
             </p>
 
             <label htmlFor="confirm_pwd">
@@ -300,6 +289,7 @@ function Signup() {
             <input
               type="password"
               id="confirm_pwd"
+              placeholder="Confirm Password"
               onChange={(e) => setMatchPwd(e.target.value)}
               required
               aria-invalid={validMatch ? "false" : "true"}
@@ -337,6 +327,7 @@ function Signup() {
               value={about}
             ></textarea>
             <button
+              className={styles.signUpBtn}
               disabled={
                 !validFName ||
                 !validLName ||
@@ -352,7 +343,6 @@ function Signup() {
           </form>
           <p>
             Already registered?
-            <br />
             <span className="line">
               <a href="login">Sign In</a>
             </span>
