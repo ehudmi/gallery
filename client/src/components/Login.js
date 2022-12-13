@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import useAuth from "../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
+import styles from "./styles/FormComponents.module.css";
 
 // Login page functions and render - as form
 
@@ -58,7 +59,7 @@ function Login() {
   };
 
   return (
-    <section>
+    <section className={styles.FormContainer}>
       <p
         ref={errRef}
         className={errMsg ? "errMsg" : "offscreen"}
@@ -67,7 +68,7 @@ function Login() {
         {errMsg}
       </p>
       <h1>Login</h1>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className={styles.ActiveForm}>
         <label htmlFor="email">Email:</label>
         <input
           type={"email"}
@@ -89,7 +90,7 @@ function Login() {
           required
         />
 
-        <button>Log In</button>
+        <button className={styles.FormSubmitBtn}>Log In</button>
       </form>
       <p>
         Need an account?

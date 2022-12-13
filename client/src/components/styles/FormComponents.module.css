@@ -1,4 +1,4 @@
-.signUpContainer {
+.FormContainer {
   margin: 30px auto;
   background-color: rgb(10, 133, 157);
   border-radius: 20px;
@@ -12,7 +12,7 @@
     rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
 }
 
-.signUpForm {
+.ActiveForm {
   display: grid;
   grid-template-columns: 200px 200px 100px 100px;
   text-align: flex-start;
@@ -56,7 +56,7 @@ textarea {
   grid-column: 3/4;
 }
 
-.signUpBtn {
+.FormSubmitBtn {
   grid-column: 1/2;
   width: 80%;
 }

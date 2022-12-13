@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import useAuth from "../hooks/useAuth";
+import ImageModal from "./ImageModal";
 import ProjectComments from "./ProjectComments";
 
 function ProjectDetails() {
@@ -10,6 +11,50 @@ function ProjectDetails() {
 
   const filesRef = useRef(null);
   const [files, setFiles] = useState();
+
+  const currentIndex = useRef(null);
+  const modalSrc = useRef(null);
+
+  const [show, setShow] = useState(false);
+
+  const openModal = (e, index) => {
+    setShow(true);
+    currentIndex.current = index;
+    console.log(index);
+    console.log(currentIndex.current);
+    console.log(images[currentIndex.current].url);
+    modalSrc.current = images[currentIndex.current].url;
+  };
+
+  const closeModal = (e) => {
+    if (e !== undefined) {
+      e.preventDefault();
+    }
+    currentIndex.current = null;
+    setShow(false);
+  };
+
+  const findPrev = (e) => {
+    if (e !== undefined) {
+      e.preventDefault();
+    }
+    currentIndex.current = currentIndex - 1;
+  };
+
+  const findNext = (e) => {
+    if (e !== undefined) {
+      e.preventDefault();
+    }
+    currentIndex.current = currentIndex + 1;
+  };
+
+  // const renderImageContent=(src, index)=> {
+  //   return (
+  //     <div onClick={(e) => this.openModal(e, index)}>
+  //       <img src={src} key={src} />
+  //     </div>
+  //   )
+  // }
 
   // retrieve images from DB
 
@@ -102,7 +147,7 @@ function ProjectDetails() {
         {images.length > 0
           ? images.map((item, index) => {
               return (
-                <div key={index}>
+                <div key={index} onClick={(e) => openModal(e, index)}>
                   <img
                     alt="pic"
                     src={item.url}
@@ -110,6 +155,7 @@ function ProjectDetails() {
                     width={300}
                     height={300}
                   />
+
                   {authState.userId ===
                   Number(sessionStorage.getItem("author_id")) ? (
                     <button onClick={() => deleteImage(item.uuid)}>
@@ -120,6 +166,15 @@ function ProjectDetails() {
               );
             })
           : null}
+        <ImageModal
+          closeModal={closeModal}
+          findPrev={findPrev}
+          findNext={findNext}
+          hasPrev={currentIndex > 0}
+          hasNext={currentIndex + 1 < images.length}
+          src={modalSrc.current}
+          show={show}
+        />
         {authState.userId === Number(sessionStorage.getItem("author_id")) ? (
           <>
             <label htmlFor="addImages">
