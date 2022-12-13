@@ -57,20 +57,20 @@ function AppRouter() {
               <Route path="author_projects" element={<AuthorProjects />} />
               {/* <Route path="logout" element={<Logout />} /> */}
             </Route>
-          </Route>
 
-          <Route
-            element={
-              <ProtectedRoute
-                redirectPath="/home"
-                isAllowed={
-                  !!authState.userId && !!authState.role.includes("author")
-                }
-              />
-            }
-          >
-            <Route path="my_projects" element={<MyProjects />} />
-            <Route path="project_form" element={<ProjectForm />} />
+            <Route
+              element={
+                <ProtectedRoute
+                  redirectPath="/home"
+                  isAllowed={
+                    !!authState.userId && !!authState.role.includes("author")
+                  }
+                />
+              }
+            >
+              <Route path="my_projects" element={<MyProjects />} />
+              <Route path="project_form" element={<ProjectForm />} />
+            </Route>
           </Route>
         </Route>
       </Routes>

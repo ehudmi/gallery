@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import styles from "../components/styles/FormComponents.module.css";
 // import useAuth from "../hooks/useAuth";
 
 function ProjectForm() {
@@ -78,8 +79,8 @@ function ProjectForm() {
 
   if (courseData !== undefined) {
     return (
-      <div>
-        <form onSubmit={handleSubmit}>
+      <div className={styles.FormContainer}>
+        <form onSubmit={handleSubmit} className={styles.ActiveForm}>
           <label htmlFor="project_name">Project Name</label>
           <input
             type={"text"}
@@ -107,7 +108,9 @@ function ProjectForm() {
             cols="50"
             onChange={(e) => setDescription(e.target.value)}
           ></textarea>
-          <button type="submit">Submit</button>
+          <button type="submit" className={styles.FormSubmitBtn}>
+            Submit
+          </button>
         </form>
         {!!validProjectId ? (
           <>
