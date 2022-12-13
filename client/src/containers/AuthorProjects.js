@@ -39,7 +39,7 @@ function AuthorProjects() {
     return (
       <div>
         <div>
-          Author Projects
+          <h1>Author Projects</h1>
           {projects.map((item, index) => {
             return (
               <div key={index}>
@@ -49,7 +49,7 @@ function AuthorProjects() {
                     navigate("/project_details");
                   }}
                 >
-                  Project Name {item.project_name}
+                  Project Name: {item.project_name}
                 </p>
               </div>
             );

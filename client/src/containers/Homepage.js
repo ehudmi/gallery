@@ -4,18 +4,18 @@ import ProjectsList from "./ProjectsList";
 function Homepage() {
   const { authState } = useAuth();
 
-  if (authState.role === "user" || "author") {
+  if (authState.message === "failed") {
+    window.location.href = "/welcome";
+  } else {
     return (
       <div>
         <h1>
           Welcome<span> </span>
           {authState.first_name}
         </h1>
-        {/* <ProjectsList /> */}
+        <ProjectsList />
       </div>
     );
-  } else if (authState.message === "failed") {
-    window.location.href = "/welcome";
   }
 
   // if (authState.role === "user") {
