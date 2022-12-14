@@ -64,7 +64,6 @@ textarea {
   bottom: 20px;
   width: 80%;
   height: 53px;
-  /* z-index: 100; */
   grid-column: 3/5;
 }
 

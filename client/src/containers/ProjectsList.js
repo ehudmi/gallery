@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import styles from "../components/styles/ListContainer.module.css";
 
 function ProjectsList() {
   const [projects, setProjects] = useState();
@@ -22,7 +23,7 @@ function ProjectsList() {
         }),
       });
       const json = await response.json();
-      // console.log(json);
+      console.log(json);
       setProjects(json);
     } catch (error) {
       console.log(error);
@@ -38,44 +39,49 @@ function ProjectsList() {
   if (projects !== undefined) {
     console.log(projects);
     return (
-      <div>
-        List of Projects
+      <div className={styles.listContainer}>
+        <h1 className={styles.listHeader}>List of Projects</h1>
         {projects.map((item, index) => {
           return (
             <div key={index}>
-              <p
+              <h3
+                className={styles.listItem}
                 onClick={() => {
                   sessionStorage.setItem("project_id", item.id);
                   sessionStorage.setItem("author_id", item.user_id);
-                  console.log(sessionStorage.getItem("project_id"));
+                  // console.log(sessionStorage.getItem("project_id"));
                   return navigate("/project_details");
                 }}
               >
-                Project Name {item.project_name}
-              </p>
+                Project Name: {item.project_name}
+              </h3>
             </div>
           );
         })}
-        <button
-          id="previous"
-          name="previous"
-          onClick={() => {
-            countProj.current = countProj.current - 3;
-            getProjectsList(3, countProj.current);
-          }}
-        >
-          Previous
-        </button>
-        <button
-          id="next"
-          name="next"
-          onClick={() => {
-            countProj.current = countProj.current + 3;
-            getProjectsList(3, countProj.current);
-          }}
-        >
-          Next
-        </button>
+        <div className={styles.btnContainer}>
+          <button
+            className={`${styles.btn} ${styles.prevButton}`}
+            id="previous"
+            name="previous"
+            onClick={() => {
+              countProj.current = countProj.current - 3;
+              getProjectsList(3, countProj.current);
+            }}
+          >
+            Previous
+          </button>
+          <button
+            className={`${styles.btn} ${styles.nextButton}`}
+            id="next"
+            name="next"
+            onClick={() => {
+              countProj.current = countProj.current + 3;
+              getProjectsList(3, countProj.current);
+            }}
+          >
+            Next
+          </button>
+        </div>
       </div>
     );
   } else {
