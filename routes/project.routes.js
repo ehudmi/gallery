@@ -39,7 +39,7 @@ router.post("/author_projects", [authJwt.checkToken], getAuthorProjects);
 
 // routes available to Author
 
-router.get("/my_projects", [authJwt.isAuthor], getMyProjects);
+router.post("/my_projects", [authJwt.isAuthor], getMyProjects);
 router.get("/read_course", [authJwt.isAuthor], getCourseList);
 router.post("/add_project", [authJwt.isAuthor], addProject);
 router.post(

@@ -56,13 +56,17 @@ const _get3TabJoinData = (
   column2,
   column3,
   column4,
-  criteria1
+  criteria1,
+  limit,
+  offset
 ) => {
   return db(table1)
     .join(table2, column1, "=", column2)
     .join(table3, column3, "=", column4)
     .select("*")
-    .where(criteria1);
+    .where(criteria1)
+    .limit(limit)
+    .offset(offset);
 };
 
 module.exports = {

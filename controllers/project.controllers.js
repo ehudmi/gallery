@@ -81,7 +81,9 @@ const getAuthorProjects = async (req, res) => {
       "users.id",
       "project_authors.project_id",
       "projects.id",
-      { user_id: req.body.user_id }
+      { user_id: req.body.user_id },
+      req.body.limit,
+      req.body.offset
     );
     // console.log(result);
     result.map((item) => {
@@ -112,6 +114,7 @@ const getAuthorProjects = async (req, res) => {
 const getMyProjects = async (req, res) => {
   const selectedData = [];
   const data = jwt.verify(req.cookies.accessToken, config.secret);
+  console.log(data.id);
   try {
     const result = await _get3TabJoinData(
       "project_authors",
@@ -121,9 +124,11 @@ const getMyProjects = async (req, res) => {
       "users.id",
       "project_authors.project_id",
       "projects.id",
-      { user_id: data.id }
+      { user_id: data.id },
+      req.body.limit,
+      req.body.offset
     );
-    // console.log(result);
+    console.log(result);
     result.map((item) => {
       selectedData.push({
         user_id: item.user_id,
