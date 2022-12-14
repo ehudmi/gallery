@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
 import useAuth from "../hooks/useAuth";
+import styles from "../styles/Comments.module.css";
+import { faTimes } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 function ProjectComments({ project_id }) {
   const { authState } = useAuth();
@@ -76,19 +79,26 @@ function ProjectComments({ project_id }) {
 
   if (comments.length > 0) {
     return (
-      <section>
-        <h1> Project Comments</h1>
+      <div className={styles.commentsContainer}>
+        <h1 className={styles.title}> Project Comments</h1>
         {comments.map((item, index) => {
           return (
-            <div key={index}>
+            <div className={styles.comment} key={index}>
               <p>
                 {item.user_comment} by {item.first_name} {item.last_name}
               </p>
-              {authState.userId === item.user_id ? (
+              {/* {authState.userId === item.user_id ? (
                 <button onClick={() => deleteComment(item.comment_id)}>
                   Delete Comment
                 </button>
-              ) : null}
+              ) : null} */}
+              <FontAwesomeIcon
+                icon={faTimes}
+                className={
+                  authState.userId === item.user_id ? "invalid" : "hide"
+                }
+                onClick={() => deleteComment(item.comment_id)}
+              />
             </div>
           );
         })}
@@ -103,7 +113,7 @@ function ProjectComments({ project_id }) {
           ></textarea>
           <button onClick={handleSubmit}>Submit New Comment</button>
         </form>
-      </section>
+      </div>
     );
   } else {
     return <div>Loading</div>;
