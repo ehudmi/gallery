@@ -5,7 +5,7 @@ import {
   faInfoCircle,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import styles from "./styles/FormComponents.module.css";
+import styles from "../styles/FormComponents.module.css";
 
 const NAME_REGEX = new RegExp("^[A-Z][A-z]{3,23}$");
 const EMAIL_REGEX = new RegExp("^\\S+@\\S+\\.\\S+$");

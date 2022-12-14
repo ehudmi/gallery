@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import styles from "../components/styles/ListContainer.module.css";
+import styles from "../styles/ListContainer.module.css";
 
 function ProjectsList() {
   const [projects, setProjects] = useState();

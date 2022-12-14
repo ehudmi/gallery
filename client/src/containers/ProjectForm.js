@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import styles from "../components/styles/FormComponents.module.css";
+import styles from "../styles/FormComponents.module.css";
 // import useAuth from "../hooks/useAuth";
 
 function ProjectForm() {
