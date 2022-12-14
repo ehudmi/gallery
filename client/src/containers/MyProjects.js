@@ -62,6 +62,7 @@ function MyProjects() {
         <div className={styles.btnContainer}>
           <button
             className={`${styles.btn} ${styles.prevButton}`}
+            hidden={countProj.current <= 0 ? true : false}
             id="previous"
             name="previous"
             onClick={() => {
@@ -73,6 +74,7 @@ function MyProjects() {
           </button>
           <button
             className={`${styles.btn} ${styles.nextButton}`}
+            hidden={projects.length === 0 ? true : false}
             id="next"
             name="next"
             onClick={() => {

@@ -128,7 +128,7 @@ const getMyProjects = async (req, res) => {
       req.body.limit,
       req.body.offset
     );
-    console.log(result);
+    // console.log(result);
     result.map((item) => {
       selectedData.push({
         user_id: item.user_id,
