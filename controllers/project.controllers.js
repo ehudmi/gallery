@@ -100,9 +100,10 @@ const getAuthorProjects = async (req, res) => {
         description: item.description,
       });
     });
-    result.length !== 0
-      ? res.send(selectedData)
-      : res.send({ error: "Author has no projects" });
+    return res.send(selectedData);
+    // result.length !== 0
+    //   ? res.send(selectedData)
+    //   : res.send({ error: "Author has no projects" });
   } catch (error) {
     console.log(error);
     res.status(404).json({ error: "couldn't read projects" });
@@ -143,9 +144,10 @@ const getMyProjects = async (req, res) => {
         description: item.description,
       });
     });
-    result.length !== 0
-      ? res.send(selectedData)
-      : res.send({ error: "I have no projects" });
+    return res.send(selectedData);
+    // result.length !== 0
+    //   ? res.send(selectedData)
+    //   : res.send({ error: "I have no projects" });
   } catch (error) {
     console.log(error);
     res.status(404).json({ error: "couldn't read projects" });

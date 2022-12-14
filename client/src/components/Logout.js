@@ -49,6 +49,9 @@ function Logout() {
         <p>Your auth state is {authState}</p>
         <p>Your session data is {sessionStorage.key(0)}</p>
         {/* <button onClick={checkLogout}>check logged out</button> */}
+        <span className="line">
+          <a href="login">Sign In</a>
+        </span>
       </>
     );
   } else {

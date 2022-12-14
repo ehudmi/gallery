@@ -26,6 +26,7 @@ function MyProjects() {
       const json = await response.json();
       console.log(json);
       setProjects(json);
+      // !json.error ? setProjects(json) : setProjects(undefined);
     } catch (error) {
       console.log(error);
     }
