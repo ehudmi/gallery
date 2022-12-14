@@ -1,0 +1,22 @@
+.masterContainer {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+}
+
+.picContainer {
+  display: flex;
+  justify-content: space-around;
+}
+
+.projectTitle {
+  align-items: flex-end;
+}
+
+.image {
+  width: 200px;
+  height: 200px;
+  margin: 10px 15px;
+  box-shadow: 5px 4px 0 0 rgba(0, 0, 0, 0.307);
+  border-radius: 5px;
+}

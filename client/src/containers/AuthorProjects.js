@@ -60,8 +60,9 @@ function AuthorProjects() {
         })}
         <div className={styles.btnContainer}>
           <button
-            className={`${styles.btn} ${styles.prevButton}`}
-            hidden={countProj.current <= 0 ? true : false}
+            className={`${styles.btn} ${styles.prevButton} ${
+              countProj.current <= 0 ? "btnHidden" : "btnVisible"
+            }`}
             id="previous"
             name="previous"
             onClick={() => {
@@ -72,8 +73,9 @@ function AuthorProjects() {
             Previous
           </button>
           <button
-            className={`${styles.btn} ${styles.nextButton}`}
-            hidden={projects.length === 0 ? true : false}
+            className={`${styles.btn} ${styles.nextButton} ${
+              projects.length === 0 ? "btnHidden" : "btnVisible"
+            }`}
             id="next"
             name="next"
             onClick={() => {

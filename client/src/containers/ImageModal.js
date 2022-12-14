@@ -62,13 +62,15 @@ function ImageModal({
   return (
     <>
       <div className={show ? "modal" : "hide"}>
-        <button onClick={closeModal}>X</button>
         <img
+          onClick={closeModal}
           src={src}
           alt={"selected_image"}
           style={{
+            border: "2px solid black",
+            borderRadius: "5px",
             width: 400,
-            height: 400,
+            height: "auto",
             zIndex: 999,
             position: "fixed",
             top: "10%",

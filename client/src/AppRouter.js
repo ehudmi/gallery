@@ -7,7 +7,6 @@ import {
 } from "react-router-dom";
 import useAuth from "./hooks/useAuth";
 import Signup from "./components/Signup";
-// import Modal from "./containers/Modal";
 import Homepage from "./containers/Homepage";
 import MyProjects from "./containers/MyProjects";
 import Login from "./components/Login";
@@ -43,7 +42,6 @@ function AppRouter() {
         <Route path="login" element={<Login />} />
         <Route path="signup" element={<Signup />} />
         <Route path="logout" element={<Logout />} />
-        {/* <Route path="logout" element={<Modal />} /> */}
 
         <Route element={<PersistLogin />}>
           <Route element={<Layout />}>
@@ -55,7 +53,6 @@ function AppRouter() {
               <Route path="project_details" element={<ProjectDetails />} />
               <Route path="project_comments" element={<ProjectComments />} />
               <Route path="author_projects" element={<AuthorProjects />} />
-              {/* <Route path="logout" element={<Logout />} /> */}
             </Route>
 
             <Route

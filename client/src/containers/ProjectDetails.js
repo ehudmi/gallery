@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import useAuth from "../hooks/useAuth";
 import ImageModal from "./ImageModal";
 import ProjectComments from "./ProjectComments";
+import styles from "../styles/ProjectDetails.module.css";
 
 function ProjectDetails() {
   const { authState } = useAuth();
@@ -141,31 +142,32 @@ function ProjectDetails() {
     window.location.href = "/welcome";
   } else
     return (
-      <div>
-        <p>Project</p>
-        {sessionStorage.getItem("project_id")}
-        {images.length > 0
-          ? images.map((item, index) => {
-              return (
-                <div key={index} onClick={(e) => openModal(e, index)}>
-                  <img
-                    alt="pic"
-                    src={item.url}
-                    id={item.uuid}
-                    width={300}
-                    height={300}
-                  />
+      <div className={styles.masterContainer}>
+        <div className={styles.picContainer}>
+          {images.length > 0
+            ? images.map((item, index) => {
+                return (
+                  <div key={index} onClick={(e) => openModal(e, index)}>
+                    <img
+                      className={styles.image}
+                      alt="pic"
+                      src={item.url}
+                      id={item.uuid}
+                    />
 
-                  {authState.userId ===
-                  Number(sessionStorage.getItem("author_id")) ? (
-                    <button onClick={() => deleteImage(item.uuid)}>
-                      Delete Image
-                    </button>
-                  ) : null}
-                </div>
-              );
-            })
-          : null}
+                    {authState.userId ===
+                    Number(sessionStorage.getItem("author_id")) ? (
+                      <button onClick={() => deleteImage(item.uuid)}>
+                        Delete Image
+                      </button>
+                    ) : null}
+                  </div>
+                );
+              })
+            : null}
+          <ProjectComments project_id={sessionStorage.getItem("project_id")} />
+        </div>
+
         <ImageModal
           closeModal={closeModal}
           findPrev={findPrev}
@@ -197,7 +199,9 @@ function ProjectDetails() {
             <button onClick={uploadFiles}>Upload Files</button>
           </>
         ) : null}
-        <ProjectComments project_id={sessionStorage.getItem("project_id")} />
+        <p className={styles.projectTitle}>
+          Project {sessionStorage.getItem("project_id")}
+        </p>
       </div>
     );
 }

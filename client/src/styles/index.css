@@ -76,6 +76,14 @@ textarea {
   left: -9999px;
 }
 
+.btnHidden {
+  visibility: hidden;
+}
+
+.btnVisible {
+  visibility: visible;
+}
+
 .hide {
   display: none;
 }
