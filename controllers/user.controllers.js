@@ -5,6 +5,7 @@ const {
   _get2TabJoinData,
   _deleteDb,
   _updateDb,
+  _readDbNotNull,
 } = require("../models/gallery.models");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
@@ -128,6 +129,22 @@ const getUsers = async (req, res) => {
   }
 };
 
+//  function to return list of authors
+
+const getAuthors = async (req, res) => {
+  try {
+    const result = await _readDb(
+      "users",
+      ["id", "first_name", "last_name", "email", "role"],
+      { role: "author" }
+    );
+    console.log(result);
+    return res.json(result);
+  } catch (e) {
+    res.json({ msg: "not" });
+  }
+};
+
 // function to retrieve list of authors by search term
 
 const searchAuthors = async (req, res) => {
@@ -199,6 +216,7 @@ module.exports = {
   login,
   logout,
   getUsers,
+  getAuthors,
   searchAuthors,
   getUserComments,
   deleteComment,

@@ -6,9 +6,11 @@ const {
   getAuthorProjects,
   getMyProjects,
   getProjectsList,
+  getProjectDetails,
   // getInfo,
   getCourseList,
   addProject,
+  addAuthor,
   addImages,
   getProjectImages,
   getProjectComments,
@@ -30,6 +32,7 @@ router.get("/auth", [authJwt.checkToken], authUser);
 // routes available to User
 
 router.post("/projects_list", [authJwt.checkToken], getProjectsList);
+router.post("/project_details", [authJwt.checkToken], getProjectDetails);
 router.post("/project_images", [authJwt.checkToken], getProjectImages);
 router.post("/project_comments", [authJwt.checkToken], getProjectComments);
 router.post("/add_comment", [authJwt.checkToken], addComment);
@@ -42,6 +45,7 @@ router.post("/author_projects", [authJwt.checkToken], getAuthorProjects);
 router.post("/my_projects", [authJwt.isAuthor], getMyProjects);
 router.get("/read_course", [authJwt.isAuthor], getCourseList);
 router.post("/add_project", [authJwt.isAuthor], addProject);
+router.post("/add_author", [authJwt.isAuthor], addAuthor);
 router.post(
   "/add_images",
   [authJwt.isAuthor],

@@ -1,10 +1,10 @@
 import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import useAuth from "../hooks/useAuth";
+// import useAuth from "../hooks/useAuth";
 import styles from "../styles/ListContainer.module.css";
 
 function AuthorProjects() {
-  const { authState } = useAuth();
+  // const { authState } = useAuth();
   const [projects, setProjects] = useState();
   const countProj = useRef(0);
 
@@ -34,7 +34,7 @@ function AuthorProjects() {
   };
 
   useEffect(() => {
-    getAuthorProjects();
+    getAuthorProjects(3, 0);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -87,9 +87,9 @@ function AuthorProjects() {
           </button>
         </div>
 
-        {authState.userId === Number(sessionStorage.getItem("author_id")) ? (
+        {/* {authState.userId === Number(sessionStorage.getItem("author_id")) ? (
           <button onClick={() => navigate("/project_form")}>Add Project</button>
-        ) : null}
+        ) : null} */}
       </div>
     );
   } else {

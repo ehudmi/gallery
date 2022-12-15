@@ -48,8 +48,8 @@ function ProjectsList() {
                 className={styles.listItem}
                 onClick={() => {
                   sessionStorage.setItem("project_id", item.id);
-                  sessionStorage.setItem("author_id", item.user_id);
-                  // console.log(sessionStorage.getItem("project_id"));
+                  // sessionStorage.setItem("author_id", item.user_id);
+                  console.log(item.id);
                   return navigate("/project_details");
                 }}
               >

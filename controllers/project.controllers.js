@@ -173,6 +173,43 @@ const getProjectsList = async (req, res) => {
   }
 };
 
+const getProjectDetails = async (req, res) => {
+  const selectedData = [];
+  // console.log(req.body.project_id);
+  try {
+    const result = await _get3TabJoinData(
+      "project_authors",
+      "users",
+      "projects",
+      "project_authors.user_id",
+      "users.id",
+      "project_authors.project_id",
+      "projects.id",
+      { project_id: req.body.project_id },
+      5,
+      0
+    );
+    // console.log(result);
+    result.map((item) => {
+      selectedData.push({
+        author_id: item.user_id,
+        first_name: item.first_name,
+        last_name: item.last_name,
+        id: item.project_id,
+        project_name: item.project_name,
+        course_id: item.course_id,
+        description: item.description,
+      });
+    });
+    return res.send(selectedData);
+    // result.length !== 0
+    //   ? res.send(selectedData)
+    //   : res.send({ error: "Author has no projects" });
+  } catch (error) {
+    console.log(error);
+    res.status(404).json({ error: "couldn't read projects" });
+  }
+};
 // function to retrieve list of courses in db to populate option list
 
 const getCourseList = async (req, res) => {
@@ -211,6 +248,22 @@ const addProject = async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(404).json({ error: "couldn't insert" });
+  }
+};
+
+// function to insert another author for project into DB
+
+const addAuthor = async (req, res) => {
+  const { project_id, user_id } = req.body;
+  try {
+    const result = await _insertDb("project_authors", {
+      project_id: project_id,
+      user_id: user_id,
+    });
+    // console.log(result[0].id);
+  } catch (error) {
+    console.log(error);
+    res.status(404).json({ error: "couldn't insert author" });
   }
 };
 
@@ -382,9 +435,11 @@ module.exports = {
   getAuthorProjects,
   getMyProjects,
   getProjectsList,
+  getProjectDetails,
   // getInfo,
   getCourseList,
   addProject,
+  addAuthor,
   addImages,
   getProjectImages,
   getProjectComments,

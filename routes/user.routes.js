@@ -4,6 +4,7 @@ const {
   login,
   logout,
   getUsers,
+  getAuthors,
   searchAuthors,
   authUser,
   getUserComments,
@@ -19,6 +20,7 @@ const router = express.Router();
 router.get("/auth", [authJwt.checkToken], authUser);
 
 router.get("/users", getUsers);
+router.get("/authors", getAuthors);
 router.post("/register", register);
 router.post("/login", login);
 router.get("/logout", logout);

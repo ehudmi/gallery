@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import ImageModal from "./ImageModal";
 import ProjectComments from "./ProjectComments";
@@ -6,6 +7,10 @@ import styles from "../styles/ProjectDetails.module.css";
 
 function ProjectDetails() {
   const { authState } = useAuth();
+
+  const navigate = useNavigate();
+
+  const [projectDetails, setProjectDetails] = useState();
 
   const [images, setImages] = useState([]);
   const countImages = useRef(0);
@@ -58,6 +63,27 @@ function ProjectDetails() {
   // }
 
   // retrieve images from DB
+
+  const getProjectDetails = async () => {
+    // console.log(sessionStorage.getItem("project_id"));
+    try {
+      const response = await fetch("/projects/project_details", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          project_id: sessionStorage.getItem("project_id"),
+        }),
+      });
+      const json = await response.json();
+      console.log(json);
+      setProjectDetails(json);
+      // console.log(countImages.current);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const getProjectImages = async () => {
     try {
@@ -132,6 +158,7 @@ function ProjectDetails() {
 
   useEffect(
     () => {
+      getProjectDetails();
       getProjectImages();
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -140,7 +167,7 @@ function ProjectDetails() {
 
   if (authState.message === "failed") {
     window.location.href = "/welcome";
-  } else
+  } else if (projectDetails !== undefined) {
     return (
       <div className={styles.masterContainer}>
         <div className={styles.picContainer}>
@@ -154,9 +181,10 @@ function ProjectDetails() {
                       src={item.url}
                       id={item.uuid}
                     />
-
-                    {authState.userId ===
-                    Number(sessionStorage.getItem("author_id")) ? (
+                    {/* {projectDetails.findIndex((value)=>{return value=authState.userId})>=0} */}
+                    {projectDetails.findIndex((item) => {
+                      return item.author_id === authState.userId;
+                    }) >= 0 ? (
                       <button onClick={() => deleteImage(item.uuid)}>
                         Delete Image
                       </button>
@@ -177,8 +205,10 @@ function ProjectDetails() {
           src={modalSrc.current}
           show={show}
         />
-        {authState.userId === Number(sessionStorage.getItem("author_id")) ? (
-          <>
+        {projectDetails.findIndex((item) => {
+          return item.author_id === authState.userId;
+        }) >= 0 ? (
+          <div>
             <label htmlFor="addImages">
               <button component="span" onClick={() => filesRef.current.click()}>
                 <span>Select Images</span>
@@ -197,13 +227,33 @@ function ProjectDetails() {
               }}
             />
             <button onClick={uploadFiles}>Upload Files</button>
-          </>
+          </div>
         ) : null}
-        <p className={styles.projectTitle}>
-          Project {sessionStorage.getItem("project_id")}
-        </p>
+        {projectDetails.length > 0
+          ? projectDetails.map((item, index) => {
+              return (
+                <div key={index}>
+                  <p className={styles.projectTitle}>
+                    Project {sessionStorage.getItem("project_id")}
+                    {item.project_name}
+                  </p>
+                  <p
+                    onClick={() => {
+                      sessionStorage.setItem("author_id", item.author_id);
+                      return navigate("/author_projects");
+                    }}
+                  >
+                    {item.first_name} {item.last_name}
+                  </p>
+                </div>
+              );
+            })
+          : null}
       </div>
     );
+  } else {
+    return <div>Loading</div>;
+  }
 }
 
 export default ProjectDetails;
