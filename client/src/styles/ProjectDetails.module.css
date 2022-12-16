@@ -2,7 +2,7 @@
   margin-top: 50px;
   display: grid;
   grid-template-columns: 60% 40%;
-  grid-template-rows: 1fr 1fr;
+  grid-template-rows: 1fr 2fr;
 }
 
 .picContainer {
@@ -23,4 +23,18 @@
   margin: 10px 15px;
   box-shadow: 5px 4px 0 0 rgba(0, 0, 0, 0.307);
   border-radius: 5px;
+}
+
+.details {
+  margin-top: 30px;
+  margin-left: 20px;
+  border-top: 3px solid rgba(0, 0, 0, 0.312);
+  padding: 30px;
+}
+
+@media screen and (max-width: 1175px) {
+  .masterContainer {
+    display: flex;
+    flex-wrap: wrap;
+  }
 }

@@ -194,10 +194,6 @@ function ProjectDetails() {
               })
             : null}
         </div>
-        <ProjectComments
-          className={styles.commentsContainer}
-          project_id={sessionStorage.getItem("project_id")}
-        />
 
         <ImageModal
           closeModal={closeModal}
@@ -235,7 +231,7 @@ function ProjectDetails() {
         {projectDetails.length > 0
           ? projectDetails.map((item, index) => {
               return (
-                <div key={index}>
+                <div className={styles.details} key={index}>
                   <p className={styles.projectTitle}>
                     Project {sessionStorage.getItem("project_id")}
                     {item.project_name}
@@ -252,6 +248,10 @@ function ProjectDetails() {
               );
             })
           : null}
+        <ProjectComments
+          className={styles.commentsContainer}
+          project_id={sessionStorage.getItem("project_id")}
+        />
       </div>
     );
   } else {
