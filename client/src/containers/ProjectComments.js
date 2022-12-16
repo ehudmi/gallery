@@ -111,7 +111,7 @@ function ProjectComments({ project_id }) {
             cols="50"
             onChange={(e) => setNewComment(e.target.value)}
           ></textarea>
-          <button onClick={handleSubmit}>Submit New Comment</button>
+          <button onClick={handleSubmit}>Submit</button>
         </form>
       </div>
     );
