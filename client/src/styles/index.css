@@ -22,6 +22,12 @@ body {
   align-items: center;
 }
 
+.welcomeHeader {
+  display: flex;
+  justify-content: center;
+  margin-top: 50px;
+}
+
 section {
   width: 800px;
   min-height: 400px;

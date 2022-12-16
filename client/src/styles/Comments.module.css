@@ -28,3 +28,11 @@
   font-size: 15px;
   padding: 3px;
 }
+
+.projectName {
+  font-weight: bold;
+  font-size: 15px;
+  text-transform: capitalize;
+  margin-left: 5px;
+  cursor: pointer;
+}

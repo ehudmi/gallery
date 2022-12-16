@@ -54,19 +54,24 @@ function ProjectComments({ project_id }) {
   };
 
   const handleSubmit = async () => {
-    const response = await fetch("/projects/add_comment", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        user_id: authState.userId,
-        project_id: project_id,
-        user_comment: newComment,
-      }),
-    });
-    const commentAdd = await response.json();
-    console.log(commentAdd);
+    try {
+      const response = await fetch("/projects/add_comment", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          user_id: authState.userId,
+          project_id: project_id,
+          user_comment: newComment,
+        }),
+      });
+      const json = await response.json();
+      console.log(json);
+      setComments((oldComments) => [...oldComments, json]);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(
@@ -103,7 +108,7 @@ function ProjectComments({ project_id }) {
           );
         })}
         <form>
-          <h1>My Comment</h1>
+          <h1>Add Comment</h1>
           <textarea
             id="new_comment"
             placeholder="New Comment"
@@ -116,7 +121,19 @@ function ProjectComments({ project_id }) {
       </div>
     );
   } else {
-    return <div>Loading</div>;
+    return (
+      <form>
+        e<h1>Add Comment</h1>
+        <textarea
+          id="new_comment"
+          placeholder="New Comment"
+          rows="4"
+          cols="50"
+          onChange={(e) => setNewComment(e.target.value)}
+        ></textarea>
+        <button onClick={handleSubmit}>Submit</button>
+      </form>
+    );
   }
 }
 

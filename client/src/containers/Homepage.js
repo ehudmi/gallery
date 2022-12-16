@@ -9,9 +9,9 @@ function Homepage() {
   } else {
     return (
       <div>
-        <h1>
-          Welcome<span> </span>
-          {authState.first_name}
+        <h1 className="welcomeHeader">
+          Welcome
+          {" " + authState.first_name}
         </h1>
         <ProjectsList />
       </div>

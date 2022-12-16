@@ -1,10 +1,15 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import styles from "../styles/Comments.module.css";
+import { faTimes } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // import useAuth from "../hooks/useAuth";
 
 function UserComments() {
   // const { authState } = useAuth();
 
   const [comments, setComments] = useState([]);
+  const navigate = useNavigate();
 
   const getUserComments = async () => {
     try {
@@ -48,21 +53,35 @@ function UserComments() {
 
   if (comments.length > 0) {
     return (
-      <section>
-        <h1> User Comments</h1>
+      <div className={styles.commentsContainer}>
+        <h1 className={styles.title}> My Comments</h1>
         {comments.map((item, index) => {
           return (
-            <div key={index}>
-              <p>{item.user_comment}</p>
+            <div className={styles.comment} key={index}>
+              <p>
+                {item.user_comment} - project
+                <span
+                  onClick={() => {
+                    sessionStorage.setItem("project_id", item.project_id);
+                    console.log(item.project_id);
+                    return navigate("/project_details");
+                  }}
+                  className={styles.projectName}
+                >
+                  {" "}
+                  {item.project_name}
+                </span>
+              </p>
               {
-                <button onClick={() => deleteComment(item.comment_id)}>
-                  Delete Comment
-                </button>
+                <FontAwesomeIcon
+                  icon={faTimes}
+                  onClick={() => deleteComment(item.comment_id)}
+                />
               }
             </div>
           );
         })}
-      </section>
+      </div>
     );
   } else {
     return <div>Loading</div>;

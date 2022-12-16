@@ -156,106 +156,111 @@ function ProjectDetails() {
     }
   };
 
-  useEffect(
-    () => {
-      getProjectDetails();
-      getProjectImages();
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
-  );
+  useEffect(() => {
+    getProjectDetails();
+    getProjectImages();
+  }, []);
 
   if (authState.message === "failed") {
     window.location.href = "/welcome";
   } else if (projectDetails !== undefined) {
     return (
-      <div className={styles.masterContainer}>
-        <div className={styles.picContainer}>
-          {images.length > 0
-            ? images.map((item, index) => {
+      <>
+        <div className={styles.masterContainer}>
+          <div className={styles.picContainer}>
+            {images.length > 0
+              ? images.map((item, index) => {
+                  return (
+                    <div key={index} onClick={(e) => openModal(e, index)}>
+                      <img
+                        className={styles.image}
+                        alt="pic"
+                        src={item.url}
+                        id={item.uuid}
+                      />
+                      {/* {projectDetails.findIndex((value)=>{return value=authState.userId})>=0} */}
+                      {projectDetails.findIndex((item) => {
+                        return item.author_id === authState.userId;
+                      }) >= 0 ? (
+                        <button onClick={() => deleteImage(item.uuid)}>
+                          Delete Image
+                        </button>
+                      ) : null}
+                    </div>
+                  );
+                })
+              : null}
+          </div>
+          <ImageModal
+            closeModal={closeModal}
+            findPrev={findPrev}
+            findNext={findNext}
+            hasPrev={currentIndex > 0}
+            hasNext={currentIndex + 1 < images.length}
+            src={modalSrc.current}
+            show={show}
+          />
+          {projectDetails.findIndex((item) => {
+            return item.author_id === authState.userId;
+          }) >= 0 ? (
+            <div>
+              <label htmlFor="addImages">
+                <button
+                  component="span"
+                  onClick={() => filesRef.current.click()}
+                >
+                  <span>Select Images</span>
+                </button>
+              </label>
+              <input
+                ref={filesRef}
+                accept=".jpg, .jpeg, .png, .gif"
+                style={{ display: "none" }}
+                id="addImages"
+                name="images"
+                multiple
+                type="file"
+                onChange={(e) => {
+                  setFiles(e.target.files);
+                }}
+              />
+              <button onClick={uploadFiles}>Upload Files</button>
+            </div>
+          ) : null}
+          {projectDetails.length > 0
+            ? projectDetails.map((item, index) => {
                 return (
-                  <div key={index} onClick={(e) => openModal(e, index)}>
-                    <img
-                      className={styles.image}
-                      alt="pic"
-                      src={item.url}
-                      id={item.uuid}
-                    />
-                    {/* {projectDetails.findIndex((value)=>{return value=authState.userId})>=0} */}
-                    {projectDetails.findIndex((item) => {
-                      return item.author_id === authState.userId;
-                    }) >= 0 ? (
-                      <button onClick={() => deleteImage(item.uuid)}>
-                        Delete Image
-                      </button>
-                    ) : null}
+                  <div className={styles.details} key={index}>
+                    <p className={styles.projectTitle}>
+                      Project {sessionStorage.getItem("project_id")}
+                      {item.project_name}
+                    </p>
+                    <p
+                      onClick={() => {
+                        sessionStorage.setItem("author_id", item.author_id);
+                        return navigate("/author_projects");
+                      }}
+                    >
+                      {item.first_name} {item.last_name}
+                    </p>
                   </div>
                 );
               })
             : null}
+          <ProjectComments
+            className={styles.commentsContainer}
+            project_id={sessionStorage.getItem("project_id")}
+          />
         </div>
-
-        <ImageModal
-          closeModal={closeModal}
-          findPrev={findPrev}
-          findNext={findNext}
-          hasPrev={currentIndex > 0}
-          hasNext={currentIndex + 1 < images.length}
-          src={modalSrc.current}
-          show={show}
-        />
-        {projectDetails.findIndex((item) => {
-          return item.author_id === authState.userId;
-        }) >= 0 ? (
-          <div>
-            <label htmlFor="addImages">
-              <button component="span" onClick={() => filesRef.current.click()}>
-                <span>Select Images</span>
-              </button>
-            </label>
-            <input
-              ref={filesRef}
-              accept=".jpg, .jpeg, .png, .gif"
-              style={{ display: "none" }}
-              id="addImages"
-              name="images"
-              multiple
-              type="file"
-              onChange={(e) => {
-                setFiles(e.target.files);
-              }}
-            />
-            <button onClick={uploadFiles}>Upload Files</button>
-          </div>
-        ) : null}
-        {projectDetails.length > 0
-          ? projectDetails.map((item, index) => {
-              return (
-                <div className={styles.details} key={index}>
-                  <p className={styles.projectTitle}>
-                    Project {sessionStorage.getItem("project_id")}
-                    {item.project_name}
-                  </p>
-                  <p
-                    onClick={() => {
-                      sessionStorage.setItem("author_id", item.author_id);
-                      return navigate("/author_projects");
-                    }}
-                  >
-                    {item.first_name} {item.last_name}
-                  </p>
-                </div>
-              );
-            })
-          : null}
-        <ProjectComments
-          className={styles.commentsContainer}
-          project_id={sessionStorage.getItem("project_id")}
-        />
-      </div>
+      </>
     );
-  } else {
-    return <div>Loading</div>;
+  } else if (projectDetails === null) {
+    return (
+      <ProjectComments
+        className={styles.commentsContainer}
+        project_id={sessionStorage.getItem("project_id")}
+      />
+    );
   }
 }
 
