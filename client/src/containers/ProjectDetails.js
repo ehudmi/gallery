@@ -165,8 +165,11 @@ function ProjectDetails() {
                 );
               })
             : null}
-          <ProjectComments project_id={sessionStorage.getItem("project_id")} />
         </div>
+        <ProjectComments
+          className={styles.commentsContainer}
+          project_id={sessionStorage.getItem("project_id")}
+        />
 
         <ImageModal
           closeModal={closeModal}

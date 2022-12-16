@@ -1,16 +1,20 @@
 .masterContainer {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: nowrap;
+  margin-top: 50px;
+  display: grid;
+  grid-template-columns: 60% 40%;
+  grid-template-rows: 1fr 1fr;
 }
 
 .picContainer {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-evenly;
+  grid-column: 1/2;
 }
 
 .projectTitle {
   align-items: flex-end;
+  grid-column: 1/2;
+  grid-row: 2/3;
 }
 
 .image {
