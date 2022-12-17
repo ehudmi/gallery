@@ -91,7 +91,10 @@ function ProjectComments({ project_id }) {
           return (
             <div className={styles.comment} key={index}>
               <p>
-                {item.user_comment} by {item.first_name} {item.last_name}
+                {item.user_comment} by{" "}
+                <span>
+                  {item.first_name} {item.last_name}
+                </span>
               </p>
               {/* {authState.userId === item.user_id ? (
                 <button onClick={() => deleteComment(item.comment_id)}>

@@ -42,7 +42,6 @@ function MyProjects() {
     return (
       <div className={styles.listContainer}>
         <h1 className={styles.listHeader}>My Projects</h1>
-
         {projects.map((item, index) => {
           return (
             <div key={index}>
@@ -51,7 +50,7 @@ function MyProjects() {
                 onClick={() => {
                   sessionStorage.setItem("project_id", item.id);
                   sessionStorage.setItem("author_id", item.user_id);
-                  console.log(item.user_id);
+                  // console.log(item.user_id);
                   return navigate("/project_details");
                 }}
               >

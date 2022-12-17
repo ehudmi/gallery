@@ -7,17 +7,14 @@ const {
   getMyProjects,
   getProjectsList,
   getProjectDetails,
-  // getInfo,
   getCourseList,
   addProject,
-  addAuthor,
   addImages,
   getProjectImages,
   getProjectComments,
   deleteImages,
   addComment,
   deleteComment,
-  // updateInfo,
 } = require("../controllers/project.controllers");
 
 const { authJwt } = require("../middleware/auth");
@@ -57,8 +54,5 @@ router.post(
   [handleAPI.delete],
   deleteImages
 );
-
-// router.get("/update", updateInfo);
-// router.get("/read", getInfo);
 
 module.exports = router;

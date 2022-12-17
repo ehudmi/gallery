@@ -63,7 +63,7 @@ function UserComments() {
                 <span
                   onClick={() => {
                     sessionStorage.setItem("project_id", item.project_id);
-                    console.log(item.project_id);
+                    // console.log(item.project_id);
                     return navigate("/project_details");
                   }}
                   className={styles.projectName}

@@ -42,28 +42,6 @@ function ProjectDetails() {
     setShow(false);
   };
 
-  const findPrev = (e) => {
-    if (e !== undefined) {
-      e.preventDefault();
-    }
-    currentIndex.current = currentIndex - 1;
-  };
-
-  const findNext = (e) => {
-    if (e !== undefined) {
-      e.preventDefault();
-    }
-    currentIndex.current = currentIndex + 1;
-  };
-
-  // const renderImageContent=(src, index)=> {
-  //   return (
-  //     <div onClick={(e) => this.openModal(e, index)}>
-  //       <img src={src} key={src} />
-  //     </div>
-  //   )
-  // }
-
   // retrieve images from DB
 
   const getProjectDetails = async () => {
@@ -79,7 +57,7 @@ function ProjectDetails() {
         }),
       });
       const json = await response.json();
-      console.log(json);
+      // console.log(json);
       setProjectDetails(json);
       // console.log(countImages.current);
     } catch (error) {
@@ -168,6 +146,28 @@ function ProjectDetails() {
   } else if (projectDetails !== undefined) {
     return (
       <>
+        {projectDetails.length > 0
+          ? projectDetails.map((item, index) => {
+              return (
+                <div className={styles.details} key={index}>
+                  <h3 className={styles.projectTitle}>
+                    Project {sessionStorage.getItem("project_id")} -{" "}
+                    {item.project_name}
+                  </h3>
+                  <h3>Description - {item.description}</h3>
+                  <h3
+                    className={styles.listItem}
+                    onClick={() => {
+                      sessionStorage.setItem("author_id", item.author_id);
+                      return navigate("/author_projects");
+                    }}
+                  >
+                    {item.first_name} {item.last_name}
+                  </h3>
+                </div>
+              );
+            })
+          : null}
         <div className={styles.masterContainer}>
           <div className={styles.picContainer}>
             {images.length > 0
@@ -200,10 +200,6 @@ function ProjectDetails() {
           </div>
           <ImageModal
             closeModal={closeModal}
-            findPrev={findPrev}
-            findNext={findNext}
-            hasPrev={currentIndex > 0}
-            hasNext={currentIndex + 1 < images.length}
             src={modalSrc.current}
             show={show}
           />
@@ -237,26 +233,28 @@ function ProjectDetails() {
               </button>
             </div>
           ) : null}
-          {projectDetails.length > 0
+          {/* {projectDetails.length > 0
             ? projectDetails.map((item, index) => {
                 return (
                   <div className={styles.details} key={index}>
-                    <p className={styles.projectTitle}>
-                      Project {sessionStorage.getItem("project_id")}
+                    <h3 className={styles.projectTitle}>
+                      Project {sessionStorage.getItem("project_id")} -{" "}
                       {item.project_name}
-                    </p>
-                    <p
+                    </h3>
+                    <h3>Description - {item.description}</h3>
+                    <h3
+                      className={styles.listItem}
                       onClick={() => {
                         sessionStorage.setItem("author_id", item.author_id);
                         return navigate("/author_projects");
                       }}
                     >
                       {item.first_name} {item.last_name}
-                    </p>
+                    </h3>
                   </div>
                 );
               })
-            : null}
+            : null} */}
           <ProjectComments
             className={styles.commentsContainer}
             project_id={sessionStorage.getItem("project_id")}

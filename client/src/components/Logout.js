@@ -14,7 +14,7 @@ function Logout() {
       },
     });
     const serverLogout = await response.json();
-    console.log(serverLogout);
+    // console.log(serverLogout);
     if (serverLogout.msg === "logging you out") {
       sessionStorage.clear();
       setAuthState("");

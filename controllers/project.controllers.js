@@ -5,7 +5,6 @@ const {
   _countRows,
   _searchDb,
   _insertDb,
-  // _updateDb,
   _deleteDb,
   _get2TabJoinData,
   _get3TabJoinData,
@@ -42,7 +41,6 @@ const authUser = async (req, res) => {
 // function to retrieve list of projects by search term
 
 const searchProjects = async (req, res) => {
-  // console.log(req.body.search_term);
   const selectedData = [];
   try {
     const result = await _searchDb(
@@ -51,7 +49,6 @@ const searchProjects = async (req, res) => {
       `%${req.body.search_term}%`,
       "description"
     );
-    // console.log(result);
     result.map((item) => {
       selectedData.push({
         id: item.id,
@@ -85,7 +82,6 @@ const getAuthorProjects = async (req, res) => {
       req.body.limit,
       req.body.offset
     );
-    // console.log(result);
     result.map((item) => {
       selectedData.push({
         user_id: item.user_id,
@@ -101,9 +97,6 @@ const getAuthorProjects = async (req, res) => {
       });
     });
     return res.send(selectedData);
-    // result.length !== 0
-    //   ? res.send(selectedData)
-    //   : res.send({ error: "Author has no projects" });
   } catch (error) {
     console.log(error);
     res.status(404).json({ error: "couldn't read projects" });
@@ -143,9 +136,6 @@ const getMyProjects = async (req, res) => {
       });
     });
     return res.send(selectedData);
-    // result.length !== 0
-    //   ? res.send(selectedData)
-    //   : res.send({ error: "I have no projects" });
   } catch (error) {
     console.log(error);
     res.status(404).json({ error: "couldn't read projects" });
@@ -155,7 +145,6 @@ const getMyProjects = async (req, res) => {
 // function to retrieve list of all projects for user
 
 const getProjectsList = async (req, res) => {
-  // console.log(req.body.limit, req.body.offset);
   try {
     const result = await _readDb_Limited(
       "projects",
@@ -163,7 +152,6 @@ const getProjectsList = async (req, res) => {
       req.body.limit,
       req.body.offset
     );
-    // console.log(result);
     return res.send(result);
   } catch (error) {
     console.log(error);
@@ -171,9 +159,10 @@ const getProjectsList = async (req, res) => {
   }
 };
 
+// function to retrieve details of specific project
+
 const getProjectDetails = async (req, res) => {
   const selectedData = [];
-  // console.log(req.body.project_id);
   try {
     const result = await _get3TabJoinData(
       "project_authors",
@@ -187,7 +176,6 @@ const getProjectDetails = async (req, res) => {
       5,
       0
     );
-    // console.log(result);
     result.map((item) => {
       selectedData.push({
         author_id: item.user_id,
@@ -200,20 +188,17 @@ const getProjectDetails = async (req, res) => {
       });
     });
     return res.send(selectedData);
-    // result.length !== 0
-    //   ? res.send(selectedData)
-    //   : res.send({ error: "Author has no projects" });
   } catch (error) {
     console.log(error);
     res.status(404).json({ error: "couldn't read projects" });
   }
 };
+
 // function to retrieve list of courses in db to populate option list
 
 const getCourseList = async (req, res) => {
   try {
     const result = await _readDbNotNull("courses", "*", "id");
-    // console.log(result);
     return res.send(result);
   } catch (error) {
     console.log(error);
@@ -249,27 +234,9 @@ const addProject = async (req, res) => {
   }
 };
 
-// function to insert another author for project into DB
-
-const addAuthor = async (req, res) => {
-  const { project_id, user_id } = req.body;
-  try {
-    const result = await _insertDb("project_authors", {
-      project_id: project_id,
-      user_id: user_id,
-    });
-    // console.log(result[0].id);
-  } catch (error) {
-    console.log(error);
-    res.status(404).json({ error: "couldn't insert author" });
-  }
-};
-
 // function to add new images to DB
 
 const addImages = async (req, res) => {
-  // console.log(req.body);
-  // console.log(req.body.project_id);
   for (const item of req.files) {
     console.log(item.uploadcare_file_id);
   }
@@ -283,15 +250,12 @@ const addImages = async (req, res) => {
     const isProjectExist = await _readDb("projects", "*", {
       id: req.body.project_id,
     });
-    // console.log(isProjectExist);
     if (isProjectExist.length > 0) {
       const checkImageCount = await _countRows("project_images", "uuid", {
         project_id: req.body.project_id,
       });
-      // console.log(checkImageCount[0].count);
       if (checkImageCount[0].count < 3) {
         const insertImage = await _insertDb("project_images", fieldsToInsert);
-        // console.log(insertImage);
         return res.send({ message: `inserted ${insertImage.length} images` });
       } else {
         return res.send({ error: "more than 3 images exist" });
@@ -361,7 +325,6 @@ const deleteImages = async (req, res) => {
     const result = await _deleteDb("project_images", {
       uuid: req.body.uuid,
     });
-    // console.log(result);
     return res.send({ message: "deleted the image" });
   } catch (error) {
     console.log(error);
@@ -372,14 +335,12 @@ const deleteImages = async (req, res) => {
 // function to add a user comment on project by logged-in user
 
 const addComment = async (req, res) => {
-  // console.log(req.body);
   try {
     const result = await _insertDb("user_comments", {
       project_id: req.body.project_id,
       user_id: req.body.user_id,
       user_comment: req.body.user_comment,
     });
-    // console.log(result);
     return res.send({ message: "added the comment" });
   } catch (error) {
     console.log(error);
@@ -394,39 +355,12 @@ const deleteComment = async (req, res) => {
     const result = await _deleteDb("user_comments", {
       comment_id: req.body.comment_id,
     });
-    // console.log(result);
     return res.send({ message: "deleted the comment" });
   } catch (error) {
     console.log(error);
     res.status(404).json({ error: "couldn't delete comment" });
   }
 };
-
-// const updateInfo = async (req, res) => {
-//   try {
-//     let result = await _updateDb(
-//       "authors",
-//       { email: "ehudmi12@gmail.com" },
-//       { first_name: "Ehud" }
-//     );
-//     console.log(result);
-//     res.send("info updated");
-//   } catch (error) {
-//     console.log(error);
-//     res.status(404).json({ error: "couldn't update" });
-//   }
-// };
-
-// const getInfo = async (req, res) => {
-//   try {
-//     const result = await _readDb("users", "*", { first_name: "Ehud" });
-//     console.log(result);
-//     return res.send(result);
-//   } catch (error) {
-//     console.log(error);
-//     res.status(404).json({ error: "couldn't read" });
-//   }
-// };
 
 module.exports = {
   authUser,
@@ -435,15 +369,12 @@ module.exports = {
   getMyProjects,
   getProjectsList,
   getProjectDetails,
-  // getInfo,
   getCourseList,
   addProject,
-  addAuthor,
   addImages,
   getProjectImages,
   getProjectComments,
   deleteImages,
   addComment,
   deleteComment,
-  // updateInfo,
 };

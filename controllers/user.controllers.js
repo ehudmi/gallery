@@ -5,8 +5,6 @@ const {
   _insertDb,
   _get2TabJoinData,
   _deleteDb,
-  _updateDb,
-  _readDbNotNull,
 } = require("../models/gallery.models");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
@@ -53,7 +51,6 @@ const register = async (req, res) => {
     return response.length == 0 ? "user" : "author";
   };
   const role = await isStudent();
-  // console.log(role);
   try {
     await _insertDb("users", {
       first_name: first_name,
@@ -87,7 +84,6 @@ const login = async (req, res) => {
         expiresIn: "900s",
       }
     );
-    // console.log("accessToken", accessToken);
     res.cookie("accessToken", accessToken, {
       httpOnly: true,
       maxAge: 900 * 1000,
@@ -141,7 +137,6 @@ const getAuthors = async (req, res) => {
       { id: data.id },
       { role: "author" }
     );
-    // console.log(result);
     return res.json(result);
   } catch (e) {
     res.json({ msg: "not" });
@@ -161,7 +156,6 @@ const searchAuthors = async (req, res) => {
       `%${req.body.search_term}%`,
       "last_name"
     );
-    // console.log(result);
     result.map((item) => {
       selectedData.push({
         id: item.id,
@@ -191,7 +185,6 @@ const getUserComments = async (req, res) => {
       "projects.id",
       { user_id: data.id }
     );
-    // console.log(result);
     return res.send(result);
   } catch (error) {
     console.log(error);
@@ -206,7 +199,6 @@ const deleteComment = async (req, res) => {
     const result = await _deleteDb("user_comments", {
       comment_id: req.body.comment_id,
     });
-    // console.log(result);
     return res.send({ message: "deleted the comment" });
   } catch (error) {
     console.log(error);

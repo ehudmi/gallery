@@ -26,7 +26,7 @@ function AuthorProjects() {
         }),
       });
       const json = await response.json();
-      console.log(json);
+      // console.log(json);
       setProjects(json);
     } catch (error) {
       console.log(error);

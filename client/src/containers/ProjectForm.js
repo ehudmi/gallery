@@ -34,7 +34,7 @@ function ProjectForm() {
     });
     const json = await result.json();
     setCourseData(json);
-    console.log(json);
+    // console.log(json);
   };
 
   const getAuthorData = async () => {
@@ -46,7 +46,7 @@ function ProjectForm() {
     });
     const json = await result.json();
     setAuthorData(json);
-    console.log(json);
+    // console.log(json);
   };
 
   // function to submit project form
@@ -65,11 +65,9 @@ function ProjectForm() {
       }),
     });
     const projectAdd = await response.json();
-    console.log(projectAdd);
+    // console.log(projectAdd);
     setProjectId(projectAdd[0].project_id);
   };
-
-  // function to submit author form
 
   // function to add image data to the db using fileInfo from Uploadcare
 
@@ -77,14 +75,14 @@ function ProjectForm() {
     const data = new FormData();
     data.append("project_id", projectId);
     // data.append("project_id", 65);
-    console.log(files);
+    // console.log(files);
     if (files.length > 3) {
-      console.log("too many files");
+      alert("too many files");
     } else {
       for (const item of files) {
         data.append("images", item);
       }
-      console.log(data.get("project_id"));
+      // console.log(data.get("project_id"));
       const response = await fetch("/projects/add_images", {
         method: "POST",
         body: data,
@@ -151,7 +149,7 @@ function ProjectForm() {
                   ...prev,
                   { id: Number(e.target.value), name: dataset.display },
                 ]);
-                console.log(authors);
+                // console.log(authors);
               }}
             >
               <option hidden disabled value={0}>
@@ -166,14 +164,17 @@ function ProjectForm() {
                 />
               ))}
             </select>
-            <button type="submit" className="btn">
-              Submit
-            </button>
-            {authors.map((item, index) => (
+            <div className="btnContainer">
+              <button type="submit" className="btn">
+                Submit
+              </button>
+            </div>
+
+            {/* {authors.map((item, index) => (
               <p key={index} style={{ color: "red" }}>
                 hello {item.name}
               </p>
-            ))}
+            ))} */}
           </form>
           {!!validProjectId ? (
             <>

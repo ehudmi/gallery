@@ -1,64 +1,7 @@
 import React from "react";
 // import "./ImageModal.css";
 
-function ImageModal({
-  show,
-  closeModal,
-  findPrev,
-  findNext,
-  hasPrev,
-  hasNext,
-  src,
-}) {
-  // const handleKeyDown = (e) => {
-  //   if (e.keyCode === 27) closeModal();
-  //   if (e.keyCode === 37 && hasPrev) findPrev();
-  //   if (e.keyCode === 39 && hasNext) findNext();
-  // };
-
-  // if (!src) {
-  //   console.log("whut");
-  //   return null;
-  // }
-  // return (
-  //   <div>
-  //     <div className="modal-overlay" onClick={closeModal}></div>
-  //     <div className="modal">
-  //       <div className="modal-body">
-  //         <a
-  //           href="#"
-  //           className="modal-close"
-  //           onClick={closeModal}
-  //           onKeyDown={handleKeyDown}
-  //         >
-  //           &times;
-  //         </a>
-  //         {hasPrev && (
-  //           <a
-  //             href="#"
-  //             className="modal-prev"
-  //             onClick={findPrev}
-  //             onKeyDown={handleKeyDown}
-  //           >
-  //             &lsaquo;
-  //           </a>
-  //         )}
-  //         {hasNext && (
-  //           <a
-  //             href="#"
-  //             className="modal-next"
-  //             onClick={findNext}
-  //             onKeyDown={handleKeyDown}
-  //           >
-  //             &rsaquo;
-  //           </a>
-  //         )}
-  //         <img src={src} />
-  //       </div>
-  //     </div>
-  //   </div>
-  // );
-
+function ImageModal({ show, closeModal, src }) {
   return (
     <>
       <div className={show ? "modal" : "hide"}>
