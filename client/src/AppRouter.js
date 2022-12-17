@@ -15,7 +15,7 @@ import ProjectForm from "./containers/ProjectForm";
 import Layout from "./components/Layout";
 import PersistLogin from "./components/PersistLogin";
 import ProjectDetails from "./containers/ProjectDetails";
-import ProjectComments from "./containers/ProjectComments";
+// import ProjectComments from "./containers/ProjectComments";
 import UserComments from "./containers/UserComments";
 import Search from "./components/Search";
 import AuthorProjects from "./containers/AuthorProjects";
@@ -51,7 +51,6 @@ function AppRouter() {
               <Route path="user_comments" element={<UserComments />} />
               <Route path="projects_list" element={<ProjectsList />} />
               <Route path="project_details" element={<ProjectDetails />} />
-              <Route path="project_comments" element={<ProjectComments />} />
               <Route path="author_projects" element={<AuthorProjects />} />
             </Route>
 

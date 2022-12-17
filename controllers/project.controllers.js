@@ -115,7 +115,6 @@ const getAuthorProjects = async (req, res) => {
 const getMyProjects = async (req, res) => {
   const selectedData = [];
   const data = jwt.verify(req.cookies.accessToken, config.secret);
-  console.log(data.id);
   try {
     const result = await _get3TabJoinData(
       "project_authors",
@@ -129,7 +128,6 @@ const getMyProjects = async (req, res) => {
       req.body.limit,
       req.body.offset
     );
-    // console.log(result);
     result.map((item) => {
       selectedData.push({
         user_id: item.user_id,
@@ -226,20 +224,20 @@ const getCourseList = async (req, res) => {
 // function to insert new project into DB
 
 const addProject = async (req, res) => {
-  const { project_name, course_id, description } = req.body;
-  const data = jwt.verify(req.cookies.accessToken, config.secret);
+  const { project_name, course_id, description, authors } = req.body;
   try {
     const result = await _insertDb("projects", {
       project_name: project_name,
       course_id: course_id,
       description: description,
     });
-    // console.log(result[0].id);
     if (result.length > 0) {
-      const addProjAuth = await _insertDb("project_authors", {
-        project_id: result[0].id,
-        user_id: data.id,
+      const dataToInsert = [];
+      authors.forEach((item) => {
+        dataToInsert.push({ project_id: result[0].id, user_id: item });
       });
+
+      const addProjAuth = await _insertDb("project_authors", dataToInsert);
       console.log(addProjAuth);
       return res.send(addProjAuth);
     } else {
@@ -382,6 +380,7 @@ const addComment = async (req, res) => {
       user_comment: req.body.user_comment,
     });
     // console.log(result);
+    return res.send({ message: "added the comment" });
   } catch (error) {
     console.log(error);
     res.status(404).json({ error: "couldn't add comment" });

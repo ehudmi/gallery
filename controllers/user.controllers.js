@@ -1,5 +1,6 @@
 const {
   _readDb,
+  _readDbWhereNot,
   _searchAuthorsDb,
   _insertDb,
   _get2TabJoinData,
@@ -132,13 +133,15 @@ const getUsers = async (req, res) => {
 //  function to return list of authors
 
 const getAuthors = async (req, res) => {
+  const data = jwt.verify(req.cookies.accessToken, config.secret);
   try {
-    const result = await _readDb(
+    const result = await _readDbWhereNot(
       "users",
       ["id", "first_name", "last_name", "email", "role"],
+      { id: data.id },
       { role: "author" }
     );
-    console.log(result);
+    // console.log(result);
     return res.json(result);
   } catch (e) {
     res.json({ msg: "not" });

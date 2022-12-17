@@ -35,7 +35,7 @@ function ProjectComments({ project_id }) {
 
   const deleteComment = async (id) => {
     try {
-      console.log(id);
+      // console.log(id);
       const response = await fetch("/projects/delete_comment", {
         method: "POST",
         headers: {
@@ -53,7 +53,7 @@ function ProjectComments({ project_id }) {
     }
   };
 
-  const handleSubmit = async () => {
+  const addComment = async () => {
     try {
       const response = await fetch("/projects/add_comment", {
         method: "POST",
@@ -68,7 +68,8 @@ function ProjectComments({ project_id }) {
       });
       const json = await response.json();
       console.log(json);
-      setComments((oldComments) => [...oldComments, json]);
+      // setComments(json);
+      getProjectComments();
     } catch (error) {
       console.log(error);
     }
@@ -107,8 +108,8 @@ function ProjectComments({ project_id }) {
             </div>
           );
         })}
-        <form>
-          <h1>Add Comment</h1>
+        <div>
+          <label htmlFor="new_comment">Add Comment</label>
           <textarea
             id="new_comment"
             placeholder="New Comment"
@@ -116,14 +117,16 @@ function ProjectComments({ project_id }) {
             cols="50"
             onChange={(e) => setNewComment(e.target.value)}
           ></textarea>
-          <button onClick={handleSubmit}>Submit</button>
-        </form>
+          <button className="btn" onClick={addComment}>
+            Add Comment
+          </button>
+        </div>
       </div>
     );
   } else {
     return (
-      <form>
-        e<h1>Add Comment</h1>
+      <div>
+        <label htmlFor="new_comment">Add Comment</label>
         <textarea
           id="new_comment"
           placeholder="New Comment"
@@ -131,8 +134,8 @@ function ProjectComments({ project_id }) {
           cols="50"
           onChange={(e) => setNewComment(e.target.value)}
         ></textarea>
-        <button onClick={handleSubmit}>Submit</button>
-      </form>
+        <button onClick={addComment}>Add Comment</button>
+      </div>
     );
   }
 }

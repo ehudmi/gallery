@@ -20,6 +20,7 @@
 }
 
 input,
+select,
 label {
   margin-top: 17px;
   /* width: 200px; */
@@ -31,6 +32,7 @@ label {
 }
 
 input,
+select,
 textarea,
 label {
   font-family: "Nunito", sans-serif;
@@ -43,7 +45,8 @@ label {
   grid-column: 1/2;
 }
 
-input {
+input,
+select {
   grid-column: 2/3;
 }
 

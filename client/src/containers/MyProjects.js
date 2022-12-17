@@ -11,7 +11,7 @@ function MyProjects() {
   // retrieve list of projects authored by current user
 
   const getMyProjects = async (limit, offset) => {
-    console.log(limit, offset);
+    // console.log(limit, offset);
     try {
       const response = await fetch("/projects/my_projects", {
         method: "POST",
@@ -24,7 +24,7 @@ function MyProjects() {
         }),
       });
       const json = await response.json();
-      console.log(json);
+      // console.log(json);
       setProjects(json);
       // !json.error ? setProjects(json) : setProjects(undefined);
     } catch (error) {
@@ -88,8 +88,6 @@ function MyProjects() {
             Next
           </button>
         </div>
-
-        {/* <button onClick={() => navigate("/project_form")}>Add Project</button> */}
       </div>
     );
   } else {

@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import ImageModal from "./ImageModal";
 import ProjectComments from "./ProjectComments";
+import { faTimes } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styles from "../styles/ProjectDetails.module.css";
 
 function ProjectDetails() {
@@ -182,10 +184,15 @@ function ProjectDetails() {
                       {projectDetails.findIndex((item) => {
                         return item.author_id === authState.userId;
                       }) >= 0 ? (
-                        <button onClick={() => deleteImage(item.uuid)}>
-                          Delete Image
-                        </button>
-                      ) : null}
+                        <FontAwesomeIcon
+                          icon={faTimes}
+                          className="invalid"
+                          onClick={() => deleteImage(item.uuid)}
+                        />
+                      ) : // <button onClick={() => deleteImage(item.uuid)}>
+                      //   Delete Image
+                      // </button>
+                      null}
                     </div>
                   );
                 })
@@ -207,6 +214,7 @@ function ProjectDetails() {
               <label htmlFor="addImages">
                 <button
                   component="span"
+                  className="btn"
                   onClick={() => filesRef.current.click()}
                 >
                   <span>Select Images</span>
@@ -224,7 +232,9 @@ function ProjectDetails() {
                   setFiles(e.target.files);
                 }}
               />
-              <button onClick={uploadFiles}>Upload Files</button>
+              <button className="btn" onClick={uploadFiles}>
+                Upload Files
+              </button>
             </div>
           ) : null}
           {projectDetails.length > 0

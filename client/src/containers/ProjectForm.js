@@ -1,15 +1,20 @@
 import { useState, useEffect, useRef } from "react";
 import styles from "../styles/FormComponents.module.css";
-// import useAuth from "../hooks/useAuth";
+import useAuth from "../hooks/useAuth";
 
 function ProjectForm() {
-  // const { authState } = useAuth();
+  const { authState } = useAuth();
 
   const [courseData, setCourseData] = useState();
   const [courseId, setCourseId] = useState("");
 
   const [authorData, setAuthorData] = useState();
-  const [otherAuthor, setOtherAuthor] = useState("");
+  const [authors, setAuthors] = useState([
+    {
+      id: authState.userId,
+      name: `${authState.first_name} ${authState.last_name}`,
+    },
+  ]);
 
   const [projectName, setProjectName] = useState("");
   const [projectId, setProjectId] = useState("");
@@ -56,6 +61,7 @@ function ProjectForm() {
         project_name: projectName,
         course_id: courseId,
         description: description,
+        authors: authors.map((item) => item.id),
       }),
     });
     const projectAdd = await response.json();
@@ -64,22 +70,6 @@ function ProjectForm() {
   };
 
   // function to submit author form
-
-  const submitAuthor = async (event) => {
-    event.preventDefault();
-    const response = await fetch("/projects/add_author", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        project_id: projectId,
-        user_id: otherAuthor,
-      }),
-    });
-    const json = await response.json();
-    console.log(json);
-  };
 
   // function to add image data to the db using fileInfo from Uploadcare
 
@@ -113,7 +103,7 @@ function ProjectForm() {
     projectId !== "" ? setValidProjectId(true) : setValidProjectId(false);
   }, [projectId]);
 
-  if (courseData !== undefined) {
+  if (courseData !== undefined && authorData !== undefined) {
     return (
       <div>
         <div className={styles.FormContainer}>
@@ -126,21 +116,20 @@ function ProjectForm() {
               onChange={(e) => setProjectName(e.target.value)}
             />
             <label htmlFor="course_id">Course</label>
-            <input
-              list="courses"
+            <select
               id="course_id"
-              placeholder="Course"
-              onChange={(e) => setCourseId(e.target.value)}
-            />
-            <datalist id="courses">
+              defaultValue={0}
+              onChange={(e) => {
+                setCourseId(e.target.value);
+              }}
+            >
+              <option hidden disabled value={0}>
+                -- select an option --
+              </option>
               {courseData.map((item, index) => (
-                <option
-                  key={index}
-                  value={item.id}
-                  label={`${item.name} ${item.start_date}`}
-                />
+                <option key={index} value={item.id} label={`${item.name}`} />
               ))}
-            </datalist>
+            </select>
             <label htmlFor="description">Description</label>
             <textarea
               id="description"
@@ -149,14 +138,48 @@ function ProjectForm() {
               cols="50"
               onChange={(e) => setDescription(e.target.value)}
             ></textarea>
-            <button type="submit" className={styles.FormSubmitBtn}>
+
+            <label htmlFor="add_author">Additional Author</label>
+            <select
+              id="add_author"
+              defaultValue={0}
+              onChange={(e) => {
+                let idx = e.target.selectedIndex;
+                let dataset = e.target.options[idx].dataset;
+                console.log(dataset.display);
+                setAuthors((prev) => [
+                  ...prev,
+                  { id: Number(e.target.value), name: dataset.display },
+                ]);
+                console.log(authors);
+              }}
+            >
+              <option hidden disabled value={0}>
+                -- select an option --
+              </option>
+              {authorData.map((item, index) => (
+                <option
+                  key={index}
+                  value={item.id}
+                  data-display={`${item.first_name} ${item.last_name}`}
+                  label={`${item.first_name} ${item.last_name}`}
+                />
+              ))}
+            </select>
+            <button type="submit" className="btn">
               Submit
             </button>
+            {authors.map((item, index) => (
+              <p key={index} style={{ color: "red" }}>
+                hello {item.name}
+              </p>
+            ))}
           </form>
           {!!validProjectId ? (
             <>
               <label htmlFor="addImages">
                 <button
+                  className="btn"
                   component="span"
                   onClick={() => filesRef.current.click()}
                 >
@@ -168,7 +191,6 @@ function ProjectForm() {
                 accept=".jpg, .jpeg, .png, .gif"
                 style={{ display: "none" }}
                 id="addImages"
-                // name="images"
                 multiple
                 type="file"
                 onChange={(e) => {
@@ -179,31 +201,6 @@ function ProjectForm() {
             </>
           ) : null}
         </div>
-        {authorData !== undefined ? (
-          <div className={styles.FormContainer}>
-            <form onSubmit={submitAuthor} className={styles.ActiveForm}>
-              <label htmlFor="add_author">Authors</label>
-              <input
-                list="authors"
-                id="add_author"
-                placeholder="Author"
-                onChange={(e) => setOtherAuthor(e.target.value)}
-              />
-              <datalist id="authors">
-                {authorData.map((item, index) => (
-                  <option
-                    key={index}
-                    value={item.id}
-                    label={`${item.first_name} ${item.last_name}`}
-                  />
-                ))}
-              </datalist>
-              <button type="submit" className={styles.FormSubmitBtn}>
-                Submit
-              </button>
-            </form>
-          </div>
-        ) : null}
       </div>
     );
   } else {

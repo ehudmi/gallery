@@ -68,13 +68,13 @@ function UserComments() {
                   }}
                   className={styles.projectName}
                 >
-                  {" "}
                   {item.project_name}
                 </span>
               </p>
               {
                 <FontAwesomeIcon
                   icon={faTimes}
+                  className="invalid"
                   onClick={() => deleteComment(item.comment_id)}
                 />
               }

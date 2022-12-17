@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import styles from "../styles/FormComponents.module.css";
 
 function Search() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -40,9 +41,9 @@ function Search() {
   };
 
   return (
-    <>
-      <h3>search</h3>
-      <form onSubmit={handleSubmit}>
+    <div className={styles.FormContainer}>
+      <h1>search</h1>
+      <form className={styles.ActiveForm} onSubmit={handleSubmit}>
         <label htmlFor="search_term">Search Term</label>
         <input
           type={"text"}
@@ -72,7 +73,7 @@ function Search() {
             setSearchField(e.target.value);
           }}
         />
-        <button>Search</button>
+        <button className="btn">Search</button>
       </form>
       {resultList.length > 0
         ? resultList.map((item, index) => {
@@ -94,7 +95,7 @@ function Search() {
             );
           })
         : null}
-    </>
+    </div>
   );
 }
 

@@ -23,7 +23,7 @@ function ProjectsList() {
         }),
       });
       const json = await response.json();
-      console.log(json);
+      // console.log(json);
       setProjects(json);
     } catch (error) {
       console.log(error);
@@ -37,7 +37,7 @@ function ProjectsList() {
   }, []);
 
   if (projects !== undefined) {
-    console.log(projects);
+    // console.log(projects);
     return (
       <div className={styles.listContainer}>
         <h1 className={styles.listHeader}>List of Projects</h1>
@@ -49,7 +49,7 @@ function ProjectsList() {
                 onClick={() => {
                   sessionStorage.setItem("project_id", item.id);
                   // sessionStorage.setItem("author_id", item.user_id);
-                  console.log(item.id);
+                  // console.log(item.id);
                   return navigate("/project_details");
                 }}
               >
