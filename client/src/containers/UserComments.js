@@ -3,18 +3,24 @@ import { useNavigate } from "react-router-dom";
 import styles from "../styles/Comments.module.css";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import useAuth from "../hooks/useAuth";
+import useAuth from "../hooks/useAuth";
 
 function UserComments() {
-  // const { authState } = useAuth();
+  const { authState } = useAuth();
 
   const [comments, setComments] = useState([]);
   const navigate = useNavigate();
 
-  const getUserComments = async () => {
+  const getUserComments = async (id) => {
     try {
       const response = await fetch("/users/user_comments", {
-        method: "GET",
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id: id,
+        }),
       });
       const json = await response.json();
       //   console.log(json);
@@ -38,14 +44,24 @@ function UserComments() {
       });
       const json = await response.json();
       console.log(json);
-      getUserComments();
+      // getUserComments();
+      if (authState.role === "admin") {
+        getUserComments(sessionStorage.getItem("admin_user_id"));
+      } else {
+        getUserComments(authState.userId);
+      }
     } catch (error) {
       console.log(error);
     }
   };
+
   useEffect(
     () => {
-      getUserComments();
+      if (authState.role === "admin") {
+        getUserComments(sessionStorage.getItem("admin_user_id"));
+      } else {
+        getUserComments(authState.userId);
+      }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
@@ -84,7 +100,7 @@ function UserComments() {
       </div>
     );
   } else {
-    return <div>Loading</div>;
+    return <h3>You have no comments yet</h3>;
   }
 }
 

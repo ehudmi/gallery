@@ -1,21 +1,20 @@
-import { useEffect, useState, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "../styles/ListContainer.module.css";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-function MyProjects() {
-  const [projects, setProjects] = useState();
-  const countProj = useRef(0);
+function AdminUsers() {
+  const [users, setUsers] = useState();
+  const countUsers = useRef(0);
 
   const navigate = useNavigate();
 
-  // retrieve list of projects authored by current user
+  // retrieve list of users to display
 
-  const getMyProjects = async (limit, offset) => {
-    // console.log(limit, offset);
+  const getUserList = async (limit, offset) => {
     try {
-      const response = await fetch("/projects/my_projects", {
+      const response = await fetch("/users/user_list", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -27,8 +26,7 @@ function MyProjects() {
       });
       const json = await response.json();
       // console.log(json);
-      setProjects(json);
-      // !json.error ? setProjects(json) : setProjects(undefined);
+      setUsers(json);
     } catch (error) {
       console.log(error);
     }
@@ -36,10 +34,10 @@ function MyProjects() {
 
   // delete user from db
 
-  const deleteProject = async (id) => {
+  const deleteUser = async (id) => {
     try {
       //   console.log(id);
-      const response = await fetch("/projects/delete_project", {
+      const response = await fetch("/users/delete_user", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -50,41 +48,39 @@ function MyProjects() {
       });
       const json = await response.json();
       console.log(json);
-      getMyProjects(3, 0);
+      getUserList(3, 0);
     } catch (error) {
       console.log(error);
     }
   };
 
   useEffect(() => {
-    getMyProjects(3, 0);
+    getUserList(3, 0);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (projects !== undefined) {
-    // console.log(projects);
+  if (users !== undefined) {
+    // console.log(users);
     return (
       <div className={styles.listContainer}>
-        <h1 className={styles.listHeader}>My Projects</h1>
-        {projects.map((item, index) => {
+        <h1 className={styles.listHeader}>List of users</h1>
+        {users.map((item, index) => {
           return (
             <div key={index}>
               <h3
                 className={styles.listItem}
                 onClick={() => {
-                  sessionStorage.setItem("project_id", item.id);
-                  sessionStorage.setItem("author_id", item.user_id);
-                  // console.log(item.user_id);
-                  return navigate("/project_details");
+                  sessionStorage.setItem("admin_user_id", item.id);
+                  return navigate("/user_comments");
                 }}
               >
-                Project Name {item.project_name}
+                User Name: {item.first_name} {item.last_name}
               </h3>
               {
                 <FontAwesomeIcon
                   icon={faTimes}
                   className="invalid"
-                  onClick={() => deleteProject(item.id)}
+                  onClick={() => deleteUser(item.id)}
                 />
               }
             </div>
@@ -93,26 +89,27 @@ function MyProjects() {
         <div className={styles.btnContainer}>
           <button
             className={`${styles.btn} ${styles.prevButton} ${
-              countProj.current <= 0 ? "btnHidden" : "btnVisible"
+              countUsers.current <= 0 ? "btnHidden" : "btnVisible"
             }`}
             id="previous"
             name="previous"
             onClick={() => {
-              countProj.current = countProj.current - 3;
-              getMyProjects(3, countProj.current);
+              countUsers.current = countUsers.current - 3;
+              getUserList(3, countUsers.current);
             }}
           >
             Previous
           </button>
           <button
             className={`${styles.btn} ${styles.nextButton} ${
-              projects.length === 0 ? "btnHidden" : "btnVisible"
+              users.length === 0 ? "btnHidden" : "btnVisible"
             }`}
+            // visibility={users.length === 0 ? "visible" : "hidden"}
             id="next"
             name="next"
             onClick={() => {
-              countProj.current = countProj.current + 3;
-              getMyProjects(3, countProj.current);
+              countUsers.current = countUsers.current + 3;
+              getUserList(3, countUsers.current);
             }}
           >
             Next
@@ -125,4 +122,4 @@ function MyProjects() {
   }
 }
 
-export default MyProjects;
+export default AdminUsers;

@@ -87,7 +87,10 @@ function ProjectForm() {
         method: "POST",
         body: data,
       });
-      console.log(await response.json());
+      const success = await response.json();
+      if (!!success.message) {
+        alert("Project Added");
+      }
     }
   };
 

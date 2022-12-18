@@ -1,5 +1,6 @@
 const {
   _readDb,
+  _readDb_Limited,
   _readDbWhereNot,
   _searchAuthorsDb,
   _insertDb,
@@ -111,18 +112,32 @@ const logout = (req, res) => {
 // test function to return list of users - can be used by admin
 
 const getUsers = async (req, res) => {
+  // console.log(req.body.limit, req.body.offset);
   try {
-    const users = await _readDb("users", [
-      "id",
-      "first_name",
-      "last_name",
-      "email",
-      "password",
-      "role",
-    ]);
-    res.json(users);
-  } catch (e) {
-    res.json({ msg: "not" });
+    const users = await _readDb_Limited(
+      "users",
+      ["id", "first_name", "last_name", "email", "role", "birth_date", "about"],
+      req.body.limit,
+      req.body.offset
+    );
+    return res.send(users);
+  } catch (error) {
+    console.log(error);
+    res.status(404).json({ error: "couldn't read users" });
+  }
+};
+
+// function to delete user - can be used by admin
+
+const deleteUser = async (req, res) => {
+  try {
+    const result = await _deleteDb("users", {
+      id: req.body.id,
+    });
+    return res.send({ message: "deleted the user" });
+  } catch (error) {
+    console.log(error);
+    res.status(404).json({ error: "couldn't delete user" });
   }
 };
 
@@ -176,14 +191,14 @@ const searchAuthors = async (req, res) => {
 // function to retrieve list of comments authored by user
 
 const getUserComments = async (req, res) => {
-  const data = jwt.verify(req.cookies.accessToken, config.secret);
+  // const data = jwt.verify(req.cookies.accessToken, config.secret);
   try {
     const result = await _get2TabJoinData(
       "user_comments",
       "projects",
       "user_comments.project_id",
       "projects.id",
-      { user_id: data.id }
+      { user_id: req.body.id }
     );
     return res.send(result);
   } catch (error) {
@@ -211,6 +226,7 @@ module.exports = {
   login,
   logout,
   getUsers,
+  deleteUser,
   getAuthors,
   searchAuthors,
   getUserComments,

@@ -1,8 +1,13 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import useAuth from "../hooks/useAuth";
 import styles from "../styles/ListContainer.module.css";
+import { faTimes } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 function ProjectsList() {
+  const { authState } = useAuth();
+
   const [projects, setProjects] = useState();
   const countProj = useRef(0);
 
@@ -25,6 +30,26 @@ function ProjectsList() {
       const json = await response.json();
       // console.log(json);
       setProjects(json);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const deleteProject = async (id) => {
+    try {
+      //   console.log(id);
+      const response = await fetch("/projects/delete_project", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id: id,
+        }),
+      });
+      const json = await response.json();
+      console.log(json);
+      getProjectsList(3, 0);
     } catch (error) {
       console.log(error);
     }
@@ -55,6 +80,11 @@ function ProjectsList() {
               >
                 Project Name: {item.project_name}
               </h3>
+              <FontAwesomeIcon
+                icon={faTimes}
+                className={authState.role === "admin" ? "invalid" : "hide"}
+                onClick={() => deleteProject(item.id)}
+              />
             </div>
           );
         })}

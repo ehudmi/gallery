@@ -21,6 +21,7 @@ import Search from "./components/Search";
 import AuthorProjects from "./containers/AuthorProjects";
 import ProjectsList from "./containers/ProjectsList";
 import Logout from "./components/Logout";
+import AdminUsers from "./containers/AdminUsers";
 
 // Define protected route wrapping routes by authentication and role based authorization
 
@@ -66,6 +67,19 @@ function AppRouter() {
             >
               <Route path="my_projects" element={<MyProjects />} />
               <Route path="project_form" element={<ProjectForm />} />
+            </Route>
+
+            <Route
+              element={
+                <ProtectedRoute
+                  redirectPath="/home"
+                  isAllowed={
+                    !!authState.userId && !!authState.role.includes("admin")
+                  }
+                />
+              }
+            >
+              <Route path="user_list" element={<AdminUsers />} />
             </Route>
           </Route>
         </Route>

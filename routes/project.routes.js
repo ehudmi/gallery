@@ -9,6 +9,7 @@ const {
   getProjectDetails,
   getCourseList,
   addProject,
+  deleteProject,
   addImages,
   getProjectImages,
   getProjectComments,
@@ -53,6 +54,21 @@ router.post(
   [authJwt.isAuthor],
   [handleAPI.delete],
   deleteImages
+);
+router.post(
+  "/delete_project",
+  [authJwt.isAuthor],
+  [handleAPI.deleteBatch],
+  deleteProject
+);
+
+// routes available to Admin
+
+router.post(
+  "/admin_delete_project",
+  [authJwt.isAdmin],
+  [handleAPI.deleteBatch],
+  deleteProject
 );
 
 module.exports = router;

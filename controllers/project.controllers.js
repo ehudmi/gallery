@@ -234,6 +234,20 @@ const addProject = async (req, res) => {
   }
 };
 
+// function to delete project from DB
+
+const deleteProject = async (req, res) => {
+  try {
+    const result = await _deleteDb("projects", {
+      id: req.body.id,
+    });
+    return res.send({ message: "deleted the project" });
+  } catch (error) {
+    console.log(error);
+    res.status(404).json({ error: "couldn't delete project" });
+  }
+};
+
 // function to add new images to DB
 
 const addImages = async (req, res) => {
@@ -371,6 +385,7 @@ module.exports = {
   getProjectDetails,
   getCourseList,
   addProject,
+  deleteProject,
   addImages,
   getProjectImages,
   getProjectComments,
