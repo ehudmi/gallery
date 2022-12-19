@@ -36,13 +36,13 @@ const deleteFromAPI = async (req, res, next) => {
 };
 
 const getProjectList = async (req, res, next) => {
-  const user_id = req.body.id;
+  const user_id = req.body.user_id;
   try {
     const projectList = await _readDb("project_authors", ["project_id"], {
       user_id: user_id,
     });
     const list = projectList.map((item) => item.project_id);
-    req.body.id = list;
+    req.body.project_id = list;
     console.log(list);
   } catch (error) {
     console.log(error);
@@ -52,8 +52,8 @@ const getProjectList = async (req, res, next) => {
 };
 
 const getImageList = async (req, res, next) => {
-  console.log(req.body.id);
-  const project_id = req.body.id;
+  console.log(req.body.project_id);
+  const project_id = req.body.project_id;
   try {
     const picList = await _readDbList(
       "project_images",
@@ -86,8 +86,8 @@ const deleteBatchFromAPI = async (req, res, next) => {
     // urlList:list,
     body: list,
   });
-  // const json = await response.json();
-  // console.log(json);
+  const json = await response.json();
+  console.log(json);
   next();
 };
 

@@ -43,7 +43,7 @@ function AdminUsers() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          id: id,
+          user_id: id,
         }),
       });
       const json = await response.json();
@@ -54,25 +54,25 @@ function AdminUsers() {
     }
   };
 
-  const testDelete = async (id) => {
-    try {
-      //   console.log(id);
-      const response = await fetch("/users/test_delete", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          id: id,
-        }),
-      });
-      const json = await response.json();
-      console.log(json);
-      getUserList(3, 0);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  // const testDelete = async (id) => {
+  //   try {
+  //     //   console.log(id);
+  //     const response = await fetch("/users/test_delete", {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify({
+  //         id: id,
+  //       }),
+  //     });
+  //     const json = await response.json();
+  //     console.log(json);
+  //     getUserList(3, 0);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   useEffect(() => {
     getUserList(3, 0);
@@ -103,7 +103,7 @@ function AdminUsers() {
                   onClick={() => deleteUser(item.id)}
                 />
               }
-              <button onClick={() => testDelete(item.id)}>Test Delete</button>
+              {/* <button onClick={() => testDelete(item.id)}>Test Delete</button> */}
             </div>
           );
         })}

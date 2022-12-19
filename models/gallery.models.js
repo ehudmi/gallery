@@ -20,6 +20,10 @@ const _readDb_Limited = (table, data, limit, offset) => {
   return db(table).select(data).limit(limit).offset(offset);
 };
 
+const _readDb_LimitedWhereNot = (table, data, criteria1, limit, offset) => {
+  return db(table).select(data).whereNot(criteria1).limit(limit).offset(offset);
+};
+
 const _countRows = (table, data, criteria) => {
   return db(table).count(data).where(criteria);
 };
@@ -83,6 +87,7 @@ module.exports = {
   _readDbWhereNot,
   _readDbNotNull,
   _readDb_Limited,
+  _readDb_LimitedWhereNot,
   _countRows,
   _searchDb,
   _searchAuthorsDb,

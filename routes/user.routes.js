@@ -39,6 +39,7 @@ router.post(
   "/delete_user",
   [authJwt.isAdmin],
   [handleAPI.getProjects, handleAPI.getImages],
+  [handleAPI.deleteBatch],
   deleteUser
 );
 router.post(

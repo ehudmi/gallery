@@ -1,6 +1,7 @@
 const {
   _readDb,
   _readDb_Limited,
+  _readDb_LimitedWhereNot,
   _readDbWhereNot,
   _searchAuthorsDb,
   _insertDb,
@@ -112,11 +113,13 @@ const logout = (req, res) => {
 // test function to return list of users - can be used by admin
 
 const getUsers = async (req, res) => {
+  const data = jwt.verify(req.cookies.accessToken, process.env.JWT_SECRET);
   // console.log(req.body.limit, req.body.offset);
   try {
-    const users = await _readDb_Limited(
+    const users = await _readDb_LimitedWhereNot(
       "users",
       ["id", "first_name", "last_name", "email", "role", "birth_date", "about"],
+      { id: data.id },
       req.body.limit,
       req.body.offset
     );
@@ -132,7 +135,7 @@ const getUsers = async (req, res) => {
 const deleteUser = async (req, res) => {
   try {
     const result = await _deleteDb("users", {
-      id: req.body.id,
+      id: req.body.user_id,
     });
     return res.send({ message: "deleted the user" });
   } catch (error) {
