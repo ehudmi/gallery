@@ -5,7 +5,7 @@ import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 function AdminUsers() {
-  const [users, setUsers] = useState();
+  const [users, setUsers] = useState([]);
   const countUsers = useRef(0);
 
   const navigate = useNavigate();
@@ -54,12 +54,32 @@ function AdminUsers() {
     }
   };
 
+  const testDelete = async (id) => {
+    try {
+      //   console.log(id);
+      const response = await fetch("/users/test_delete", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id: id,
+        }),
+      });
+      const json = await response.json();
+      console.log(json);
+      getUserList(3, 0);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     getUserList(3, 0);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (users !== undefined) {
+  if (users.length > 0) {
     // console.log(users);
     return (
       <div className={styles.listContainer}>
@@ -83,6 +103,7 @@ function AdminUsers() {
                   onClick={() => deleteUser(item.id)}
                 />
               }
+              <button onClick={() => testDelete(item.id)}>Test Delete</button>
             </div>
           );
         })}

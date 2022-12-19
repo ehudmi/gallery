@@ -4,6 +4,10 @@ const _readDb = (table, data, criteria) => {
   return db(table).select(data).where(criteria);
 };
 
+const _readDbList = (table, data, column, array) => {
+  return db(table).select(data).whereIn(column, array);
+};
+
 const _readDbWhereNot = (table, data, criteria1, criteria2) => {
   return db(table).select(data).whereNot(criteria1).andWhere(criteria2);
 };
@@ -75,6 +79,7 @@ const _get3TabJoinData = (
 
 module.exports = {
   _readDb,
+  _readDbList,
   _readDbWhereNot,
   _readDbNotNull,
   _readDb_Limited,

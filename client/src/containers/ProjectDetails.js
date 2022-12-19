@@ -12,7 +12,7 @@ function ProjectDetails() {
 
   const navigate = useNavigate();
 
-  const [projectDetails, setProjectDetails] = useState();
+  const [projectDetails, setProjectDetails] = useState([]);
 
   const [images, setImages] = useState([]);
   const countImages = useRef(0);
@@ -143,31 +143,29 @@ function ProjectDetails() {
 
   if (authState.message === "failed") {
     window.location.href = "/welcome";
-  } else if (projectDetails !== undefined) {
+  } else if (projectDetails.length > 0) {
     return (
       <>
-        {projectDetails.length > 0
-          ? projectDetails.map((item, index) => {
-              return (
-                <div className={styles.details} key={index}>
-                  <h3 className={styles.projectTitle}>
-                    Project {sessionStorage.getItem("project_id")} -{" "}
-                    {item.project_name}
-                  </h3>
-                  <h3>Description - {item.description}</h3>
-                  <h3
-                    className={styles.listItem}
-                    onClick={() => {
-                      sessionStorage.setItem("author_id", item.author_id);
-                      return navigate("/author_projects");
-                    }}
-                  >
-                    {item.first_name} {item.last_name}
-                  </h3>
-                </div>
-              );
-            })
-          : null}
+        {projectDetails.map((item, index) => {
+          return (
+            <div className={styles.details} key={index}>
+              <h3 className={styles.projectTitle}>
+                Project {sessionStorage.getItem("project_id")} -{" "}
+                {item.project_name}
+              </h3>
+              <h3>Description - {item.description}</h3>
+              <h3
+                className={styles.listItem}
+                onClick={() => {
+                  sessionStorage.setItem("author_id", item.author_id);
+                  return navigate("/author_projects");
+                }}
+              >
+                {item.first_name} {item.last_name}
+              </h3>
+            </div>
+          );
+        })}
         <div className={styles.masterContainer}>
           <div className={styles.picContainer}>
             {images.length > 0
@@ -262,7 +260,7 @@ function ProjectDetails() {
         </div>
       </>
     );
-  } else if (projectDetails === null) {
+  } else if (projectDetails.length === 0) {
     return (
       <ProjectComments
         className={styles.commentsContainer}

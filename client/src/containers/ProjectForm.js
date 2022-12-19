@@ -5,10 +5,10 @@ import useAuth from "../hooks/useAuth";
 function ProjectForm() {
   const { authState } = useAuth();
 
-  const [courseData, setCourseData] = useState();
+  const [courseData, setCourseData] = useState([]);
   const [courseId, setCourseId] = useState("");
 
-  const [authorData, setAuthorData] = useState();
+  const [authorData, setAuthorData] = useState([]);
   const [authors, setAuthors] = useState([
     {
       id: authState.userId,
@@ -104,7 +104,7 @@ function ProjectForm() {
     projectId !== "" ? setValidProjectId(true) : setValidProjectId(false);
   }, [projectId]);
 
-  if (courseData !== undefined && authorData !== undefined) {
+  if (courseData.length > 0 && authorData.length > 0) {
     return (
       <div>
         <div className={styles.FormContainer}>

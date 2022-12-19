@@ -58,6 +58,7 @@ router.post(
 router.post(
   "/delete_project",
   [authJwt.isAuthor],
+  [handleAPI.getImages],
   [handleAPI.deleteBatch],
   deleteProject
 );
@@ -67,6 +68,7 @@ router.post(
 router.post(
   "/admin_delete_project",
   [authJwt.isAdmin],
+  [handleAPI.getImages],
   [handleAPI.deleteBatch],
   deleteProject
 );

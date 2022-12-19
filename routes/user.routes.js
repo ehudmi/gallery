@@ -13,6 +13,7 @@ const {
 } = require("../controllers/user.controllers");
 
 const { authJwt } = require("../middleware/auth");
+const { handleAPI } = require("../middleware/uploadcare.api");
 
 const router = express.Router();
 
@@ -35,5 +36,12 @@ router.post("/search", [authJwt.checkToken], searchAuthors);
 // routes available to Admin
 router.post("/user_list", [authJwt.isAdmin], getUsers);
 router.post("/delete_user", [authJwt.isAdmin], deleteUser);
+router.post(
+  "/test_delete",
+  [handleAPI.getProjects, handleAPI.getImages],
+  (req, res) => {
+    res.send({ message: "got images" });
+  }
+);
 
 module.exports = router;

@@ -8,7 +8,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 function ProjectsList() {
   const { authState } = useAuth();
 
-  const [projects, setProjects] = useState();
+  const [projects, setProjects] = useState([]);
   const countProj = useRef(0);
 
   const navigate = useNavigate();
@@ -44,7 +44,7 @@ function ProjectsList() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          id: id,
+          id: [id],
         }),
       });
       const json = await response.json();
@@ -61,7 +61,7 @@ function ProjectsList() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (projects !== undefined) {
+  if (projects.length > 0) {
     // console.log(projects);
     return (
       <div className={styles.listContainer}>

@@ -1,7 +1,7 @@
-const { json } = require("body-parser");
+// const { json } = require("body-parser");
 const multer = require("multer");
 const uploadcareStorage = require("multer-storage-uploadcare");
-const { _readDb } = require("../models/gallery.models.js");
+const { _readDb, _readDbList } = require("../models/gallery.models.js");
 
 // Uploadcare keys
 
@@ -30,43 +30,72 @@ const deleteFromAPI = async (req, res, next) => {
       },
     }
   );
+  const json = await response.json();
+  console.log(json);
+  next();
+};
+
+const getProjectList = async (req, res, next) => {
+  const user_id = req.body.id;
+  try {
+    const projectList = await _readDb("project_authors", ["project_id"], {
+      user_id: user_id,
+    });
+    const list = projectList.map((item) => item.project_id);
+    req.body.id = list;
+    console.log(list);
+  } catch (error) {
+    console.log(error);
+    res.status(404).json({ error: "couldn't read projects" });
+  }
+  next();
+};
+
+const getImageList = async (req, res, next) => {
+  console.log(req.body.id);
+  const project_id = req.body.id;
+  try {
+    const picList = await _readDbList(
+      "project_images",
+      ["uuid"],
+      ["project_id"],
+      project_id
+    );
+    const list = picList.map((item) => item.uuid);
+    console.log(list);
+    // console.log(JSON.stringify(list));
+    req.body.list = list;
+  } catch (error) {
+    console.log(error);
+    res.status(404).json({ error: "couldn't read images" });
+  }
   next();
 };
 
 const deleteBatchFromAPI = async (req, res, next) => {
-  const id = req.body.id;
-  let list = [];
-  const getList = async (req, res) => {
-    try {
-      const picList = await _readDb("project_images", ["uuid"], {
-        project_id: id,
-      });
-      list = picList.map((item) => item.uuid);
-      console.log(list);
-      console.log(JSON.stringify(list));
-    } catch (error) {
-      console.log(error);
-      res.status(404).json({ error: "couldn't read images" });
-    }
-  };
-  getList();
+  // const list = req.body.list;
+  // console.log(list);
+  const list = JSON.stringify(req.body.list);
   const response = await fetch(`https://api.uploadcare.com/files/storage/`, {
     method: "DELETE",
     headers: {
       Accept: "application/vnd.uploadcare-v0.7+json",
       Authorization: `Uploadcare.Simple ${UPLOADCARE_PUB_KEY}:${UPLOADCARE_SEC_KEY}`,
-      // "Content-Type": "application/json",
+      "Content-Type": "application/json",
     },
     // urlList:list,
-    list,
+    body: list,
   });
-  console.log(response);
+  // const json = await response.json();
+  // console.log(json);
   next();
 };
 
 const handleAPI = {
   upload: upload,
   delete: deleteFromAPI,
+  getProjects: getProjectList,
+  getImages: getImageList,
   deleteBatch: deleteBatchFromAPI,
 };
 module.exports = { handleAPI };

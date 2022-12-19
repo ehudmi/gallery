@@ -5,7 +5,7 @@ import styles from "../styles/ListContainer.module.css";
 
 function AuthorProjects() {
   // const { authState } = useAuth();
-  const [projects, setProjects] = useState();
+  const [projects, setProjects] = useState([]);
   const countProj = useRef(0);
 
   const navigate = useNavigate();
@@ -38,7 +38,7 @@ function AuthorProjects() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (projects !== undefined) {
+  if (projects.length > 0) {
     // console.log(projects);
     return (
       <div className={styles.listContainer}>
