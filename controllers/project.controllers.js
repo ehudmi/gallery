@@ -10,13 +10,13 @@ const {
   _get3TabJoinData,
 } = require("../models/gallery.models");
 const jwt = require("jsonwebtoken");
-const config = require("../config/auth.config.json");
+// const config = require("../config/auth.config.json");
 
 // function to verify token from front-end
 
 const authUser = async (req, res) => {
   const req_token = req.cookies.accessToken;
-  const data = jwt.verify(req_token, config.secret);
+  const data = jwt.verify(req_token, process.env.JWT_SECRET);
   try {
     const user = await _readDb("users", "*", {
       id: data.id,
@@ -107,7 +107,7 @@ const getAuthorProjects = async (req, res) => {
 
 const getMyProjects = async (req, res) => {
   const selectedData = [];
-  const data = jwt.verify(req.cookies.accessToken, config.secret);
+  const data = jwt.verify(req.cookies.accessToken, process.env.JWT_SECRET);
   try {
     const result = await _get3TabJoinData(
       "project_authors",

@@ -1,21 +1,21 @@
 const { _readDb } = require("../models/gallery.models");
 const jwt = require("jsonwebtoken");
-const config = require("../config/auth.config.json");
+// const config = require("../config/auth.config.json");
 
 const checkToken = async (req, res, next) => {
   const req_token = req.cookies.accessToken;
   if (!req_token) {
     return res.status(200).json({ message: "Please login" });
   }
-  if (!jwt.verify(req_token, config.secret)) {
-    return res.status(400).json({ message: "token verification failed" });
+  if (!jwt.verify(req_token, process.env.JWT_SECRET)) {
+    return res.status(401).json({ message: "token verification failed" });
   } else {
     next();
   }
 };
 
 const isAdmin = async (req, res, next) => {
-  const data = jwt.verify(req.cookies.accessToken, config.secret);
+  const data = jwt.verify(req.cookies.accessToken, process.env.JWT_SECRET);
   const user = await _readDb("users", "*", {
     id: data.id,
   });
@@ -31,7 +31,7 @@ const isAdmin = async (req, res, next) => {
 };
 
 const isAuthor = async (req, res, next) => {
-  const data = jwt.verify(req.cookies.accessToken, config.secret);
+  const data = jwt.verify(req.cookies.accessToken, process.env.JWT_SECRET);
   const user = await _readDb("users", "*", {
     id: data.id,
   });
@@ -47,7 +47,7 @@ const isAuthor = async (req, res, next) => {
 };
 
 const isUser = async (req, res, next) => {
-  const data = jwt.verify(req.cookies.accessToken, config.secret);
+  const data = jwt.verify(req.cookies.accessToken, process.env.JWT_SECRET);
   const user = await _readDb("users", "*", {
     id: data.id,
   });

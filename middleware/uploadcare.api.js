@@ -5,14 +5,14 @@ const { _readDb, _readDbList } = require("../models/gallery.models.js");
 
 // Uploadcare keys
 
-const UPLOADCARE_PUB_KEY = "a8a3d493f7784d19923f";
-const UPLOADCARE_SEC_KEY = "7504d155b72e01f55dbf";
+// const UPLOADCARE_PUB_KEY = "a8a3d493f7784d19923f";
+// const UPLOADCARE_SEC_KEY = "7504d155b72e01f55dbf";
 
 // middleware for adding images to Uploadcare
 
 const fileStorageEngine = uploadcareStorage({
-  public_key: UPLOADCARE_PUB_KEY,
-  private_key: UPLOADCARE_SEC_KEY,
+  public_key: process.env.API_PUB_KEY,
+  private_key: process.env.API_SEC_KEY,
   store: "auto", // 'auto' || 0 || 1
 });
 const upload = multer({ storage: fileStorageEngine });
@@ -26,7 +26,7 @@ const deleteFromAPI = async (req, res, next) => {
       method: "DELETE",
       headers: {
         Accept: "application/vnd.uploadcare-v0.7+json",
-        Authorization: `Uploadcare.Simple ${UPLOADCARE_PUB_KEY}:${UPLOADCARE_SEC_KEY}`,
+        Authorization: `Uploadcare.Simple ${process.env.API_PUB_KEY}:${process.env.API_SEC_KEY}`,
       },
     }
   );
@@ -80,7 +80,7 @@ const deleteBatchFromAPI = async (req, res, next) => {
     method: "DELETE",
     headers: {
       Accept: "application/vnd.uploadcare-v0.7+json",
-      Authorization: `Uploadcare.Simple ${UPLOADCARE_PUB_KEY}:${UPLOADCARE_SEC_KEY}`,
+      Authorization: `Uploadcare.Simple ${process.env.API_PUB_KEY}:${process.env.API_SEC_KEY}`,
       "Content-Type": "application/json",
     },
     // urlList:list,

@@ -9,13 +9,13 @@ const {
 } = require("../models/gallery.models");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const config = require("../config/auth.config.json");
+// const config = require("../config/auth.config.json");
 
 // function to verify token from front-end
 
 const authUser = async (req, res) => {
   const req_token = req.cookies.accessToken;
-  const data = jwt.verify(req_token, config.secret);
+  const data = jwt.verify(req_token, process.env.JWT_SECRET);
   try {
     const user = await _readDb("users", "*", {
       id: data.id,
@@ -80,7 +80,7 @@ const login = async (req, res) => {
     const { id, first_name, last_name, email, role } = user[0];
     const accessToken = jwt.sign(
       { id, first_name, last_name, email, role },
-      config.secret,
+      process.env.JWT_SECRET,
       {
         expiresIn: "900s",
       }
@@ -144,7 +144,7 @@ const deleteUser = async (req, res) => {
 //  function to return list of authors
 
 const getAuthors = async (req, res) => {
-  const data = jwt.verify(req.cookies.accessToken, config.secret);
+  const data = jwt.verify(req.cookies.accessToken, process.env.JWT_SECRET);
   try {
     const result = await _readDbWhereNot(
       "users",
@@ -191,7 +191,7 @@ const searchAuthors = async (req, res) => {
 // function to retrieve list of comments authored by user
 
 const getUserComments = async (req, res) => {
-  // const data = jwt.verify(req.cookies.accessToken, config.secret);
+  // const data = jwt.verify(req.cookies.accessToken, process.env.JWT_SECRET);
   try {
     const result = await _get2TabJoinData(
       "user_comments",
