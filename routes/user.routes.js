@@ -35,7 +35,12 @@ router.post("/search", [authJwt.checkToken], searchAuthors);
 
 // routes available to Admin
 router.post("/user_list", [authJwt.isAdmin], getUsers);
-router.post("/delete_user", [authJwt.isAdmin], deleteUser);
+router.post(
+  "/delete_user",
+  [authJwt.isAdmin],
+  [handleAPI.getProjects, handleAPI.getImages],
+  deleteUser
+);
 router.post(
   "/test_delete",
   [handleAPI.getProjects, handleAPI.getImages],
