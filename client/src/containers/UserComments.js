@@ -4,9 +4,12 @@ import styles from "../styles/Comments.module.css";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import useAuth from "../hooks/useAuth";
+import useModal from "../hooks/useModal";
+import ConfirmModal from "../components/ConfirmModal";
 
 function UserComments() {
   const { authState } = useAuth();
+  const { isShowing, toggle } = useModal();
 
   const [comments, setComments] = useState([]);
   const navigate = useNavigate();
@@ -30,30 +33,30 @@ function UserComments() {
     }
   };
 
-  const deleteComment = async (id) => {
-    try {
-      //   console.log(id);
-      const response = await fetch("/users/delete_comment", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          comment_id: id,
-        }),
-      });
-      const json = await response.json();
-      console.log(json);
-      // getUserComments();
-      if (authState.role === "admin") {
-        getUserComments(sessionStorage.getItem("admin_user_id"));
-      } else {
-        getUserComments(authState.userId);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  // const deleteComment = async (id) => {
+  //   try {
+  //     //   console.log(id);
+  //     const response = await fetch("/users/delete_comment", {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify({
+  //         comment_id: id,
+  //       }),
+  //     });
+  //     const json = await response.json();
+  //     console.log(json);
+  //     // getUserComments();
+  //     if (authState.role === "admin") {
+  //       getUserComments(sessionStorage.getItem("admin_user_id"));
+  //     } else {
+  //       getUserComments(authState.userId);
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   useEffect(
     () => {
@@ -91,12 +94,16 @@ function UserComments() {
                 <FontAwesomeIcon
                   icon={faTimes}
                   className="invalid"
-                  onClick={() => deleteComment(item.comment_id)}
+                  onClick={
+                    toggle
+                    // () => deleteComment(item.comment_id)
+                  }
                 />
               }
             </div>
           );
         })}
+        <ConfirmModal isShowing={isShowing} hide={toggle} />
       </div>
     );
   } else {
