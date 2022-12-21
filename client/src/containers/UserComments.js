@@ -9,10 +9,19 @@ import ConfirmModal from "../components/ConfirmModal";
 
 function UserComments() {
   const { authState } = useAuth();
-  const { isShowing, toggle } = useModal();
+  const {
+    isShowing,
+    toggle,
+    message,
+    selectedId,
+    setSelectedId,
+    setType,
+    type,
+  } = useModal();
 
   const [comments, setComments] = useState([]);
   const navigate = useNavigate();
+  // setType("comment");
 
   const getUserComments = async (id) => {
     try {
@@ -33,30 +42,31 @@ function UserComments() {
     }
   };
 
-  // const deleteComment = async (id) => {
-  //   try {
-  //     //   console.log(id);
-  //     const response = await fetch("/users/delete_comment", {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify({
-  //         comment_id: id,
-  //       }),
-  //     });
-  //     const json = await response.json();
-  //     console.log(json);
-  //     // getUserComments();
-  //     if (authState.role === "admin") {
-  //       getUserComments(sessionStorage.getItem("admin_user_id"));
-  //     } else {
-  //       getUserComments(authState.userId);
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
+  const deleteComment = async (id) => {
+    try {
+      //   console.log(id);
+      const response = await fetch("/users/delete_comment", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          comment_id: id,
+        }),
+      });
+      const json = await response.json();
+      console.log(json);
+      toggle();
+      // getUserComments();
+      if (authState.role === "admin") {
+        getUserComments(sessionStorage.getItem("admin_user_id"));
+      } else {
+        getUserComments(authState.userId);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(
     () => {
@@ -94,16 +104,24 @@ function UserComments() {
                 <FontAwesomeIcon
                   icon={faTimes}
                   className="invalid"
-                  onClick={
-                    toggle
-                    // () => deleteComment(item.comment_id)
-                  }
+                  onClick={() => {
+                    setType("comment");
+                    setSelectedId(item.comment_id);
+                    toggle();
+                  }}
                 />
               }
             </div>
           );
         })}
-        <ConfirmModal isShowing={isShowing} hide={toggle} />
+        <ConfirmModal
+          isShowing={isShowing}
+          hide={toggle}
+          message={message}
+          confirmModal={deleteComment}
+          id={selectedId}
+          type={type}
+        />
       </div>
     );
   } else {

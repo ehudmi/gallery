@@ -1,4 +1,4 @@
-.modal-overlay {
+.modal_overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -9,7 +9,7 @@
   opacity: 0.5;
 }
 
-.modal-wrapper {
+.modal_wrapper {
   position: fixed;
   top: 0;
   left: 0;
@@ -31,12 +31,13 @@
   padding: 2rem;
 }
 
-.modal-header {
+.modal_header {
+  color: #000;
   display: flex;
   justify-content: flex-end;
 }
 
-.modal-close-button {
+.modal_close_button {
   font-size: 1.4rem;
   font-weight: 700;
   line-height: 1;
@@ -55,7 +56,7 @@ button {
   margin-left: 0.5rem;
 }
 
-.button-default {
+.button_default {
   background: #247ba0;
   color: #fff;
 }
