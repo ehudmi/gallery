@@ -3,12 +3,24 @@ import { useNavigate } from "react-router-dom";
 import styles from "../styles/ListContainer.module.css";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import useModal from "../hooks/useModal";
+import ConfirmModal from "../components/ConfirmModal";
 
 function MyProjects() {
   const [projects, setProjects] = useState([]);
   const countProj = useRef(0);
 
   const navigate = useNavigate();
+
+  const {
+    isShowing,
+    toggle,
+    message,
+    selectedId,
+    setSelectedId,
+    setType,
+    type,
+  } = useModal();
 
   // retrieve list of projects authored by current user
 
@@ -50,6 +62,7 @@ function MyProjects() {
       });
       const json = await response.json();
       console.log(json);
+      toggle();
       getMyProjects(3, 0);
     } catch (error) {
       console.log(error);
@@ -84,7 +97,11 @@ function MyProjects() {
                 <FontAwesomeIcon
                   icon={faTimes}
                   className="invalid"
-                  onClick={() => deleteProject(item.id)}
+                  onClick={() => {
+                    setType("project");
+                    setSelectedId(item.id);
+                    toggle();
+                  }}
                 />
               }
             </div>
@@ -118,6 +135,14 @@ function MyProjects() {
             Next
           </button>
         </div>
+        <ConfirmModal
+          isShowing={isShowing}
+          hide={toggle}
+          message={message}
+          confirmModal={deleteProject}
+          id={selectedId}
+          type={type}
+        />
       </div>
     );
   } else if (projects.length === 0) {

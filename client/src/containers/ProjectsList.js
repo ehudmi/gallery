@@ -1,9 +1,11 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
-import styles from "../styles/ListContainer.module.css";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import useModal from "../hooks/useModal";
+import ConfirmModal from "../components/ConfirmModal";
+import styles from "../styles/ListContainer.module.css";
 
 function ProjectsList() {
   const { authState } = useAuth();
@@ -12,6 +14,16 @@ function ProjectsList() {
   const countProj = useRef(0);
 
   const navigate = useNavigate();
+
+  const {
+    isShowing,
+    toggle,
+    message,
+    selectedId,
+    setSelectedId,
+    setType,
+    type,
+  } = useModal();
 
   // retrieve list of projects to display
 
@@ -49,6 +61,7 @@ function ProjectsList() {
       });
       const json = await response.json();
       console.log(json);
+      toggle();
       getProjectsList(3, 0);
     } catch (error) {
       console.log(error);
@@ -83,7 +96,11 @@ function ProjectsList() {
               <FontAwesomeIcon
                 icon={faTimes}
                 className={authState.role === "admin" ? "invalid" : "hide"}
-                onClick={() => deleteProject(item.id)}
+                onClick={() => {
+                  setType("project");
+                  setSelectedId(item.id);
+                  toggle();
+                }}
               />
             </div>
           );
@@ -117,6 +134,14 @@ function ProjectsList() {
             Next
           </button>
         </div>
+        <ConfirmModal
+          isShowing={isShowing}
+          hide={toggle}
+          message={message}
+          confirmModal={deleteProject}
+          id={selectedId}
+          type={type}
+        />
       </div>
     );
   } else {

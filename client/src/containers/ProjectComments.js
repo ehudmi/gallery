@@ -3,12 +3,24 @@ import useAuth from "../hooks/useAuth";
 import styles from "../styles/Comments.module.css";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import useModal from "../hooks/useModal";
+import ConfirmModal from "../components/ConfirmModal";
 
 function ProjectComments({ project_id }) {
   const { authState } = useAuth();
 
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");
+
+  const {
+    isShowing,
+    toggle,
+    message,
+    selectedId,
+    setSelectedId,
+    setType,
+    type,
+  } = useModal();
 
   // retrieve list of comments for current project
 
@@ -47,6 +59,7 @@ function ProjectComments({ project_id }) {
       });
       const json = await response.json();
       console.log(json);
+      toggle();
       getProjectComments();
     } catch (error) {
       console.log(error);
@@ -106,7 +119,11 @@ function ProjectComments({ project_id }) {
                 className={
                   authState.userId === item.user_id ? "invalid" : "hide"
                 }
-                onClick={() => deleteComment(item.comment_id)}
+                onClick={() => {
+                  setType("comment");
+                  setSelectedId(item.comment_id);
+                  toggle();
+                }}
               />
             </div>
           );
@@ -124,6 +141,14 @@ function ProjectComments({ project_id }) {
             Add Comment
           </button>
         </div>
+        <ConfirmModal
+          isShowing={isShowing}
+          hide={toggle}
+          message={message}
+          confirmModal={deleteComment}
+          id={selectedId}
+          type={type}
+        />
       </div>
     );
   } else {

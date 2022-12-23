@@ -5,6 +5,8 @@ import ImageModal from "../components/ImageModal";
 import ProjectComments from "./ProjectComments";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import useModal from "../hooks/useModal";
+import ConfirmModal from "../components/ConfirmModal";
 import styles from "../styles/ProjectDetails.module.css";
 
 function ProjectDetails() {
@@ -24,6 +26,16 @@ function ProjectDetails() {
   const modalSrc = useRef(null);
 
   const [show, setShow] = useState(false);
+
+  const {
+    isShowing,
+    toggle,
+    message,
+    selectedId,
+    setSelectedId,
+    setType,
+    type,
+  } = useModal();
 
   const openModal = (e, index) => {
     setShow(true);
@@ -104,6 +116,7 @@ function ProjectDetails() {
       await response.json();
       // console.log(json);
       countImages.current = countImages.current - 1;
+      toggle();
       getProjectImages();
     } catch (error) {
       console.log(error);
@@ -185,7 +198,11 @@ function ProjectDetails() {
                         <FontAwesomeIcon
                           icon={faTimes}
                           className="invalid"
-                          onClick={() => deleteImage(item.uuid)}
+                          onClick={() => {
+                            setType("image");
+                            setSelectedId(item.uuid);
+                            toggle();
+                          }}
                         />
                       ) : // <button onClick={() => deleteImage(item.uuid)}>
                       //   Delete Image
@@ -200,6 +217,14 @@ function ProjectDetails() {
             closeModal={closeModal}
             src={modalSrc.current}
             show={show}
+          />
+          <ConfirmModal
+            isShowing={isShowing}
+            hide={toggle}
+            message={message}
+            confirmModal={deleteImage}
+            id={selectedId}
+            type={type}
           />
           {projectDetails.findIndex((item) => {
             return item.author_id === authState.userId;
