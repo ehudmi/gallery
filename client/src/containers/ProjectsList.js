@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
@@ -27,7 +27,7 @@ function ProjectsList() {
 
   // retrieve list of projects to display
 
-  const getProjectsList = async (limit, offset) => {
+  const getProjectsList = useCallback(async (limit, offset) => {
     try {
       const response = await fetch("/projects/projects_list", {
         method: "POST",
@@ -40,16 +40,16 @@ function ProjectsList() {
         }),
       });
       const json = await response.json();
-      // console.log(json);
       setProjects(json);
     } catch (error) {
       console.log(error);
     }
-  };
+  }, []);
+
+  // delete current project
 
   const deleteProject = async (id) => {
     try {
-      //   console.log(id);
       const response = await fetch("/projects/delete_project", {
         method: "POST",
         headers: {
@@ -70,12 +70,9 @@ function ProjectsList() {
 
   useEffect(() => {
     getProjectsList(3, 0);
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [getProjectsList]);
 
   if (projects.length > 0) {
-    // console.log(projects);
     return (
       <div className={styles.listContainer}>
         <h1 className={styles.listHeader}>List of Projects</h1>
@@ -86,8 +83,6 @@ function ProjectsList() {
                 className={styles.listItem}
                 onClick={() => {
                   sessionStorage.setItem("project_id", item.id);
-                  // sessionStorage.setItem("author_id", item.user_id);
-                  // console.log(item.id);
                   return navigate("/project_details");
                 }}
               >
@@ -123,7 +118,6 @@ function ProjectsList() {
             className={`${styles.btn} ${styles.nextButton} ${
               projects.length === 0 ? "btnHidden" : "btnVisible"
             }`}
-            // visibility={projects.length === 0 ? "visible" : "hidden"}
             id="next"
             name="next"
             onClick={() => {

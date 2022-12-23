@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import useAuth from "../hooks/useAuth";
 import styles from "../styles/Comments.module.css";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
@@ -24,7 +24,7 @@ function ProjectComments({ project_id }) {
 
   // retrieve list of comments for current project
 
-  const getProjectComments = async () => {
+  const getProjectComments = useCallback(async () => {
     try {
       const response = await fetch("/projects/project_comments", {
         method: "POST",
@@ -36,18 +36,16 @@ function ProjectComments({ project_id }) {
         }),
       });
       const json = await response.json();
-      //   console.log(json);
       setComments(json);
     } catch (error) {
       console.log(error);
     }
-  };
+  }, [project_id]);
 
   // delete comment from list of comments for current project
 
   const deleteComment = async (id) => {
     try {
-      // console.log(id);
       const response = await fetch("/projects/delete_comment", {
         method: "POST",
         headers: {
@@ -81,20 +79,15 @@ function ProjectComments({ project_id }) {
       });
       const json = await response.json();
       console.log(json);
-      // setComments(json);
       getProjectComments();
     } catch (error) {
       console.log(error);
     }
   };
 
-  useEffect(
-    () => {
-      getProjectComments();
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
-  );
+  useEffect(() => {
+    getProjectComments();
+  }, [getProjectComments]);
 
   if (comments.length > 0) {
     return (
@@ -109,11 +102,6 @@ function ProjectComments({ project_id }) {
                   {item.first_name} {item.last_name}
                 </span>
               </p>
-              {/* {authState.userId === item.user_id ? (
-                <button onClick={() => deleteComment(item.comment_id)}>
-                  Delete Comment
-                </button>
-              ) : null} */}
               <FontAwesomeIcon
                 icon={faTimes}
                 className={

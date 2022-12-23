@@ -38,7 +38,6 @@ function Login() {
         body: JSON.stringify({ email: email, password: password }),
       });
       let userLoggedIn = await response.json();
-      // console.log(userLoggedIn);
       if (userLoggedIn.userId) {
         setAuthState({
           userId: userLoggedIn.userId,
@@ -52,7 +51,6 @@ function Login() {
         navigate("/home");
       } else if (userLoggedIn.error) throw userLoggedIn.error;
     } catch (error) {
-      // console.log(error);
       setErrMsg(error);
       errRef.current.focus();
     }

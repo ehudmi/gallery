@@ -22,7 +22,6 @@ function Search() {
         }),
       });
       const results = await response.json();
-      // console.log(results);
       setResultList(results);
     } else if (searchField === "project") {
       const response = await fetch("/projects/search", {
@@ -35,7 +34,6 @@ function Search() {
         }),
       });
       const results = await response.json();
-      // console.log(results);
       setResultList(results);
     }
   };

@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "../styles/ListContainer.module.css";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
@@ -24,8 +24,7 @@ function MyProjects() {
 
   // retrieve list of projects authored by current user
 
-  const getMyProjects = async (limit, offset) => {
-    // console.log(limit, offset);
+  const getMyProjects = useCallback(async (limit, offset) => {
     try {
       const response = await fetch("/projects/my_projects", {
         method: "POST",
@@ -38,19 +37,16 @@ function MyProjects() {
         }),
       });
       const json = await response.json();
-      // console.log(json);
       setProjects(json);
-      // !json.error ? setProjects(json) : setProjects(undefined);
     } catch (error) {
       console.log(error);
     }
-  };
+  }, []);
 
-  // delete user from db
+  // delete project from db
 
   const deleteProject = async (id) => {
     try {
-      //   console.log(id);
       const response = await fetch("/projects/delete_project", {
         method: "POST",
         headers: {
@@ -71,11 +67,9 @@ function MyProjects() {
 
   useEffect(() => {
     getMyProjects(3, 0);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [getMyProjects]);
 
   if (projects.length > 0) {
-    // console.log(projects);
     return (
       <div className={styles.listContainer}>
         <h1 className={styles.listHeader}>My Projects</h1>
@@ -87,7 +81,6 @@ function MyProjects() {
                 onClick={() => {
                   sessionStorage.setItem("project_id", item.id);
                   sessionStorage.setItem("author_id", item.user_id);
-                  // console.log(item.user_id);
                   return navigate("/project_details");
                 }}
               >

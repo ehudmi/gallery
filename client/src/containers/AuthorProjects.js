@@ -1,10 +1,8 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-// import useAuth from "../hooks/useAuth";
 import styles from "../styles/ListContainer.module.css";
 
 function AuthorProjects() {
-  // const { authState } = useAuth();
   const [projects, setProjects] = useState([]);
   const countProj = useRef(0);
 
@@ -12,7 +10,7 @@ function AuthorProjects() {
 
   // retrieve list of projects authored by author
 
-  const getAuthorProjects = async (limit, offset) => {
+  const getAuthorProjects = useCallback(async (limit, offset) => {
     try {
       const response = await fetch("/projects/author_projects", {
         method: "POST",
@@ -26,20 +24,17 @@ function AuthorProjects() {
         }),
       });
       const json = await response.json();
-      // console.log(json);
       setProjects(json);
     } catch (error) {
       console.log(error);
     }
-  };
+  }, []);
 
   useEffect(() => {
     getAuthorProjects(3, 0);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [getAuthorProjects]);
 
   if (projects.length > 0) {
-    // console.log(projects);
     return (
       <div className={styles.listContainer}>
         <h1 className={styles.listHeader}>Author Projects</h1>
@@ -86,10 +81,6 @@ function AuthorProjects() {
             Next
           </button>
         </div>
-
-        {/* {authState.userId === Number(sessionStorage.getItem("author_id")) ? (
-          <button onClick={() => navigate("/project_form")}>Add Project</button>
-        ) : null} */}
       </div>
     );
   } else {

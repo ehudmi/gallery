@@ -27,6 +27,7 @@ function ProjectForm() {
   const [files, setFiles] = useState();
 
   // check what courses are in the db to populate list of courses
+
   const getCourseData = async () => {
     const result = await fetch("/projects/read_course", {
       method: "GET",
@@ -36,8 +37,9 @@ function ProjectForm() {
     });
     const json = await result.json();
     setCourseData(json);
-    // console.log(json);
   };
+
+  // check which authors are in the db to populate list of authors
 
   const getAuthorData = async () => {
     const result = await fetch("/users/authors", {
@@ -48,10 +50,10 @@ function ProjectForm() {
     });
     const json = await result.json();
     setAuthorData(json);
-    // console.log(json);
   };
 
   // function to submit project form
+
   const submitProject = async (event) => {
     event.preventDefault();
     const response = await fetch("/projects/add_project", {
@@ -67,7 +69,6 @@ function ProjectForm() {
       }),
     });
     const projectAdd = await response.json();
-    // console.log(projectAdd);
     setProjectId(projectAdd[0].project_id);
   };
 
@@ -76,15 +77,12 @@ function ProjectForm() {
   const uploadFiles = async () => {
     const data = new FormData();
     data.append("project_id", projectId);
-    // data.append("project_id", 65);
-    // console.log(files);
     if (files.length > 3) {
       alert("too many files");
     } else {
       for (const item of files) {
         data.append("images", item);
       }
-      // console.log(data.get("project_id"));
       const response = await fetch("/projects/add_images", {
         method: "POST",
         body: data,
@@ -99,7 +97,6 @@ function ProjectForm() {
   useEffect(() => {
     getCourseData();
     getAuthorData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {

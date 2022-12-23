@@ -37,15 +37,12 @@ function ProjectDetails() {
     type,
   } = useModal();
 
+  // functions to open and close ImageModal
   const openModal = (e, index) => {
     setShow(true);
     currentIndex.current = index;
-    console.log(index);
-    console.log(currentIndex.current);
-    console.log(images[currentIndex.current].url);
     modalSrc.current = images[currentIndex.current].url;
   };
-
   const closeModal = (e) => {
     if (e !== undefined) {
       e.preventDefault();
@@ -54,10 +51,9 @@ function ProjectDetails() {
     setShow(false);
   };
 
-  // retrieve images from DB
+  // retrieve project details from DB
 
   const getProjectDetails = async () => {
-    // console.log(sessionStorage.getItem("project_id"));
     try {
       const response = await fetch("/projects/project_details", {
         method: "POST",
@@ -69,13 +65,13 @@ function ProjectDetails() {
         }),
       });
       const json = await response.json();
-      // console.log(json);
       setProjectDetails(json);
-      // console.log(countImages.current);
     } catch (error) {
       console.log(error);
     }
   };
+
+  // retrieve images from DB
 
   const getProjectImages = async () => {
     try {
@@ -89,21 +85,17 @@ function ProjectDetails() {
         }),
       });
       const json = await response.json();
-      // console.log(json);
       setImages(json);
       countImages.current = json.length;
-      // console.log(countImages.current);
     } catch (error) {
       console.log(error);
     }
   };
 
-  // delete images from DB
+  // delete selected image from DB
 
   const deleteImage = async (uuid) => {
     try {
-      // console.log(uuid);
-      // console.log(authState.userId);
       const response = await fetch("/projects/delete_images", {
         method: "POST",
         headers: {
@@ -114,7 +106,6 @@ function ProjectDetails() {
         }),
       });
       await response.json();
-      // console.log(json);
       countImages.current = countImages.current - 1;
       toggle();
       getProjectImages();
@@ -123,8 +114,9 @@ function ProjectDetails() {
     }
   };
 
+  // upload image files to DB
+
   const uploadFiles = async () => {
-    // console.log(countImages.current);
     if (files.length > 3 - countImages.current) {
       console.log("too many files");
     }
@@ -133,13 +125,10 @@ function ProjectDetails() {
     } else {
       const data = new FormData();
       data.append("project_id", sessionStorage.getItem("project_id"));
-      // console.log(files);
       data.append("file_count", files.length);
       for (const item of files) {
         data.append("images", item);
       }
-      // console.log(data.get("project_id"));
-      // console.log(data.get("file_count"));
       const response = await fetch("/projects/add_images", {
         method: "POST",
         body: data,
@@ -191,7 +180,6 @@ function ProjectDetails() {
                         src={item.url}
                         id={item.uuid}
                       />
-                      {/* {projectDetails.findIndex((value)=>{return value=authState.userId})>=0} */}
                       {projectDetails.findIndex((item) => {
                         return item.author_id === authState.userId;
                       }) >= 0 ? (
@@ -204,10 +192,7 @@ function ProjectDetails() {
                             toggle();
                           }}
                         />
-                      ) : // <button onClick={() => deleteImage(item.uuid)}>
-                      //   Delete Image
-                      // </button>
-                      null}
+                      ) : null}
                     </div>
                   );
                 })
@@ -256,28 +241,6 @@ function ProjectDetails() {
               </button>
             </div>
           ) : null}
-          {/* {projectDetails.length > 0
-            ? projectDetails.map((item, index) => {
-                return (
-                  <div className={styles.details} key={index}>
-                    <h3 className={styles.projectTitle}>
-                      Project {sessionStorage.getItem("project_id")} -{" "}
-                      {item.project_name}
-                    </h3>
-                    <h3>Description - {item.description}</h3>
-                    <h3
-                      className={styles.listItem}
-                      onClick={() => {
-                        sessionStorage.setItem("author_id", item.author_id);
-                        return navigate("/author_projects");
-                      }}
-                    >
-                      {item.first_name} {item.last_name}
-                    </h3>
-                  </div>
-                );
-              })
-            : null} */}
           <ProjectComments
             className={styles.commentsContainer}
             project_id={sessionStorage.getItem("project_id")}

@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "../styles/ListContainer.module.css";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
@@ -12,7 +12,7 @@ function AdminUsers() {
 
   // retrieve list of users to display
 
-  const getUserList = async (limit, offset) => {
+  const getUserList = useCallback(async (limit, offset) => {
     try {
       const response = await fetch("/users/user_list", {
         method: "POST",
@@ -30,7 +30,7 @@ function AdminUsers() {
     } catch (error) {
       console.log(error);
     }
-  };
+  }, []);
 
   // delete user from db
 
@@ -76,8 +76,7 @@ function AdminUsers() {
 
   useEffect(() => {
     getUserList(3, 0);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [getUserList]);
 
   if (users.length > 0) {
     // console.log(users);

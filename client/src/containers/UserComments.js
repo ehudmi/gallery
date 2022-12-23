@@ -21,7 +21,8 @@ function UserComments() {
 
   const [comments, setComments] = useState([]);
   const navigate = useNavigate();
-  // setType("comment");
+
+  // retrieve list of comments for current user
 
   const getUserComments = async (id) => {
     try {
@@ -35,16 +36,16 @@ function UserComments() {
         }),
       });
       const json = await response.json();
-      //   console.log(json);
       setComments(json);
     } catch (error) {
       console.log(error);
     }
   };
 
+  // delete comment from list of comments for current user
+
   const deleteComment = async (id) => {
     try {
-      //   console.log(id);
       const response = await fetch("/users/delete_comment", {
         method: "POST",
         headers: {
@@ -57,7 +58,6 @@ function UserComments() {
       const json = await response.json();
       console.log(json);
       toggle();
-      // getUserComments();
       if (authState.role === "admin") {
         getUserComments(sessionStorage.getItem("admin_user_id"));
       } else {
@@ -68,17 +68,13 @@ function UserComments() {
     }
   };
 
-  useEffect(
-    () => {
-      if (authState.role === "admin") {
-        getUserComments(sessionStorage.getItem("admin_user_id"));
-      } else {
-        getUserComments(authState.userId);
-      }
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
-  );
+  useEffect(() => {
+    if (authState.role === "admin") {
+      getUserComments(sessionStorage.getItem("admin_user_id"));
+    } else {
+      getUserComments(authState.userId);
+    }
+  }, [authState.role, authState.userId]);
 
   if (comments.length > 0) {
     return (
@@ -92,7 +88,6 @@ function UserComments() {
                 <span
                   onClick={() => {
                     sessionStorage.setItem("project_id", item.project_id);
-                    // console.log(item.project_id);
                     return navigate("/project_details");
                   }}
                   className={styles.projectName}

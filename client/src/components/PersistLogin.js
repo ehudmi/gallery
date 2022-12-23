@@ -20,9 +20,7 @@ const PersistLogin = () => {
     };
 
     !authState?.userId ? verifyAccessToken() : setIsLoading(false);
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [authState?.userId, refresh]);
 
   return <>{isLoading ? <p>Loading...</p> : <Outlet />}</>;
 };

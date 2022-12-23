@@ -3,6 +3,8 @@ import useAuth from "./useAuth";
 const useAccessToken = () => {
   const { setAuthState } = useAuth();
 
+  // function to check authentication status in backend
+
   const isAuthenticated = async () => {
     try {
       const response = await fetch("/projects/auth", {
@@ -11,7 +13,6 @@ const useAccessToken = () => {
       const userAuth = await response.json();
       if (userAuth.userId > 0) {
         setAuthState((prev) => {
-          //   console.log(JSON.stringify(prev));
           return {
             ...prev,
             userId: userAuth.userId,
@@ -25,9 +26,7 @@ const useAccessToken = () => {
         setAuthState((prev) => {
           return { ...prev, message: "failed" };
         });
-        // console.log(authState.message);
       }
-      //   return userAuth;
     } catch (error) {
       console.log(error);
     }
