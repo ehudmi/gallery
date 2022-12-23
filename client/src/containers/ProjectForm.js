@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 import styles from "../styles/FormComponents.module.css";
 import useAuth from "../hooks/useAuth";
+import { faTimes } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 function ProjectForm() {
   const { authState } = useAuth();
@@ -172,12 +174,28 @@ function ProjectForm() {
                 Submit
               </button>
             </div>
-
-            {/* {authors.map((item, index) => (
-              <p key={index} style={{ color: "red" }}>
-                hello {item.name}
-              </p>
-            ))} */}
+            <div>
+              {authors.map((item, index) => (
+                <p key={index} style={{ color: "red" }}>
+                  {item.name}
+                  {index > 0 ? (
+                    <FontAwesomeIcon
+                      icon={faTimes}
+                      className="invalid"
+                      onClick={() => {
+                        // authors.splice(index, 1);
+                        setAuthors((prev) => [
+                          ...prev.slice(0, index),
+                          ...prev.slice(index + 1),
+                        ]);
+                        // console.log(index);
+                        // console.log(authors);
+                      }}
+                    />
+                  ) : null}
+                </p>
+              ))}
+            </div>
           </form>
           {!!validProjectId ? (
             <>
