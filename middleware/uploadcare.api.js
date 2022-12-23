@@ -1,7 +1,11 @@
 // const { json } = require("body-parser");
 const multer = require("multer");
 const uploadcareStorage = require("multer-storage-uploadcare");
-const { _readDb, _readDbList } = require("../models/gallery.models.js");
+const {
+  _readDbSingleAuthor,
+  // _readDb,
+  _readDbList,
+} = require("../models/gallery.models.js");
 
 // Uploadcare keys
 
@@ -35,12 +39,34 @@ const deleteFromAPI = async (req, res, next) => {
   next();
 };
 
+// const getProjectList = async (req, res, next) => {
+//   const user_id = req.body.user_id;
+//   try {
+//     const projectList = await _readDb("project_authors", ["project_id"], {
+//       user_id: user_id,
+//     });
+//     const list = projectList.map((item) => item.project_id);
+//     req.body.project_id = list;
+//     console.log(list);
+//   } catch (error) {
+//     console.log(error);
+//     res.status(404).json({ error: "couldn't read projects" });
+//   }
+//   next();
+// };
+
 const getProjectList = async (req, res, next) => {
   const user_id = req.body.user_id;
+  console.log(user_id);
   try {
-    const projectList = await _readDb("project_authors", ["project_id"], {
-      user_id: user_id,
-    });
+    const projectList = await _readDbSingleAuthor(
+      "project_authors",
+      ["project_id"],
+      {
+        user_id: user_id,
+      }
+    );
+    // const list = projectList;
     const list = projectList.map((item) => item.project_id);
     req.body.project_id = list;
     console.log(list);
@@ -62,7 +88,7 @@ const getImageList = async (req, res, next) => {
       project_id
     );
     const list = picList.map((item) => item.uuid);
-    console.log(list);
+    // console.log(list);
     // console.log(JSON.stringify(list));
     req.body.list = list;
   } catch (error) {

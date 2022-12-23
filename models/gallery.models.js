@@ -1,5 +1,71 @@
 const { db } = require("../config/heroku-gallery-local");
 
+const _readDbSingleAuthor = (table1, column1, criteria) => {
+  return db
+    .select("*")
+    .from(`${table1} as t1`)
+    .join(
+      db
+        .select(column1)
+        .from(`${table1} as t3`)
+        .count(`${column1} as count`)
+        .groupBy(column1)
+        .having("t3.count", "=", 1)
+        .as("t2"),
+      `t2.${column1}`,
+      "=",
+      `t1.${column1}`
+    )
+    .where(criteria);
+};
+
+// const _readDbSingleAuthor = (table1, column1, criteria) => {
+//   return db(`${table1} as t1`)
+//     .select("*")
+//     .where(
+//       db(`${table1} as t2`)
+//         .select("*")
+//         .count("*")
+//         .where(`t1.${column1}`, "=", `t2.${column1}`),
+//       "=",
+//       1
+//     )
+//     .andWhere(criteria);
+// .join(
+//   db
+//     .select(column1)
+//     .from(`${table1} as t3`)
+//     .count(`${column1} as count`)
+//     .groupBy(column1)
+//     .having("t3.count", "=", 1)
+//     .as("t2"),
+//   `t2.${column1}`,
+//   "=",
+//   `t1.${column1}`
+// );
+// .where(criteria);
+
+// .andWhere(criteria);
+// };
+
+// select * from project_authors t1
+// where (select count(*) from project_authors t2
+//   where t1.project_id = t2.project_id) = 1
+//   AND t1.user_id=2
+// order by t1.project_id;
+
+// select * from project_authors t1
+// INNER JOIN (SELECT t3.project_id FROM project_authors t3 GROUP BY t3.project_id
+// 			HAVING COUNT (t3.project_id)=1) t2
+// 			ON t1.project_id=t2.project_id Where t1.user_id=2 ORDER BY t1.project_id;
+
+// select * from project_authors t1
+// where NOT exists
+//       (select 1 from project_authors t2
+//        where t1.project_id = t2.project_id and t1.user_id <> t2.user_id) AND t1.user_id=2
+// 	   ORDER by t1.project_id
+//  ;
+
 const _readDb = (table, data, criteria) => {
   return db(table).select(data).where(criteria);
 };
@@ -82,6 +148,7 @@ const _get3TabJoinData = (
 };
 
 module.exports = {
+  _readDbSingleAuthor,
   _readDb,
   _readDbList,
   _readDbWhereNot,

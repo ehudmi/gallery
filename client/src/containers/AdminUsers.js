@@ -56,14 +56,14 @@ function AdminUsers() {
 
   // const testDelete = async (id) => {
   //   try {
-  //     //   console.log(id);
+  //     console.log(id);
   //     const response = await fetch("/users/test_delete", {
   //       method: "POST",
   //       headers: {
   //         "Content-Type": "application/json",
   //       },
   //       body: JSON.stringify({
-  //         id: id,
+  //         user_id: id,
   //       }),
   //     });
   //     const json = await response.json();

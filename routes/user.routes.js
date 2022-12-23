@@ -42,12 +42,8 @@ router.post(
   [handleAPI.deleteBatch],
   deleteUser
 );
-router.post(
-  "/test_delete",
-  [handleAPI.getProjects, handleAPI.getImages],
-  (req, res) => {
-    res.send({ message: "got images" });
-  }
-);
+router.post("/test_delete", [handleAPI.getProjects], (req, res) => {
+  res.send({ message: "got projects" });
+});
 
 module.exports = router;
