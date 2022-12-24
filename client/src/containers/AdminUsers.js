@@ -94,6 +94,9 @@ function AdminUsers() {
                 }}
               >
                 User Name: {item.first_name} {item.last_name}
+                Email: {item.email}
+                Role: {item.role}
+                About: {item.about}
               </h3>
               {
                 <FontAwesomeIcon

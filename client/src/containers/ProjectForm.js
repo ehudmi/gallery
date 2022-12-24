@@ -1,8 +1,12 @@
 import { useState, useEffect, useRef } from "react";
 import styles from "../styles/FormComponents.module.css";
 import useAuth from "../hooks/useAuth";
-import { faTimes } from "@fortawesome/free-solid-svg-icons";
+import { faCheck, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+const LINK_REGEX = new RegExp(
+  "^((https?)://)?([w|W]{3}.)+[a-zA-Z0-9-.]{3,}.[a-zA-Z]{2,}(.[a-zA-Z]{2,})?$"
+);
 
 function ProjectForm() {
   const { authState } = useAuth();
@@ -21,6 +25,9 @@ function ProjectForm() {
   const [projectName, setProjectName] = useState("");
   const [projectId, setProjectId] = useState("");
   const [validProjectId, setValidProjectId] = useState(false);
+
+  const [link, setLink] = useState("");
+  const [validProjectLink, setValidProjectLink] = useState(false);
 
   const [description, setDescription] = useState("");
   const filesRef = useRef(null);
@@ -66,6 +73,7 @@ function ProjectForm() {
         course_id: courseId,
         description: description,
         authors: authors.map((item) => item.id),
+        link: link,
       }),
     });
     const projectAdd = await response.json();
@@ -103,6 +111,12 @@ function ProjectForm() {
     projectId !== "" ? setValidProjectId(true) : setValidProjectId(false);
   }, [projectId]);
 
+  useEffect(() => {
+    link !== ""
+      ? setValidProjectLink(LINK_REGEX.test(link))
+      : setValidProjectLink("");
+  }, [link]);
+
   if (courseData.length > 0 && authorData.length > 0) {
     return (
       <div>
@@ -138,7 +152,6 @@ function ProjectForm() {
               cols="50"
               onChange={(e) => setDescription(e.target.value)}
             ></textarea>
-
             <label htmlFor="add_author">Additional Author</label>
             <select
               id="add_author"
@@ -166,6 +179,23 @@ function ProjectForm() {
                 />
               ))}
             </select>
+            <label htmlFor="project_link">
+              Project Link{" "}
+              <FontAwesomeIcon
+                icon={faCheck}
+                className={validProjectLink ? "valid" : "hide"}
+              />
+              <FontAwesomeIcon
+                icon={faTimes}
+                className={validProjectLink || !link ? "hide" : "invalid"}
+              />
+            </label>
+            <input
+              type={"text"}
+              id="project_link"
+              placeholder="Project Link"
+              onChange={(e) => setLink(e.target.value)}
+            />
             <div className="btnContainer">
               <button type="submit" className="btn">
                 Submit

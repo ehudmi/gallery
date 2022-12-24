@@ -185,6 +185,7 @@ const getProjectDetails = async (req, res) => {
         project_name: item.project_name,
         course_id: item.course_id,
         description: item.description,
+        link: item.link,
       });
     });
     return res.send(selectedData);
@@ -209,12 +210,13 @@ const getCourseList = async (req, res) => {
 // function to insert new project into DB
 
 const addProject = async (req, res) => {
-  const { project_name, course_id, description, authors } = req.body;
+  const { project_name, course_id, description, authors, link } = req.body;
   try {
     const result = await _insertDb("projects", {
       project_name: project_name,
       course_id: course_id,
       description: description,
+      link: link,
     });
     if (result.length > 0) {
       const dataToInsert = [];
@@ -239,7 +241,7 @@ const addProject = async (req, res) => {
 const deleteProject = async (req, res) => {
   try {
     const result = await _deleteDb("projects", {
-      id: req.body.id,
+      id: req.body.project_id[0],
     });
     return res.send({ message: "deleted the project" });
   } catch (error) {

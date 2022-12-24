@@ -148,14 +148,22 @@ function ProjectDetails() {
   } else if (projectDetails.length > 0) {
     return (
       <>
+        <h2 className={styles.projectTitle}>
+          Project {sessionStorage.getItem("project_id")} -{" "}
+          {projectDetails[0].project_name}
+        </h2>
+        <h3 className={styles.projectTitle}>
+          Description - {projectDetails[0].description}
+        </h3>
+        <h3 className={styles.projectTitle}>Link - {projectDetails[0].link}</h3>
         {projectDetails.map((item, index) => {
           return (
             <div className={styles.details} key={index}>
-              <h3 className={styles.projectTitle}>
+              {/* <h3 className={styles.projectTitle}>
                 Project {sessionStorage.getItem("project_id")} -{" "}
                 {item.project_name}
               </h3>
-              <h3>Description - {item.description}</h3>
+              <h3>Description - {item.description}</h3> */}
               <h3
                 className={styles.listItem}
                 onClick={() => {
