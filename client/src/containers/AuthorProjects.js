@@ -31,7 +31,7 @@ function AuthorProjects() {
   }, []);
 
   useEffect(() => {
-    getAuthorProjects(3, 0);
+    getAuthorProjects(5, 0);
   }, [getAuthorProjects]);
 
   if (projects.length > 0) {
@@ -61,8 +61,8 @@ function AuthorProjects() {
             id="previous"
             name="previous"
             onClick={() => {
-              countProj.current = countProj.current - 3;
-              getAuthorProjects(3, countProj.current);
+              countProj.current = countProj.current - 5;
+              getAuthorProjects(5, countProj.current);
             }}
           >
             Previous
@@ -74,8 +74,8 @@ function AuthorProjects() {
             id="next"
             name="next"
             onClick={() => {
-              countProj.current = countProj.current + 3;
-              getAuthorProjects(3, countProj.current);
+              countProj.current = countProj.current + 5;
+              getAuthorProjects(5, countProj.current);
             }}
           >
             Next

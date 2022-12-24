@@ -141,7 +141,7 @@ function ProjectComments({ project_id }) {
     );
   } else {
     return (
-      <div>
+      <div className={styles.commentsContainer}>
         <label htmlFor="new_comment">Add Comment</label>
         <textarea
           id="new_comment"
@@ -150,7 +150,9 @@ function ProjectComments({ project_id }) {
           cols="50"
           onChange={(e) => setNewComment(e.target.value)}
         ></textarea>
-        <button onClick={addComment}>Add Comment</button>
+        <button className="btn" onClick={addComment}>
+          Add Comment
+        </button>
       </div>
     );
   }

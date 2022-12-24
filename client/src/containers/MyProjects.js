@@ -59,14 +59,14 @@ function MyProjects() {
       const json = await response.json();
       console.log(json);
       toggle();
-      getMyProjects(3, 0);
+      getMyProjects(5, 0);
     } catch (error) {
       console.log(error);
     }
   };
 
   useEffect(() => {
-    getMyProjects(3, 0);
+    getMyProjects(5, 0);
   }, [getMyProjects]);
 
   if (projects.length > 0) {
@@ -108,8 +108,8 @@ function MyProjects() {
             id="previous"
             name="previous"
             onClick={() => {
-              countProj.current = countProj.current - 3;
-              getMyProjects(3, countProj.current);
+              countProj.current = countProj.current - 5;
+              getMyProjects(5, countProj.current);
             }}
           >
             Previous
@@ -121,8 +121,8 @@ function MyProjects() {
             id="next"
             name="next"
             onClick={() => {
-              countProj.current = countProj.current + 3;
-              getMyProjects(3, countProj.current);
+              countProj.current = countProj.current + 5;
+              getMyProjects(5, countProj.current);
             }}
           >
             Next

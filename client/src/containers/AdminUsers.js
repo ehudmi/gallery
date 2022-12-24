@@ -48,7 +48,7 @@ function AdminUsers() {
       });
       const json = await response.json();
       console.log(json);
-      getUserList(3, 0);
+      getUserList(5, 0);
     } catch (error) {
       console.log(error);
     }
@@ -68,14 +68,14 @@ function AdminUsers() {
   //     });
   //     const json = await response.json();
   //     console.log(json);
-  //     getUserList(3, 0);
+  //     getUserList(5, 0);
   //   } catch (error) {
   //     console.log(error);
   //   }
   // };
 
   useEffect(() => {
-    getUserList(3, 0);
+    getUserList(5, 0);
   }, [getUserList]);
 
   if (users.length > 0) {
@@ -117,8 +117,8 @@ function AdminUsers() {
             id="previous"
             name="previous"
             onClick={() => {
-              countUsers.current = countUsers.current - 3;
-              getUserList(3, countUsers.current);
+              countUsers.current = countUsers.current - 5;
+              getUserList(5, countUsers.current);
             }}
           >
             Previous
@@ -131,8 +131,8 @@ function AdminUsers() {
             id="next"
             name="next"
             onClick={() => {
-              countUsers.current = countUsers.current + 3;
-              getUserList(3, countUsers.current);
+              countUsers.current = countUsers.current + 5;
+              getUserList(5, countUsers.current);
             }}
           >
             Next

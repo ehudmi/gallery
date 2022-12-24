@@ -1,3 +1,15 @@
+.bigProjectTitle {
+  margin: 35px auto;
+  color: white;
+  font-size: 50px;
+}
+
+.descriptionContainer {
+  display: flex;
+  /* flex-direction: column; */
+  justify-content: space-around;
+}
+
 .masterContainer {
   margin-top: 50px;
   display: grid;
@@ -15,6 +27,16 @@
   align-items: flex-end;
   grid-column: 1/2;
   grid-row: 2/3;
+}
+
+.prjDescription {
+  width: 25%;
+  word-wrap: break-word;
+}
+
+.mapAuthors {
+  display: flex;
+  flex-direction: column;
 }
 
 .image {

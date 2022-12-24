@@ -148,34 +148,36 @@ function ProjectDetails() {
   } else if (projectDetails.length > 0) {
     return (
       <>
-        <h2 className={styles.projectTitle}>
-          Project {sessionStorage.getItem("project_id")} -{" "}
-          {projectDetails[0].project_name}
-        </h2>
-        <h3 className={styles.projectTitle}>
-          Description - {projectDetails[0].description}
-        </h3>
-        <h3 className={styles.projectTitle}>Link - {projectDetails[0].link}</h3>
-        {projectDetails.map((item, index) => {
-          return (
-            <div className={styles.details} key={index}>
-              {/* <h3 className={styles.projectTitle}>
-                Project {sessionStorage.getItem("project_id")} -{" "}
-                {item.project_name}
-              </h3>
-              <h3>Description - {item.description}</h3> */}
-              <h3
-                className={styles.listItem}
-                onClick={() => {
-                  sessionStorage.setItem("author_id", item.author_id);
-                  return navigate("/author_projects");
-                }}
-              >
-                {item.first_name} {item.last_name}
-              </h3>
-            </div>
-          );
-        })}
+        <div className={styles.descriptionContainer}>
+          <h2 className={styles.bigProjectTitle}>
+            Project {sessionStorage.getItem("project_id")} -{" "}
+            {projectDetails[0].project_name}
+          </h2>
+        </div>
+        <div className={styles.descriptionContainer}>
+          <h3 className={styles.prjDescription}>
+            Description - {projectDetails[0].description}
+          </h3>
+          <h3>Link - {projectDetails[0].link}</h3>
+          <div>
+            <h3>Additional Authors:</h3>
+            {projectDetails.map((item, index) => {
+              return (
+                <div key={index}>
+                  <h3
+                    className={styles.listItem}
+                    onClick={() => {
+                      sessionStorage.setItem("author_id", item.author_id);
+                      return navigate("/author_projects");
+                    }}
+                  >
+                    {item.first_name} {item.last_name}
+                  </h3>
+                </div>
+              );
+            })}
+          </div>
+        </div>
         <div className={styles.masterContainer}>
           <div className={styles.picContainer}>
             {images.length > 0
@@ -258,10 +260,13 @@ function ProjectDetails() {
     );
   } else if (projectDetails.length === 0) {
     return (
-      <ProjectComments
-        className={styles.commentsContainer}
-        project_id={sessionStorage.getItem("project_id")}
-      />
+      // <div className={styles.masterContainer}>
+      //   <ProjectComments
+      //     // className={styles.commentsContainer}
+      //     project_id={sessionStorage.getItem("project_id")}
+      //   />
+      // </div>
+      <p>Loading</p>
     );
   }
 }
