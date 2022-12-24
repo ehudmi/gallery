@@ -1,5 +1,6 @@
 const {
   _readDb,
+  _countRows,
   _readDb_Limited,
   _readDb_LimitedWhereNot,
   _readDbWhereNot,
@@ -110,7 +111,19 @@ const logout = (req, res) => {
   return res.json({ msg: "logging you out" });
 };
 
-// test function to return list of users - can be used by admin
+// function to count number of users - used by admin
+
+const getCountUsers = async (req, res) => {
+  try {
+    const result = await _countRows("users", "*", "id", ">", "0");
+    return res.send(result);
+  } catch (error) {
+    console.log(error);
+    res.status(404).json({ error: "couldn't count users" });
+  }
+};
+
+// function to return list of users - used by admin
 
 const getUsers = async (req, res) => {
   const data = jwt.verify(req.cookies.accessToken, process.env.JWT_SECRET);
@@ -127,6 +140,40 @@ const getUsers = async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(404).json({ error: "couldn't read users" });
+  }
+};
+
+// function to add student to DB - used by admin
+
+const addStudent = async (req, res) => {
+  const { first_name, last_name, email } = req.body;
+  try {
+    await _insertDb("students", {
+      first_name: first_name,
+      last_name: last_name,
+      email: email,
+    });
+    res.json({ msg: "Added Successfully" });
+  } catch (error) {
+    res.status(409).json({ error: "couldn't add student" });
+  }
+};
+
+// function to add course to DB - used by admin
+
+const addCourse = async (req, res) => {
+  const { id, name, start_date, city, country } = req.body;
+  try {
+    await _insertDb("courses", {
+      id: id,
+      name: name,
+      start_date: start_date,
+      city: city,
+      country: country,
+    });
+    res.json({ msg: "Added Successfully" });
+  } catch (error) {
+    res.status(409).json({ error: "couldn't add course" });
   }
 };
 
@@ -228,7 +275,10 @@ module.exports = {
   register,
   login,
   logout,
+  getCountUsers,
   getUsers,
+  addStudent,
+  addCourse,
   deleteUser,
   getAuthors,
   searchAuthors,

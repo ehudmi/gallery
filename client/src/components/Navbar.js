@@ -70,6 +70,9 @@ function Navbar() {
             <Link to="/user_list">Manage Users</Link>
           </li>
           <li>
+            <Link to="/admin_add">Add Data</Link>
+          </li>
+          <li>
             <Link to="/search">Search</Link>
           </li>
           <li>

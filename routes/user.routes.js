@@ -3,7 +3,10 @@ const {
   register,
   login,
   logout,
+  getCountUsers,
   getUsers,
+  addStudent,
+  addCourse,
   deleteUser,
   getAuthors,
   searchAuthors,
@@ -34,7 +37,10 @@ router.post("/delete_comment", [authJwt.checkToken], deleteComment);
 router.post("/search", [authJwt.checkToken], searchAuthors);
 
 // routes available to Admin
+router.get("/count_users", [authJwt.isAdmin], getCountUsers);
 router.post("/user_list", [authJwt.isAdmin], getUsers);
+router.post("/add_student", [authJwt.isAdmin], addStudent);
+router.post("/add_course", [authJwt.isAdmin], addCourse);
 router.post(
   "/delete_user",
   [authJwt.isAdmin],

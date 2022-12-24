@@ -38,6 +38,37 @@ const authUser = async (req, res) => {
   }
 };
 
+// function to count all projects
+
+const getCountProjects = async (req, res) => {
+  try {
+    const result = await _countRows("projects", "*", "id", ">", "0");
+    return res.send(result);
+  } catch (error) {
+    console.log(error);
+    res.status(404).json({ error: "couldn't count projects" });
+  }
+};
+
+// function to count current author projects
+
+const getCountMyProjects = async (req, res) => {
+  const data = jwt.verify(req.cookies.accessToken, process.env.JWT_SECRET);
+  try {
+    const result = await _countRows(
+      "project_authors",
+      "*",
+      "user_id",
+      "=",
+      data.id
+    );
+    return res.send(result);
+  } catch (error) {
+    console.log(error);
+    res.status(404).json({ error: "couldn't count my projects" });
+  }
+};
+
 // function to retrieve list of projects by search term
 
 const searchProjects = async (req, res) => {
@@ -267,9 +298,13 @@ const addImages = async (req, res) => {
       id: req.body.project_id,
     });
     if (isProjectExist.length > 0) {
-      const checkImageCount = await _countRows("project_images", "uuid", {
-        project_id: req.body.project_id,
-      });
+      const checkImageCount = await _countRows(
+        "project_images",
+        "uuid",
+        "project_id",
+        "=",
+        req.body.project_id
+      );
       if (checkImageCount[0].count < 3) {
         const insertImage = await _insertDb("project_images", fieldsToInsert);
         return res.send({ message: `inserted ${insertImage.length} images` });
@@ -380,6 +415,8 @@ const deleteComment = async (req, res) => {
 
 module.exports = {
   authUser,
+  getCountProjects,
+  getCountMyProjects,
   searchProjects,
   getAuthorProjects,
   getMyProjects,

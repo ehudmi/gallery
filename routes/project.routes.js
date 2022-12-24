@@ -2,6 +2,8 @@ const express = require("express");
 
 const {
   authUser,
+  getCountProjects,
+  getCountMyProjects,
   searchProjects,
   getAuthorProjects,
   getMyProjects,
@@ -37,10 +39,12 @@ router.post("/add_comment", [authJwt.checkToken], addComment);
 router.post("/delete_comment", [authJwt.checkToken], deleteComment);
 router.post("/search", [authJwt.checkToken], searchProjects);
 router.post("/author_projects", [authJwt.checkToken], getAuthorProjects);
+router.get("/count_projects", [authJwt.checkToken], getCountProjects);
 
 // routes available to Author
 
 router.post("/my_projects", [authJwt.isAuthor], getMyProjects);
+router.get("/count_my_projects", [authJwt.isAuthor], getCountMyProjects);
 router.get("/read_course", [authJwt.isAuthor], getCourseList);
 router.post("/add_project", [authJwt.isAuthor], addProject);
 router.post(

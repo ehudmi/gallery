@@ -22,6 +22,7 @@ import AuthorProjects from "./containers/AuthorProjects";
 import ProjectsList from "./containers/ProjectsList";
 import Logout from "./components/Logout";
 import AdminUsers from "./containers/AdminUsers";
+import AdminDataInput from "./containers/AdminDataInput";
 
 // Define protected route wrapping routes by authentication and role based authorization
 
@@ -80,6 +81,7 @@ function AppRouter() {
               }
             >
               <Route path="user_list" element={<AdminUsers />} />
+              <Route path="admin_add" element={<AdminDataInput />} />
             </Route>
           </Route>
         </Route>

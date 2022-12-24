@@ -11,6 +11,7 @@ function ProjectsList() {
   const { authState } = useAuth();
 
   const [projects, setProjects] = useState([]);
+  const [numProjects, setNumProjects] = useState(0);
   const countProj = useRef(0);
 
   const navigate = useNavigate();
@@ -24,6 +25,20 @@ function ProjectsList() {
     setType,
     type,
   } = useModal();
+
+  // count total projects in DB
+
+  const getCountProjects = useCallback(async () => {
+    try {
+      const response = await fetch("/projects/count_projects", {
+        method: "GET",
+      });
+      const json = await response.json();
+      setNumProjects(json);
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
 
   // retrieve list of projects to display
 
@@ -67,6 +82,10 @@ function ProjectsList() {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    getCountProjects();
+  }, [getCountProjects]);
 
   useEffect(() => {
     getProjectsList(5, 0);
@@ -116,7 +135,9 @@ function ProjectsList() {
           </button>
           <button
             className={`${styles.btn} ${styles.nextButton} ${
-              projects.length === 0 ? "btnHidden" : "btnVisible"
+              numProjects[0]?.count - countProj.current < 5
+                ? "btnHidden"
+                : "btnVisible"
             }`}
             id="next"
             name="next"
@@ -127,6 +148,7 @@ function ProjectsList() {
           >
             Next
           </button>
+          {/* <button onClick={getCountProjects}>Total Projects</button> */}
         </div>
         <ConfirmModal
           isShowing={isShowing}

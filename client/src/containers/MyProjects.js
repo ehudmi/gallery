@@ -8,6 +8,7 @@ import ConfirmModal from "../components/ConfirmModal";
 
 function MyProjects() {
   const [projects, setProjects] = useState([]);
+  const [numProjects, setNumProjects] = useState(0);
   const countProj = useRef(0);
 
   const navigate = useNavigate();
@@ -21,6 +22,20 @@ function MyProjects() {
     setType,
     type,
   } = useModal();
+
+  // Count number of projects authored by current user
+
+  const getCountProjects = useCallback(async () => {
+    try {
+      const response = await fetch("/projects/count_my_projects", {
+        method: "GET",
+      });
+      const json = await response.json();
+      setNumProjects(json);
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
 
   // retrieve list of projects authored by current user
 
@@ -64,6 +79,10 @@ function MyProjects() {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    getCountProjects();
+  }, [getCountProjects]);
 
   useEffect(() => {
     getMyProjects(5, 0);
@@ -116,7 +135,9 @@ function MyProjects() {
           </button>
           <button
             className={`${styles.btn} ${styles.nextButton} ${
-              projects.length === 0 ? "btnHidden" : "btnVisible"
+              numProjects[0]?.count - countProj.current < 5
+                ? "btnHidden"
+                : "btnVisible"
             }`}
             id="next"
             name="next"

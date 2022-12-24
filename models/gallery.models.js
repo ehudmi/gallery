@@ -90,8 +90,8 @@ const _readDb_LimitedWhereNot = (table, data, criteria1, limit, offset) => {
   return db(table).select(data).whereNot(criteria1).limit(limit).offset(offset);
 };
 
-const _countRows = (table, data, criteria) => {
-  return db(table).count(data).where(criteria);
+const _countRows = (table, data, column, operator, value) => {
+  return db(table).count(data).where(column, operator, value);
 };
 
 const _searchDb = (table, column1, value1, column2) => {

@@ -6,9 +6,22 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 function AdminUsers() {
   const [users, setUsers] = useState([]);
+  const [numUsers, setNumUsers] = useState(0);
   const countUsers = useRef(0);
 
   const navigate = useNavigate();
+
+  const getCountUsers = useCallback(async () => {
+    try {
+      const response = await fetch("/users/count_users", {
+        method: "GET",
+      });
+      const json = await response.json();
+      setNumUsers(json);
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
 
   // retrieve list of users to display
 
@@ -75,6 +88,10 @@ function AdminUsers() {
   // };
 
   useEffect(() => {
+    getCountUsers();
+  }, [getCountUsers]);
+
+  useEffect(() => {
     getUserList(5, 0);
   }, [getUserList]);
 
@@ -125,12 +142,15 @@ function AdminUsers() {
           </button>
           <button
             className={`${styles.btn} ${styles.nextButton} ${
-              users.length === 0 ? "btnHidden" : "btnVisible"
+              numUsers[0]?.count - 1 - countUsers.current < 5
+                ? "btnHidden"
+                : "btnVisible"
             }`}
             // visibility={users.length === 0 ? "visible" : "hidden"}
             id="next"
             name="next"
             onClick={() => {
+              console.log(numUsers[0].count, countUsers.current);
               countUsers.current = countUsers.current + 5;
               getUserList(5, countUsers.current);
             }}
