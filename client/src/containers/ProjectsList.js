@@ -56,7 +56,7 @@ function ProjectsList() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          id: [id],
+          project_id: [id],
         }),
       });
       const json = await response.json();
