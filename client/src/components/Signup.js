@@ -130,6 +130,13 @@ function Signup() {
           >
             {errMsg}
           </p>
+          <div className={styles.alreadyReg}>
+            Already registered?
+            <span className="line">
+              <a href="login">Sign In</a>
+            </span>
+          </div>
+
           <h1>Sign Up</h1>
           <form className={styles.ActiveForm} onSubmit={handleSubmit}>
             <label htmlFor="firstName">
@@ -142,6 +149,17 @@ function Signup() {
                 icon={faTimes}
                 className={validFName || !fName ? "hide" : "invalid"}
               />
+              <p
+                id="uidNote"
+                className={
+                  fNameFocus && fName && !validFName
+                    ? "instructions"
+                    : "offscreen"
+                }
+              >
+                <FontAwesomeIcon icon={faInfoCircle} />4 to 24 characters. Must
+                begin with a Capital letter. Only letters allowed.
+              </p>
             </label>
             <input
               type="text"
@@ -157,17 +175,7 @@ function Signup() {
               onFocus={() => setFNameFocus(true)}
               onBlur={() => setFNameFocus(false)}
             />
-            <p
-              id="uidNote"
-              className={
-                fNameFocus && fName && !validFName
-                  ? "instructions"
-                  : "offscreen"
-              }
-            >
-              <FontAwesomeIcon icon={faInfoCircle} />4 to 24 characters. Must
-              begin with a Capital letter. Only letters allowed.
-            </p>
+
             <label htmlFor="lastName">
               Last Name:
               <FontAwesomeIcon
@@ -178,6 +186,17 @@ function Signup() {
                 icon={faTimes}
                 className={validLName || !lName ? "hide" : "invalid"}
               />
+              <p
+                id="uidNote"
+                className={
+                  lNameFocus && lName && !validLName
+                    ? "instructions"
+                    : "offscreen"
+                }
+              >
+                <FontAwesomeIcon icon={faInfoCircle} />4 to 24 characters. Must
+                begin with a Capital letter. Only letters allowed.
+              </p>
             </label>
             <input
               type="text"
@@ -192,17 +211,6 @@ function Signup() {
               onFocus={() => setLNameFocus(true)}
               onBlur={() => setLNameFocus(false)}
             />
-            <p
-              id="uidNote"
-              className={
-                lNameFocus && lName && !validLName
-                  ? "instructions"
-                  : "offscreen"
-              }
-            >
-              <FontAwesomeIcon icon={faInfoCircle} />4 to 24 characters. Must
-              begin with a Capital letter. Only letters allowed.
-            </p>
 
             <label htmlFor="email">
               Email:
@@ -214,6 +222,18 @@ function Signup() {
                 icon={faTimes}
                 className={validEmail || !email ? "hide" : "invalid"}
               />
+              <p
+                id="uidNote"
+                className={
+                  emailFocus && email && !validEmail
+                    ? "instructions"
+                    : "offscreen"
+                }
+              >
+                <FontAwesomeIcon icon={faInfoCircle} />
+                Must include the characters "@" and "." Make sure the email is
+                valid
+              </p>
             </label>
             <input
               type="email"
@@ -228,18 +248,6 @@ function Signup() {
               onFocus={() => setEmailFocus(true)}
               onBlur={() => setEmailFocus(false)}
             />
-            <p
-              id="uidNote"
-              className={
-                emailFocus && email && !validEmail
-                  ? "instructions"
-                  : "offscreen"
-              }
-            >
-              <FontAwesomeIcon icon={faInfoCircle} />
-              Must include the characters "@" and "." Make sure the email is
-              valid
-            </p>
 
             <label htmlFor="password">
               Password:
@@ -251,6 +259,15 @@ function Signup() {
                 icon={faTimes}
                 className={validPwd || !password ? "hide" : "invalid"}
               />
+              <p
+                id="uidNote"
+                className={
+                  pwdFocus && lName && !validPwd ? "instructions" : "offscreen"
+                }
+              >
+                <FontAwesomeIcon icon={faInfoCircle} />8 to 15 characters. Must
+                include uppercase, lowercase and digits.
+              </p>
             </label>
             <input
               type="password"
@@ -265,15 +282,6 @@ function Signup() {
               onFocus={() => setPwdFocus(true)}
               onBlur={() => setPwdFocus(false)}
             />
-            <p
-              id="uidNote"
-              className={
-                pwdFocus && lName && !validPwd ? "instructions" : "offscreen"
-              }
-            >
-              <FontAwesomeIcon icon={faInfoCircle} />8 to 15 characters. Must
-              include uppercase, lowercase and digits.
-            </p>
 
             <label htmlFor="confirm_pwd">
               Confirm Password:
@@ -285,6 +293,15 @@ function Signup() {
                 icon={faTimes}
                 className={validMatch || !matchPwd ? "hide" : "invalid"}
               />
+              <p
+                id="confirmNote"
+                className={
+                  matchFocus && !validMatch ? "instructions" : "offscreen"
+                }
+              >
+                <FontAwesomeIcon icon={faInfoCircle} />
+                Must match the first password input field.
+              </p>
             </label>
             <input
               type="password"
@@ -297,15 +314,6 @@ function Signup() {
               onFocus={() => setMatchFocus(true)}
               onBlur={() => setMatchFocus(false)}
             />
-            <p
-              id="confirmNote"
-              className={
-                matchFocus && !validMatch ? "instructions" : "offscreen"
-              }
-            >
-              <FontAwesomeIcon icon={faInfoCircle} />
-              Must match the first password input field.
-            </p>
 
             <label htmlFor="birthDate">Birth Date:</label>
             <input
@@ -321,8 +329,8 @@ function Signup() {
             <textarea
               id="about"
               placeholder="About"
-              rows="4"
-              cols="50"
+              // rows="3"
+              // cols="38"
               onChange={(e) => setAbout(e.target.value)}
               value={about}
             ></textarea>
@@ -341,12 +349,6 @@ function Signup() {
               Submit
             </button>
           </form>
-          <p>
-            Already registered?
-            <span className="line">
-              <a href="login">Sign In</a>
-            </span>
-          </p>
         </section>
       )}
     </>

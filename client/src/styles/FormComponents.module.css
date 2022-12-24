@@ -7,23 +7,36 @@
   box-sizing: border-box;
   height: fit-content;
   padding: auto 30px;
-  width: 600px;
+  width: 500px;
+  position: relative;
   box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px,
     rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
 }
 
 .ActiveForm {
-  display: grid;
-  grid-template-columns: 200px 200px 100px 100px;
-  text-align: flex-start;
+  display: flex;
+  flex-direction: column;
   padding: auto 30px;
+  justify-content: flex-start;
+}
+
+.alreadyReg {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  align-items: center;
+  text-align: center;
+  left: 65%;
+  top: 5%;
+  color: white;
 }
 
 input,
 select,
 label {
-  margin-top: 17px;
-  /* width: 200px; */
+  width: 50%;
+  position: relative;
+  text-align: flex-start;
 }
 
 h1,
@@ -42,22 +55,41 @@ label {
 }
 
 label {
-  grid-column: 1/2;
+  margin-bottom: 0px;
+  position: relative;
 }
 
-input,
-select {
-  grid-column: 2/3;
+input {
+  margin-bottom: 15px;
 }
 
 textarea {
-  margin-top: 17px;
-  grid-column: span 2;
+  width: 90%;
 }
 
 .FormSubmitBtn {
-  grid-column: 1/2;
-  width: 80%;
+  margin-top: 15px;
+  width: 80px;
+  align-self: center;
+  width: 140px;
+  border-radius: 8px;
+  padding: 10px;
+  font-size: large;
+  cursor: pointer;
+}
+
+.FormSubmitBtn:enabled:hover {
+  background-color: rgb(225, 183, 104);
+  transition: ease 0.3s all;
+}
+
+.FormSubmitBtn:enabled {
+  background-color: rgb(214, 153, 41);
+  color: white;
+}
+
+.FormSubmitBtn:active:hover {
+  background-color: rgb(77, 119, 59);
 }
 
 .errMsg {
