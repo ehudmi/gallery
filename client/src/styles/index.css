@@ -138,19 +138,30 @@ textarea {
   margin-top: 30px;
 }
 
-.btn {
-  border-radius: 15px;
+button {
+  margin-top: 15px;
+  width: 80px;
+  align-self: center;
+  width: 140px;
+  border-radius: 8px;
+  padding: 10px;
+  font-size: large;
   cursor: pointer;
-  color: rgb(91, 66, 23);
-  background-color: rgb(223, 201, 140);
-  width: 100px;
-  border: 2px solid rgb(50, 50, 17);
-  text-align: center;
-  padding: 8px;
+  border: 2px solid rgb(190, 156, 95);
 }
 
-.btn:hover {
-  background-color: rgb(142, 131, 100);
-  color: rgb(255, 255, 255);
-  transition: all 0.4s ease;
+button:hover {
+  background-color: rgb(225, 183, 104);
+  transition: ease 0.3s all;
+}
+
+button:enabled {
+  background-color: rgb(214, 153, 41);
+  color: white;
+}
+
+button:active:hover {
+  border: 2px solid rgb(120, 174, 86);
+
+  background-color: rgb(77, 119, 59);
 }

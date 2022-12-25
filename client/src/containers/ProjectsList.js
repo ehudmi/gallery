@@ -148,7 +148,6 @@ function ProjectsList() {
           >
             Next
           </button>
-          {/* <button onClick={getCountProjects}>Total Projects</button> */}
         </div>
         <ConfirmModal
           isShowing={isShowing}

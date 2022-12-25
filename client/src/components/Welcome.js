@@ -6,12 +6,8 @@ function Welcome() {
   return (
     <div className={styles.container}>
       <div className={styles.btnContainer}>
-        <button className={styles.button20} onClick={() => navigate("/signup")}>
-          Signup
-        </button>
-        <button className={styles.button20} onClick={() => navigate("/login")}>
-          Login
-        </button>
+        <button onClick={() => navigate("/signup")}>Signup</button>
+        <button onClick={() => navigate("/login")}>Login</button>
       </div>
     </div>
   );

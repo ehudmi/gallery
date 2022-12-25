@@ -103,19 +103,20 @@ function MyProjects() {
                   return navigate("/project_details");
                 }}
               >
-                Project Name {item.project_name}
+                {item.project_name} - {item.description}
+                <span className={styles.spaceBetween}>
+                  {" "}
+                  <FontAwesomeIcon
+                    icon={faTimes}
+                    className="invalid"
+                    onClick={() => {
+                      setType("project");
+                      setSelectedId(item.id);
+                      toggle();
+                    }}
+                  />
+                </span>
               </h3>
-              {
-                <FontAwesomeIcon
-                  icon={faTimes}
-                  className="invalid"
-                  onClick={() => {
-                    setType("project");
-                    setSelectedId(item.id);
-                    toggle();
-                  }}
-                />
-              }
             </div>
           );
         })}

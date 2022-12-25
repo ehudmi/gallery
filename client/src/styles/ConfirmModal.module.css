@@ -6,7 +6,7 @@
   width: 100vw;
   height: 100vh;
   background-color: #000;
-  opacity: 0.5;
+  opacity: 0.4;
 }
 
 .modal_wrapper {
@@ -23,40 +23,34 @@
 
 .modal {
   z-index: 100;
-  background: white;
+  background: rgb(255, 249, 232);
   position: relative;
   margin: 1.75rem auto;
   border-radius: 3px;
   max-width: 500px;
   padding: 2rem;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
 }
 
 .modal_header {
   color: #000;
   display: flex;
-  justify-content: flex-end;
+  justify-content: flex-start;
 }
 
-.modal_close_button {
-  font-size: 1.4rem;
-  font-weight: 700;
-  line-height: 1;
-  color: #000;
-  opacity: 0.3;
-  cursor: pointer;
-  border: none;
+.modal_header > h2 {
+  margin: 5px auto;
 }
 
-button {
-  font-size: 0.9rem;
-  font-weight: 700;
-  border: none;
-  border-radius: 3px;
-  padding: 0.3rem 1rem;
-  margin-left: 0.5rem;
+.modal_footer {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
 }
 
-.button_default {
-  background: #247ba0;
-  color: #fff;
+.modal_body {
+  margin: 10px auto;
 }

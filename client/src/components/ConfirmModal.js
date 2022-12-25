@@ -23,7 +23,6 @@ const ConfirmModal = ({ isShowing, hide, confirmModal, id, message, type }) =>
               <div className={styles.modal_footer}>
                 <button
                   type="button"
-                  className={styles.modal_close_button}
                   data-dismiss="modal"
                   aria-label="Cancel"
                   onClick={hide}
@@ -32,7 +31,6 @@ const ConfirmModal = ({ isShowing, hide, confirmModal, id, message, type }) =>
                 </button>
                 <button
                   type="button"
-                  className={styles.modal_close_button}
                   data-dismiss="modal"
                   aria-label="Delete"
                   onClick={() => confirmModal(id)}
