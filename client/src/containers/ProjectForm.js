@@ -121,6 +121,7 @@ function ProjectForm() {
     return (
       <div>
         <div className={styles.FormContainer}>
+          <h1 className={styles.}>Add A Project</h1>
           <form onSubmit={submitProject} className={styles.ActiveForm}>
             <label htmlFor="project_name">Project Name</label>
             <input
