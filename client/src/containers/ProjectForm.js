@@ -33,6 +33,10 @@ function ProjectForm() {
   const filesRef = useRef(null);
   const [files, setFiles] = useState();
 
+  const errRef = useRef();
+  const [errMsg, setErrMsg] = useState("");
+  const [success, setSuccess] = useState(false);
+
   // check what courses are in the db to populate list of courses
 
   const getCourseData = async () => {
@@ -63,21 +67,38 @@ function ProjectForm() {
 
   const submitProject = async (event) => {
     event.preventDefault();
-    const response = await fetch("/projects/add_project", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        project_name: projectName,
-        course_id: courseId,
-        description: description,
-        authors: authors.map((item) => item.id),
-        link: link,
-      }),
-    });
-    const projectAdd = await response.json();
-    setProjectId(projectAdd[0].project_id);
+    try {
+      const response = await fetch("/projects/add_project", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          project_name: projectName,
+          course_id: courseId,
+          description: description,
+          authors: authors.map((item) => item.id),
+          link: link,
+        }),
+      });
+      const projectAdd = await response.json();
+      if (!!projectAdd[0]?.projectId) {
+        setSuccess(true);
+        setProjectName("");
+        setCourseId("");
+        setDescription("");
+        setAuthors({
+          id: authState.userId,
+          name: `${authState.first_name} ${authState.last_name}`,
+        });
+        setLink("");
+        setProjectId(projectAdd[0].project_id);
+      } else if (projectAdd.error) throw projectAdd.error;
+    } catch (error) {
+      console.log("error");
+      setErrMsg(error);
+      errRef.current.focus();
+    }
   };
 
   // function to add image data to the db using fileInfo from Uploadcare
@@ -119,143 +140,171 @@ function ProjectForm() {
 
   if (courseData.length > 0 && authorData.length > 0) {
     return (
-      <div className={styles.bigDaddy2}>
-        <div className={styles.FormContainer}>
-          <form onSubmit={submitProject} className={styles.ActiveForm}>
-            <h1 className={styles.title}>Add A Project</h1>
-
-            <label htmlFor="project_name">Project Name</label>
-            <input
-              type={"text"}
-              id="project_name"
-              placeholder="Project Name"
-              onChange={(e) => setProjectName(e.target.value)}
-            />
-            <label htmlFor="course_id">Course</label>
-            <select
-              id="course_id"
-              defaultValue={0}
-              onChange={(e) => {
-                setCourseId(e.target.value);
-              }}
-            >
-              <option hidden disabled value={0}>
-                -- select an option --
-              </option>
-              {courseData.map((item, index) => (
-                <option key={index} value={item.id} label={`${item.name}`} />
-              ))}
-            </select>
-            <label htmlFor="description">Description</label>
-            <textarea
-              id="description"
-              placeholder="Description"
-              rows="4"
-              cols="50"
-              onChange={(e) => setDescription(e.target.value)}
-            ></textarea>
-            <label htmlFor="add_author">Additional Author</label>
-            <div className={styles.authorSelectContainer}>
-              <select
-                id="add_author"
-                defaultValue={0}
-                onChange={(e) => {
-                  let idx = e.target.selectedIndex;
-                  let dataset = e.target.options[idx].dataset;
-                  console.log(dataset.display);
-                  setAuthors((prev) => [
-                    ...prev,
-                    { id: Number(e.target.value), name: dataset.display },
-                  ]);
-                  // console.log(authors);
-                }}
+      <>
+        {" "}
+        {success ? (
+          <section>
+            <h1>Success!</h1>
+            <p>
+              <a href="login">Sign In</a>
+            </p>
+          </section>
+        ) : (
+          <div>
+            <div className={styles.bigDaddy2}>
+              <p
+                ref={errRef}
+                className={errMsg ? "errMsg" : "offscreen"}
+                aria-live="assertive"
               >
-                <option hidden disabled value={0}>
-                  -- select an option --
-                </option>
-                {authorData.map((item, index) => (
-                  <option
-                    key={index}
-                    value={item.id}
-                    data-display={`${item.first_name} ${item.last_name}`}
-                    label={`${item.first_name} ${item.last_name}`}
+                {errMsg}
+              </p>
+              <div className={styles.FormContainer}>
+                <form onSubmit={submitProject} className={styles.ActiveForm}>
+                  <h1 className={styles.title}>Add A Project</h1>
+
+                  <label htmlFor="project_name">Project Name</label>
+                  <input
+                    type={"text"}
+                    id="project_name"
+                    placeholder="Project Name"
+                    onChange={(e) => setProjectName(e.target.value)}
                   />
-                ))}
-              </select>
-              <div className={styles.authorsList}>
-                {authors.map((item, index) => (
-                  <p className={styles.authorName} key={index}>
-                    {item.name}
-                    {index > 0 ? (
-                      <FontAwesomeIcon
-                        icon={faTimes}
-                        className="invalid"
-                        onClick={() => {
-                          // authors.splice(index, 1);
-                          setAuthors((prev) => [
-                            ...prev.slice(0, index),
-                            ...prev.slice(index + 1),
-                          ]);
-                          // console.log(index);
-                          // console.log(authors);
-                        }}
+                  <label htmlFor="course_id">Course</label>
+                  <select
+                    id="course_id"
+                    defaultValue={0}
+                    onChange={(e) => {
+                      setCourseId(e.target.value);
+                    }}
+                  >
+                    <option hidden disabled value={0}>
+                      -- select an option --
+                    </option>
+                    {courseData.map((item, index) => (
+                      <option
+                        key={index}
+                        value={item.id}
+                        label={`${item.name}`}
                       />
-                    ) : null}
-                  </p>
-                ))}
-              </div>
-            </div>
-            <label htmlFor="project_link">
-              Project Link{" "}
-              <FontAwesomeIcon
-                icon={faCheck}
-                className={validProjectLink ? "valid" : "hide"}
-              />
-              <FontAwesomeIcon
-                icon={faTimes}
-                className={validProjectLink || !link ? "hide" : "invalid"}
-              />
-            </label>
-            <input
-              type={"text"}
-              id="project_link"
-              placeholder="Project Link"
-              onChange={(e) => setLink(e.target.value)}
-            />
+                    ))}
+                  </select>
+                  <label htmlFor="description">Description</label>
+                  <textarea
+                    id="description"
+                    placeholder="Description"
+                    rows="4"
+                    cols="50"
+                    onChange={(e) => setDescription(e.target.value)}
+                  ></textarea>
+                  <label htmlFor="add_author">Additional Author</label>
+                  <div className={styles.authorSelectContainer}>
+                    <select
+                      id="add_author"
+                      defaultValue={0}
+                      onChange={(e) => {
+                        let idx = e.target.selectedIndex;
+                        let dataset = e.target.options[idx].dataset;
+                        console.log(dataset.display);
+                        setAuthors((prev) => [
+                          ...prev,
+                          { id: Number(e.target.value), name: dataset.display },
+                        ]);
+                        // console.log(authors);
+                      }}
+                    >
+                      <option hidden disabled value={0}>
+                        -- select an option --
+                      </option>
+                      {authorData.map((item, index) => (
+                        <option
+                          key={index}
+                          value={item.id}
+                          data-display={`${item.first_name} ${item.last_name}`}
+                          label={`${item.first_name} ${item.last_name}`}
+                        />
+                      ))}
+                    </select>
+                    <div className={styles.authorsList}>
+                      {authors.map((item, index) => (
+                        <p className={styles.authorName} key={index}>
+                          {item.name}
+                          {index > 0 ? (
+                            <FontAwesomeIcon
+                              icon={faTimes}
+                              className="invalid"
+                              onClick={() => {
+                                // authors.splice(index, 1);
+                                setAuthors((prev) => [
+                                  ...prev.slice(0, index),
+                                  ...prev.slice(index + 1),
+                                ]);
+                                // console.log(index);
+                                // console.log(authors);
+                              }}
+                            />
+                          ) : null}
+                        </p>
+                      ))}
+                    </div>
+                  </div>
+                  <label htmlFor="project_link">
+                    Project Link{" "}
+                    <FontAwesomeIcon
+                      icon={faCheck}
+                      className={validProjectLink ? "valid" : "hide"}
+                    />
+                    <FontAwesomeIcon
+                      icon={faTimes}
+                      className={validProjectLink || !link ? "hide" : "invalid"}
+                    />
+                  </label>
+                  <input
+                    type={"text"}
+                    id="project_link"
+                    placeholder="Project Link"
+                    onChange={(e) => setLink(e.target.value)}
+                  />
 
-            <div className="btnContainer">
-              <button type="submit" className={` btn ${styles.submitPrj}`}>
-                Submit
-              </button>
+                  <div className="btnContainer">
+                    <button
+                      type="submit"
+                      className={` btn ${styles.submitPrj}`}
+                    >
+                      Submit
+                    </button>
+                  </div>
+                </form>
+              </div>
+              {!!validProjectId ? (
+                <div className={styles.fileUploadBtnContainer}>
+                  <label htmlFor="addImages">
+                    <button
+                      className="btn"
+                      component="span"
+                      onClick={() => filesRef.current.click()}
+                    >
+                      <span>Select Images</span>
+                    </button>
+                  </label>
+                  <input
+                    ref={filesRef}
+                    accept=".jpg, .jpeg, .png, .gif"
+                    style={{ display: "none" }}
+                    id="addImages"
+                    multiple
+                    type="file"
+                    onChange={(e) => {
+                      setFiles(e.target.files);
+                    }}
+                  />
+                  <button onClick={uploadFiles}>Upload Files</button>
+                </div>
+              ) : null}
             </div>
-          </form>
-        </div>
-        {!!validProjectId ? (
-          <div className={styles.fileUploadBtnContainer}>
-            <label htmlFor="addImages">
-              <button
-                className="btn"
-                component="span"
-                onClick={() => filesRef.current.click()}
-              >
-                <span>Select Images</span>
-              </button>
-            </label>
-            <input
-              ref={filesRef}
-              accept=".jpg, .jpeg, .png, .gif"
-              style={{ display: "none" }}
-              id="addImages"
-              multiple
-              type="file"
-              onChange={(e) => {
-                setFiles(e.target.files);
-              }}
-            />
-            <button onClick={uploadFiles}>Upload Files</button>
           </div>
-        ) : null}
-      </div>
+        )}
+      </>
     );
   } else {
     return <div>Loading</div>;

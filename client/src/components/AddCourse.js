@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import Dropdown from "./Dropdown";
 import styles from "../styles/FormComponents.module.css";
 
@@ -40,30 +40,32 @@ function AddCourse() {
     }
   };
 
-  const getCities = async (value) => {
-    try {
-      const response = await fetch(
-        "https://countriesnow.space/api/v0.1/countries/cities",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            country: value.name.toLowerCase(),
-          }),
-        }
-      );
-      const json = await response.json();
-      console.log(json);
-      json?.msg === `cities in ${value.name} retrieved`
-        ? setCities(json.data.map((item) => ({ name: item })))
-        : setCities([]);
-    } catch (error) {
-      console.log("error");
-      setErrMsg(error);
-    }
-  };
+  const getCities = useCallback(async (value) => {
+    if (value.name !== undefined)
+      try {
+        const response = await fetch(
+          "https://countriesnow.space/api/v0.1/countries/cities",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              country: value.name.toLowerCase(),
+            }),
+          }
+        );
+        const json = await response.json();
+        console.log(json);
+        json?.msg === `cities in ${value.name} retrieved` &&
+        json?.error === false
+          ? setCities(json.data.map((item) => ({ name: item })))
+          : setCities([]);
+      } catch (error) {
+        console.log("error");
+        setErrMsg(error);
+      }
+  }, []);
 
   const submitCourse = async (event) => {
     event.preventDefault();
@@ -161,15 +163,12 @@ function AddCourse() {
                   value={country}
                   onChange={(val) => {
                     setCountry(val);
-                    country !== ""
-                      ? getCities(val)
-                      : console.log("country", country);
+                    getCities(val);
                   }}
                 />
                 {console.log("country", country)}
               </div>
             ) : null}
-
             {cities?.length > 0 ? (
               <div style={{ width: "200px" }}>
                 <Dropdown
