@@ -119,10 +119,11 @@ function ProjectForm() {
 
   if (courseData.length > 0 && authorData.length > 0) {
     return (
-      <div>
+      <div className={styles.bigDaddy2}>
         <div className={styles.FormContainer}>
-          <h1 className={styles.}>Add A Project</h1>
           <form onSubmit={submitProject} className={styles.ActiveForm}>
+            <h1 className={styles.title}>Add A Project</h1>
+
             <label htmlFor="project_name">Project Name</label>
             <input
               type={"text"}
@@ -154,32 +155,56 @@ function ProjectForm() {
               onChange={(e) => setDescription(e.target.value)}
             ></textarea>
             <label htmlFor="add_author">Additional Author</label>
-            <select
-              id="add_author"
-              defaultValue={0}
-              onChange={(e) => {
-                let idx = e.target.selectedIndex;
-                let dataset = e.target.options[idx].dataset;
-                console.log(dataset.display);
-                setAuthors((prev) => [
-                  ...prev,
-                  { id: Number(e.target.value), name: dataset.display },
-                ]);
-                // console.log(authors);
-              }}
-            >
-              <option hidden disabled value={0}>
-                -- select an option --
-              </option>
-              {authorData.map((item, index) => (
-                <option
-                  key={index}
-                  value={item.id}
-                  data-display={`${item.first_name} ${item.last_name}`}
-                  label={`${item.first_name} ${item.last_name}`}
-                />
-              ))}
-            </select>
+            <div className={styles.authorSelectContainer}>
+              <select
+                id="add_author"
+                defaultValue={0}
+                onChange={(e) => {
+                  let idx = e.target.selectedIndex;
+                  let dataset = e.target.options[idx].dataset;
+                  console.log(dataset.display);
+                  setAuthors((prev) => [
+                    ...prev,
+                    { id: Number(e.target.value), name: dataset.display },
+                  ]);
+                  // console.log(authors);
+                }}
+              >
+                <option hidden disabled value={0}>
+                  -- select an option --
+                </option>
+                {authorData.map((item, index) => (
+                  <option
+                    key={index}
+                    value={item.id}
+                    data-display={`${item.first_name} ${item.last_name}`}
+                    label={`${item.first_name} ${item.last_name}`}
+                  />
+                ))}
+              </select>
+              <div className={styles.authorsList}>
+                {authors.map((item, index) => (
+                  <p className={styles.authorName} key={index}>
+                    {item.name}
+                    {index > 0 ? (
+                      <FontAwesomeIcon
+                        icon={faTimes}
+                        className="invalid"
+                        onClick={() => {
+                          // authors.splice(index, 1);
+                          setAuthors((prev) => [
+                            ...prev.slice(0, index),
+                            ...prev.slice(index + 1),
+                          ]);
+                          // console.log(index);
+                          // console.log(authors);
+                        }}
+                      />
+                    ) : null}
+                  </p>
+                ))}
+              </div>
+            </div>
             <label htmlFor="project_link">
               Project Link{" "}
               <FontAwesomeIcon
@@ -197,60 +222,39 @@ function ProjectForm() {
               placeholder="Project Link"
               onChange={(e) => setLink(e.target.value)}
             />
+
             <div className="btnContainer">
-              <button type="submit" className="btn">
+              <button type="submit" className={` btn ${styles.submitPrj}`}>
                 Submit
               </button>
             </div>
-            <div>
-              {authors.map((item, index) => (
-                <p key={index} style={{ color: "red" }}>
-                  {item.name}
-                  {index > 0 ? (
-                    <FontAwesomeIcon
-                      icon={faTimes}
-                      className="invalid"
-                      onClick={() => {
-                        // authors.splice(index, 1);
-                        setAuthors((prev) => [
-                          ...prev.slice(0, index),
-                          ...prev.slice(index + 1),
-                        ]);
-                        // console.log(index);
-                        // console.log(authors);
-                      }}
-                    />
-                  ) : null}
-                </p>
-              ))}
-            </div>
           </form>
-          {!!validProjectId ? (
-            <>
-              <label htmlFor="addImages">
-                <button
-                  className="btn"
-                  component="span"
-                  onClick={() => filesRef.current.click()}
-                >
-                  <span>Select Images</span>
-                </button>
-              </label>
-              <input
-                ref={filesRef}
-                accept=".jpg, .jpeg, .png, .gif"
-                style={{ display: "none" }}
-                id="addImages"
-                multiple
-                type="file"
-                onChange={(e) => {
-                  setFiles(e.target.files);
-                }}
-              />
-              <button onClick={uploadFiles}>Upload Files</button>
-            </>
-          ) : null}
         </div>
+        {!!validProjectId ? (
+          <div className={styles.fileUploadBtnContainer}>
+            <label htmlFor="addImages">
+              <button
+                className="btn"
+                component="span"
+                onClick={() => filesRef.current.click()}
+              >
+                <span>Select Images</span>
+              </button>
+            </label>
+            <input
+              ref={filesRef}
+              accept=".jpg, .jpeg, .png, .gif"
+              style={{ display: "none" }}
+              id="addImages"
+              multiple
+              type="file"
+              onChange={(e) => {
+                setFiles(e.target.files);
+              }}
+            />
+            <button onClick={uploadFiles}>Upload Files</button>
+          </div>
+        ) : null}
       </div>
     );
   } else {
