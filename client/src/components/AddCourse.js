@@ -41,11 +41,6 @@ function AddCourse() {
   };
 
   const getCities = async (value) => {
-    console.log(
-      JSON.stringify({
-        country: value.name.toLowerCase(),
-      })
-    );
     try {
       const response = await fetch(
         "https://countriesnow.space/api/v0.1/countries/cities",
