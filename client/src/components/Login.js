@@ -89,7 +89,7 @@ function Login() {
         />
         <button className={styles.FormSubmitBtn}>Log In</button>
       </form>
-      <p>
+      <p className={styles.alreadyReg}>
         Need an account?
         <br />
         <span className="line">

@@ -9,10 +9,12 @@ function Navbar() {
   if (authState.role === "user") {
     return (
       <div className={styles.navContainer}>
-        <Link to="/" className={styles.logo}>
-          Dragon Productions
-        </Link>
         <ul>
+          <li>
+            <Link to="/" className={styles.logo}>
+              Dragon Productions
+            </Link>
+          </li>
           <li>
             <Link to="/home">Homepage</Link>
           </li>
@@ -31,10 +33,12 @@ function Navbar() {
   } else if (authState.role === "author") {
     return (
       <div className={styles.navContainer}>
-        <Link to="/" className={styles.logo}>
-          Dragon Productions
-        </Link>
         <ul>
+          <li>
+            <Link to="/" className={styles.logo}>
+              Dragon Productions
+            </Link>
+          </li>
           <li>
             <Link to="/home">Homepage</Link>
           </li>
@@ -59,10 +63,12 @@ function Navbar() {
   } else if (authState.role === "admin") {
     return (
       <div className={styles.navContainer}>
-        <Link to="/" className={styles.logo}>
-          Dragon Productions
-        </Link>
         <ul>
+          <li>
+            <Link to="/" className={styles.logo}>
+              Dragon Productions
+            </Link>
+          </li>
           <li>
             <Link to="/home">Homepage</Link>
           </li>

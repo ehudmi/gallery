@@ -93,70 +93,72 @@ function ProjectsList() {
 
   if (projects.length > 0) {
     return (
-      <div className={styles.listContainer}>
-        <h1 className={styles.listHeader}>List of Projects</h1>
-        {projects.map((item, index) => {
-          return (
-            <div key={index}>
-              <h3
-                className={styles.listItem}
-                onClick={() => {
-                  sessionStorage.setItem("project_id", item.id);
-                  return navigate("/project_details");
-                }}
-              >
-                Project Name: {item.project_name}
-              </h3>
-              <FontAwesomeIcon
-                icon={faTimes}
-                className={authState.role === "admin" ? "invalid" : "hide"}
-                onClick={() => {
-                  setType("project");
-                  setSelectedId(item.id);
-                  toggle();
-                }}
-              />
-            </div>
-          );
-        })}
-        <div className={styles.btnContainer}>
-          <button
-            className={`${styles.btn} ${styles.prevButton} ${
-              countProj.current <= 0 ? "btnHidden" : "btnVisible"
-            }`}
-            id="previous"
-            name="previous"
-            onClick={() => {
-              countProj.current = countProj.current - 5;
-              getProjectsList(5, countProj.current);
-            }}
-          >
-            Previous
-          </button>
-          <button
-            className={`${styles.btn} ${styles.nextButton} ${
-              numProjects[0]?.count - countProj.current < 5
-                ? "btnHidden"
-                : "btnVisible"
-            }`}
-            id="next"
-            name="next"
-            onClick={() => {
-              countProj.current = countProj.current + 5;
-              getProjectsList(5, countProj.current);
-            }}
-          >
-            Next
-          </button>
+      <div className={styles.bigDaddy}>
+        <div className={styles.listContainer}>
+          <h1 className={styles.listHeader}>List of Projects</h1>
+          {projects.map((item, index) => {
+            return (
+              <div key={index}>
+                <h3
+                  className={styles.listItem}
+                  onClick={() => {
+                    sessionStorage.setItem("project_id", item.id);
+                    return navigate("/project_details");
+                  }}
+                >
+                  Project Name: {item.project_name}
+                </h3>
+                <FontAwesomeIcon
+                  icon={faTimes}
+                  className={authState.role === "admin" ? "invalid" : "hide"}
+                  onClick={() => {
+                    setType("project");
+                    setSelectedId(item.id);
+                    toggle();
+                  }}
+                />
+              </div>
+            );
+          })}
+          <div className={styles.btnContainer}>
+            <button
+              className={`${styles.btn} ${styles.prevButton} ${
+                countProj.current <= 0 ? "btnHidden" : "btnVisible"
+              }`}
+              id="previous"
+              name="previous"
+              onClick={() => {
+                countProj.current = countProj.current - 5;
+                getProjectsList(5, countProj.current);
+              }}
+            >
+              Previous
+            </button>
+            <button
+              className={`${styles.btn} ${styles.nextButton} ${
+                numProjects[0]?.count - countProj.current < 5
+                  ? "btnHidden"
+                  : "btnVisible"
+              }`}
+              id="next"
+              name="next"
+              onClick={() => {
+                countProj.current = countProj.current + 5;
+                getProjectsList(5, countProj.current);
+              }}
+            >
+              Next
+            </button>
+          </div>
+          <ConfirmModal
+            isShowing={isShowing}
+            hide={toggle}
+            message={message}
+            confirmModal={deleteProject}
+            id={selectedId}
+            type={type}
+          />
         </div>
-        <ConfirmModal
-          isShowing={isShowing}
-          hide={toggle}
-          message={message}
-          confirmModal={deleteProject}
-          id={selectedId}
-          type={type}
-        />
       </div>
     );
   } else {
