@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import Dropdown from "./Dropdown";
 import styles from "../styles/FormComponents.module.css";
 
 function AddCourse() {
@@ -11,16 +12,63 @@ function AddCourse() {
 
   const [startDate, setStartDate] = useState("");
 
-  const [city, setCity] = useState("");
+  const [countries, setCountries] = useState([]);
 
   const [country, setCountry] = useState("");
+
+  const [cities, setCities] = useState([]);
+  const [city, setCity] = useState("");
 
   const [errMsg, setErrMsg] = useState("");
   const [success, setSuccess] = useState(false);
 
-  useEffect(() => {
-    courseIdRef.current.focus();
-  }, []);
+  const getCountries = async () => {
+    try {
+      const response = await fetch(
+        "https://countriesnow.space/api/v0.1/countries/capital",
+        { method: "GET" }
+      );
+      const json = await response.json();
+      // const test = json.data.map((item) => ({ name: item.name }));
+      json?.msg === "countries and capitals retrieved"
+        ? setCountries(json.data.map((item) => ({ name: item.name })))
+        : setCountries([]);
+      // console.log(test);
+    } catch (error) {
+      console.log("error");
+      setErrMsg(error);
+    }
+  };
+
+  const getCities = async (value) => {
+    console.log(
+      JSON.stringify({
+        country: value.name.toLowerCase(),
+      })
+    );
+    try {
+      const response = await fetch(
+        "https://countriesnow.space/api/v0.1/countries/cities",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            country: value.name.toLowerCase(),
+          }),
+        }
+      );
+      const json = await response.json();
+      console.log(json);
+      json?.msg === `cities in ${value.name} retrieved`
+        ? setCities(json.data.map((item) => ({ name: item })))
+        : setCities([]);
+    } catch (error) {
+      console.log("error");
+      setErrMsg(error);
+    }
+  };
 
   const submitCourse = async (event) => {
     event.preventDefault();
@@ -35,7 +83,7 @@ function AddCourse() {
           name: courseName,
           start_date: startDate,
           city: city,
-          country: country,
+          country: country.name,
         }),
       });
       const result = await response.json();
@@ -53,6 +101,14 @@ function AddCourse() {
       errRef.current.focus();
     }
   };
+
+  useEffect(() => {
+    courseIdRef.current.focus();
+  }, []);
+
+  useEffect(() => {
+    getCountries();
+  }, []);
 
   return (
     <>
@@ -102,26 +158,88 @@ function AddCourse() {
               value={startDate}
               required
             />
-            <label htmlFor="city">City:</label>
+            {countries?.length > 0 ? (
+              <div style={{ width: "200px" }}>
+                <Dropdown
+                  options={countries}
+                  userPrompt="Select Country..."
+                  value={country}
+                  onChange={(val) => {
+                    setCountry(val);
+                    country !== ""
+                      ? getCities(val)
+                      : console.log("country", country);
+                  }}
+                />
+                {console.log("country", country)}
+              </div>
+            ) : null}
+
+            {cities?.length > 0 ? (
+              <div style={{ width: "200px" }}>
+                <Dropdown
+                  options={cities}
+                  userPrompt="Select City..."
+                  value={city}
+                  onChange={(val) => setCity(val)}
+                />
+                {console.log(city)}
+              </div>
+            ) : null}
+            {/* <label htmlFor="country">Country:</label>
             <input
-              type="text"
-              id="city"
-              placeholder="City Name"
-              autoComplete="off"
-              onChange={(e) => setCity(e.target.value)}
-              value={city}
-              required
+              id="country_filter"
+              placeholder="Search"
+              autoComplete="on"
+              onChange={(e) => {
+                setCountryFilter(e.target.value.toLowerCase());
+              }}
             />
-            <label htmlFor="country">Country:</label>
-            <input
-              type="text"
+            <select
               id="country"
-              placeholder="Country Name"
+              defaultValue={0}
               autoComplete="off"
-              onChange={(e) => setCountry(e.target.value)}
-              value={country}
+              onChange={(e) => {
+                setCountry(e.target.value);
+                getCities(e.target.value);
+              }}
+              // value={country}
               required
-            />
+            >
+              <option hidden disabled value={0}>
+                -- select an option --
+              </option>
+              {countryFilter === ""
+                ? countries.map((item, index) => (
+                    <option key={index} value={item.name} label={item.name} />
+                  ))
+                : countries
+                    .filter((item) => {
+                      return item.name.toLowerCase().includes(countryFilter);
+                    })
+                    .map((item, index) => (
+                      <option key={index} value={item.name} label={item.name} />
+                    ))}
+            </select> */}
+            {/* <label htmlFor="city">City:</label>
+            <select
+              id="city"
+              defaultValue={0}
+              autoComplete="on"
+              onChange={(e) => {
+                setCity(e.target.value);
+              }}
+              // value={city}
+              required
+            >
+              <option hidden disabled value={0}>
+                -- select an option --
+              </option>
+              {cities.map((item, index) => (
+                <option key={index} value={item.name} label={item.name} />
+              ))}
+            </select> */}
+            {/* {console.log(countries[0].name)} */}
             <button className={styles.FormSubmitBtn}>Submit</button>
           </form>
         </section>
