@@ -35,6 +35,9 @@ function ProjectForm() {
 
   const errRef = useRef();
   const [errMsg, setErrMsg] = useState("");
+
+  const successRef = useRef();
+  const [successMsg, setSuccessMsg] = useState("");
   const [success, setSuccess] = useState(false);
 
   // check what courses are in the db to populate list of courses
@@ -84,6 +87,7 @@ function ProjectForm() {
       const projectAdd = await response.json();
       if (!!projectAdd[0]?.projectId) {
         setSuccess(true);
+        setSuccessMsg("Added Project");
         setProjectName("");
         setCourseId("");
         setDescription("");
@@ -93,6 +97,7 @@ function ProjectForm() {
         });
         setLink("");
         setProjectId(projectAdd[0].project_id);
+        successRef.current.focus();
       } else if (projectAdd.error) throw projectAdd.error;
     } catch (error) {
       console.log("error");
@@ -116,9 +121,11 @@ function ProjectForm() {
         method: "POST",
         body: data,
       });
-      const success = await response.json();
-      if (!!success.message) {
-        alert("Project Added");
+      const json = await response.json();
+      if (!!json.message) {
+        setSuccess(true);
+        setSuccessMsg("Added Image Files");
+        successRef.current.focus();
       }
     }
   };
@@ -143,12 +150,13 @@ function ProjectForm() {
       <>
         {" "}
         {success ? (
-          <section>
-            <h1>Success!</h1>
-            <p>
-              <a href="login">Sign In</a>
-            </p>
-          </section>
+          <p
+            ref={successRef}
+            className={successMsg ? "errMsg" : "offscreen"}
+            aria-live="assertive"
+          >
+            {successMsg}
+          </p>
         ) : (
           <div>
             <div className={styles.bigDaddy2}>
