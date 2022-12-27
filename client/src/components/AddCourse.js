@@ -137,7 +137,12 @@ function AddCourse() {
             {data?.length > 0 ? (
               <div style={{ width: "200px" }}>
                 <Dropdown
-                  options={data.map((item) => ({ name: item.country }))}
+                  options={data.map((item, index) => ({
+                    name: item.country,
+                    id: index,
+                  }))}
+                  id="id"
+                  label="name"
                   userPrompt="Select Country..."
                   value={country}
                   onChange={(val) => {
@@ -158,7 +163,9 @@ function AddCourse() {
                     })
                     .map((item) => [...item.cities])
                     .flat()
-                    .map((val) => ({ name: val }))}
+                    .map((val, index) => ({ name: val, id: index }))}
+                  id="id"
+                  label="name"
                   userPrompt="Select City..."
                   value={city}
                   onChange={(val) => setCity(val)}

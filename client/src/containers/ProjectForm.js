@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import useAuth from "../hooks/useAuth";
-// import Dropdown from "../components/Dropdown";
+import Dropdown from "../components/Dropdown";
 import { faCheck, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styles from "../styles/FormComponents.module.css";
@@ -79,7 +79,7 @@ function ProjectForm() {
         },
         body: JSON.stringify({
           project_name: projectName,
-          course_id: courseId,
+          course_id: courseId.id,
           description: description,
           authors: authors.map((item) => item.id),
           link: link,
@@ -180,7 +180,7 @@ function ProjectForm() {
                   onChange={(e) => setProjectName(e.target.value)}
                 />
                 <label htmlFor="course_id">Course</label>
-                <select
+                {/* <select
                   id="course_id"
                   defaultValue={0}
                   // value={courseId !== "" ? courseId : ""}
@@ -198,7 +198,21 @@ function ProjectForm() {
                       label={`${item.name}`}
                     />
                   ))}
-                </select>
+                </select> */}
+                {courseData?.length > 0 ? (
+                  <div style={{ width: "200px" }}>
+                    <Dropdown
+                      options={courseData}
+                      id="id"
+                      label="name"
+                      userPrompt="Select Course..."
+                      value={courseId}
+                      onChange={(val) => {
+                        setCourseId(val);
+                      }}
+                    />
+                  </div>
+                ) : null}
                 <label htmlFor="description">Description</label>
                 <textarea
                   id="description"

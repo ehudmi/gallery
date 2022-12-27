@@ -2,7 +2,7 @@
 import { useState, useRef, useEffect } from "react";
 import styles from "../styles/Dropdown.module.css";
 
-function Dropdown({ options, userPrompt, value, onChange }) {
+function Dropdown({ options, id, label, userPrompt, value, onChange }) {
   const [open, setOpen] = useState(false);
   const [filter, setFilter] = useState("");
   const ref = useRef(null);
@@ -13,13 +13,13 @@ function Dropdown({ options, userPrompt, value, onChange }) {
 
   const filterOptions = () => {
     return options.filter(
-      (option) => option.name.toLowerCase().indexOf(filter.toLowerCase()) > -1
+      (option) => option[label].toLowerCase().indexOf(filter.toLowerCase()) > -1
     );
   };
 
   const displayValue = () => {
     if (filter.length > 0) return filter;
-    if (value.name) return value.name;
+    if (value[label]) return value[label];
     return "";
   };
 
@@ -41,7 +41,7 @@ function Dropdown({ options, userPrompt, value, onChange }) {
           <input
             type={"text"}
             ref={ref}
-            placeholder={value ? value.name : userPrompt}
+            placeholder={value ? value[label] : userPrompt}
             value={displayValue()}
             onChange={(e) => {
               setFilter(e.target.value);
@@ -54,18 +54,18 @@ function Dropdown({ options, userPrompt, value, onChange }) {
         <div className={`${styles.arrow} ${open ? styles.open : null}`} />
       </div>
       <div className={`${styles.options} ${open ? styles.open : null}`}>
-        {filterOptions(options).map((option, index) => (
+        {filterOptions(options).map((option) => (
           <div
-            key={index}
+            key={option[id]}
             className={`${styles.option} ${
               value === option ? styles.selected : null
             }`}
             onClick={() => {
               selectOption(option);
-              // console.log(option.name);
+              // console.log(option[label]);
             }}
           >
-            {option.name}
+            {option[label]}
           </div>
         ))}
       </div>
