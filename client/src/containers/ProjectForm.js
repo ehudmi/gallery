@@ -1,8 +1,9 @@
 import { useState, useEffect, useRef } from "react";
-import styles from "../styles/FormComponents.module.css";
 import useAuth from "../hooks/useAuth";
+// import Dropdown from "../components/Dropdown";
 import { faCheck, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import styles from "../styles/FormComponents.module.css";
 
 const LINK_REGEX = new RegExp(
   "^((https?)://)?[a-zA-Z0-9-.]{3,}.[a-zA-Z]{2,}(.[a-zA-Z]{2,})?/$"
