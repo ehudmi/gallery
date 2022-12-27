@@ -119,6 +119,7 @@ function ProjectComments({ project_id }) {
         <div>
           <label htmlFor="new_comment">Add Comment</label>
           <textarea
+            className={styles.textarea}
             id="new_comment"
             placeholder="New Comment"
             rows="4"
@@ -144,6 +145,7 @@ function ProjectComments({ project_id }) {
       <div className={styles.commentsContainer}>
         <label htmlFor="new_comment">Add Comment</label>
         <textarea
+          className={styles.textarea}
           id="new_comment"
           placeholder="New Comment"
           rows="4"

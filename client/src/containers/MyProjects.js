@@ -91,8 +91,8 @@ function MyProjects() {
   if (projects.length > 0) {
     return (
       <div className={styles.bigDaddy}>
+        <h1 className={styles.listHeader}>My Projects</h1>
         <div className={styles.listContainer}>
-          <h1 className={styles.listHeader}>My Projects</h1>
           {projects.map((item, index) => {
             return (
               <div className={styles.itemBigDaddy} key={index}>
@@ -106,7 +106,7 @@ function MyProjects() {
                 >
                   {item.project_name} - {item.description}
                 </h3>
-                <span className={styles.spaceBetween}>
+                <span className={styles.deleteIcon}>
                   <FontAwesomeIcon
                     icon={faTimes}
                     className="invalid"
@@ -120,36 +120,6 @@ function MyProjects() {
               </div>
             );
           })}
-          <div className={styles.btnContainer}>
-            <button
-              className={`${styles.btn} ${styles.prevButton} ${
-                countProj.current <= 0 ? "btnHidden" : "btnVisible"
-              }`}
-              id="previous"
-              name="previous"
-              onClick={() => {
-                countProj.current = countProj.current - 5;
-                getMyProjects(5, countProj.current);
-              }}
-            >
-              Previous
-            </button>
-            <button
-              className={`${styles.btn} ${styles.nextButton} ${
-                numProjects[0]?.count - countProj.current < 5
-                  ? "btnHidden"
-                  : "btnVisible"
-              }`}
-              id="next"
-              name="next"
-              onClick={() => {
-                countProj.current = countProj.current + 5;
-                getMyProjects(5, countProj.current);
-              }}
-            >
-              Next
-            </button>
-          </div>
           <ConfirmModal
             isShowing={isShowing}
             hide={toggle}
@@ -158,6 +128,36 @@ function MyProjects() {
             id={selectedId}
             type={type}
           />
+        </div>
+        <div className={styles.btnContainer}>
+          <button
+            className={`${styles.btn} ${styles.prevButton} ${
+              countProj.current <= 0 ? "btnHidden" : "btnVisible"
+            }`}
+            id="previous"
+            name="previous"
+            onClick={() => {
+              countProj.current = countProj.current - 5;
+              getMyProjects(5, countProj.current);
+            }}
+          >
+            Previous
+          </button>
+          <button
+            className={`${styles.btn} ${styles.nextButton} ${
+              numProjects[0]?.count - countProj.current < 5
+                ? "btnHidden"
+                : "btnVisible"
+            }`}
+            id="next"
+            name="next"
+            onClick={() => {
+              countProj.current = countProj.current + 5;
+              getMyProjects(5, countProj.current);
+            }}
+          >
+            Next
+          </button>
         </div>
       </div>
     );
