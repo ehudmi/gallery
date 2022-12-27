@@ -64,13 +64,39 @@ function ProjectForm() {
       },
     });
     const json = await result.json();
-    setAuthorData(json);
+    setAuthorData(
+      json.map((item) => ({
+        id: item.id,
+        name: `${item.first_name} ${item.last_name}`,
+      }))
+    );
   };
 
   // function to submit project form
 
   const submitProject = async (event) => {
     event.preventDefault();
+    // console.log(
+    //   JSON.stringify({
+    //     project_name: projectName,
+    //     course_id: courseId.id,
+    //     description: description,
+    //     authors: authors.map((item) => item.id),
+    //     link: link,
+    //   })
+    // );
+    // setSuccess(true);
+    // setSuccessMsg("Added Project");
+    // setProjectName("");
+    // setCourseId(0);
+    // setDescription("");
+    // setAuthors([
+    //   {
+    //     id: authState.userId,
+    //     name: `${authState.first_name} ${authState.last_name}`,
+    //   },
+    // ]);
+    // setLink("");
     try {
       const response = await fetch("/projects/add_project", {
         method: "POST",
@@ -92,10 +118,12 @@ function ProjectForm() {
         setProjectName("");
         setCourseId(0);
         setDescription("");
-        // setAuthors({
-        //   id: authState.userId,
-        //   name: `${authState.first_name} ${authState.last_name}`,
-        // });
+        setAuthors([
+          {
+            id: authState.userId,
+            name: `${authState.first_name} ${authState.last_name}`,
+          },
+        ]);
         setLink("");
         setProjectId(projectAdd[0].project_id);
         successRef.current.focus();
@@ -180,25 +208,6 @@ function ProjectForm() {
                   onChange={(e) => setProjectName(e.target.value)}
                 />
                 <label htmlFor="course_id">Course</label>
-                {/* <select
-                  id="course_id"
-                  defaultValue={0}
-                  // value={courseId !== "" ? courseId : ""}
-                  onChange={(e) => {
-                    setCourseId(e.target.value);
-                  }}
-                >
-                  <option hidden disabled value={0}>
-                    -- select an option --
-                  </option>
-                  {courseData.map((item, index) => (
-                    <option
-                      key={index}
-                      value={item.id}
-                      label={`${item.name}`}
-                    />
-                  ))}
-                </select> */}
                 {courseData?.length > 0 ? (
                   <div style={{ width: "200px" }}>
                     <Dropdown
@@ -224,31 +233,25 @@ function ProjectForm() {
                 ></textarea>
                 <label htmlFor="add_author">Additional Author</label>
                 <div className={styles.authorSelectContainer}>
-                  <select
-                    id="add_author"
-                    defaultValue={0}
-                    onChange={(e) => {
-                      let idx = e.target.selectedIndex;
-                      let dataset = e.target.options[idx].dataset;
-                      // console.log(dataset.display);
-                      setAuthors((prev) => [
-                        ...prev,
-                        { id: Number(e.target.value), name: dataset.display },
-                      ]);
-                    }}
-                  >
-                    <option hidden disabled value={0}>
-                      -- select an option --
-                    </option>
-                    {authorData.map((item, index) => (
-                      <option
-                        key={index}
-                        value={item.id}
-                        data-display={`${item.first_name} ${item.last_name}`}
-                        label={`${item.first_name} ${item.last_name}`}
+                  {authorData?.length > 0 ? (
+                    <div style={{ width: "200px" }}>
+                      <Dropdown
+                        options={authorData}
+                        id="id"
+                        label="name"
+                        userPrompt="Select Author..."
+                        value={authors}
+                        onChange={(val) => {
+                          !!val?.id
+                            ? setAuthors((prev) => [
+                                ...prev,
+                                { id: val.id, name: val.name },
+                              ])
+                            : setAuthors((prev) => [...prev]);
+                        }}
                       />
-                    ))}
-                  </select>
+                    </div>
+                  ) : null}
                   <div className={styles.authorsList}>
                     {authors.map((item, index) => (
                       <p className={styles.authorName} key={index}>
