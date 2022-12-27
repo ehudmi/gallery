@@ -78,7 +78,6 @@ const getProjectList = async (req, res, next) => {
 };
 
 const getImageList = async (req, res, next) => {
-  console.log(req.body.project_id);
   const project_id = req.body.project_id;
   try {
     const picList = await _readDbList(
@@ -88,9 +87,8 @@ const getImageList = async (req, res, next) => {
       project_id
     );
     const list = picList.map((item) => item.uuid);
-    // console.log(list);
-    // console.log(JSON.stringify(list));
-    req.body.list = list;
+    console.log(list);
+    list.length > 0 ? (req.body.list = list) : (req.body.list = "");
   } catch (error) {
     console.log(error);
     res.status(404).json({ error: "couldn't read images" });
@@ -99,21 +97,28 @@ const getImageList = async (req, res, next) => {
 };
 
 const deleteBatchFromAPI = async (req, res, next) => {
-  // const list = req.body.list;
-  // console.log(list);
-  const list = JSON.stringify(req.body.list);
-  const response = await fetch(`https://api.uploadcare.com/files/storage/`, {
-    method: "DELETE",
-    headers: {
-      Accept: "application/vnd.uploadcare-v0.7+json",
-      Authorization: `Uploadcare.Simple ${process.env.API_PUB_KEY}:${process.env.API_SEC_KEY}`,
-      "Content-Type": "application/json",
-    },
-    // urlList:list,
-    body: list,
-  });
-  const json = await response.json();
-  console.log(json);
+  if (req.body.list !== "") {
+    try {
+      const list = JSON.stringify(req.body.list);
+      const response = await fetch(
+        `https://api.uploadcare.com/files/storage/`,
+        {
+          method: "DELETE",
+          headers: {
+            Accept: "application/vnd.uploadcare-v0.7+json",
+            Authorization: `Uploadcare.Simple ${process.env.API_PUB_KEY}:${process.env.API_SEC_KEY}`,
+            "Content-Type": "application/json",
+          },
+          body: list,
+        }
+      );
+      const json = await response.json();
+      console.log(json);
+    } catch (error) {
+      console.log(error);
+      res.status(404).json({ error: "couldn't delete images" });
+    }
+  } else next();
   next();
 };
 
