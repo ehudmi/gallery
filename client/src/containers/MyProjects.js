@@ -95,7 +95,7 @@ function MyProjects() {
           <h1 className={styles.listHeader}>My Projects</h1>
           {projects.map((item, index) => {
             return (
-              <div key={index}>
+              <div className={styles.itemBigDaddy} key={index}>
                 <h3
                   className={styles.listItem}
                   onClick={() => {
@@ -105,19 +105,18 @@ function MyProjects() {
                   }}
                 >
                   {item.project_name} - {item.description}
-                  <span className={styles.spaceBetween}>
-                    {" "}
-                    <FontAwesomeIcon
-                      icon={faTimes}
-                      className="invalid"
-                      onClick={() => {
-                        setType("project");
-                        setSelectedId(item.id);
-                        toggle();
-                      }}
-                    />
-                  </span>
                 </h3>
+                <span className={styles.spaceBetween}>
+                  <FontAwesomeIcon
+                    icon={faTimes}
+                    className="invalid"
+                    onClick={() => {
+                      setType("project");
+                      setSelectedId(item.id);
+                      toggle();
+                    }}
+                  />
+                </span>
               </div>
             );
           })}

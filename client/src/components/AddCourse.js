@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useCallback } from "react";
+import { useState, useRef, useEffect } from "react";
 import Dropdown from "./Dropdown";
 import styles from "../styles/FormComponents.module.css";
 
@@ -12,63 +12,42 @@ function AddCourse() {
 
   const [startDate, setStartDate] = useState("");
 
-  const [countries, setCountries] = useState([]);
+  const [data, setData] = useState([]);
 
   const [country, setCountry] = useState("");
 
-  const [cities, setCities] = useState([]);
   const [city, setCity] = useState("");
 
   const [errMsg, setErrMsg] = useState("");
   const [success, setSuccess] = useState(false);
 
-  const getCountries = async () => {
+  const getData = async () => {
     try {
       const response = await fetch(
-        "https://countriesnow.space/api/v0.1/countries/capital",
+        "https://countriesnow.space/api/v0.1/countries",
         { method: "GET" }
       );
       const json = await response.json();
-      // const test = json.data.map((item) => ({ name: item.name }));
-      json?.msg === "countries and capitals retrieved"
-        ? setCountries(json.data.map((item) => ({ name: item.name })))
-        : setCountries([]);
-      // console.log(test);
+      json?.msg === "countries and cities retrieved"
+        ? setData(json.data)
+        : setData([]);
     } catch (error) {
       console.log("error");
       setErrMsg(error);
     }
   };
 
-  const getCities = useCallback(async (value) => {
-    if (value.name !== undefined)
-      try {
-        const response = await fetch(
-          "https://countriesnow.space/api/v0.1/countries/cities",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              country: value.name.toLowerCase(),
-            }),
-          }
-        );
-        const json = await response.json();
-        console.log(json);
-        json?.msg === `cities in ${value.name} retrieved` &&
-        json?.error === false
-          ? setCities(json.data.map((item) => ({ name: item })))
-          : setCities([]);
-      } catch (error) {
-        console.log("error");
-        setErrMsg(error);
-      }
-  }, []);
-
   const submitCourse = async (event) => {
     event.preventDefault();
+    // console.log(
+    //   JSON.stringify({
+    //     id: courseId,
+    //     name: courseName,
+    //     start_date: startDate,
+    //     city: city.name,
+    //     country: country.name,
+    //   })
+    // );
     try {
       const response = await fetch("/users/add_course", {
         method: "POST",
@@ -79,7 +58,7 @@ function AddCourse() {
           id: courseId,
           name: courseName,
           start_date: startDate,
-          city: city,
+          city: city.name,
           country: country.name,
         }),
       });
@@ -104,7 +83,7 @@ function AddCourse() {
   }, []);
 
   useEffect(() => {
-    getCountries();
+    getData();
   }, []);
 
   return (
@@ -155,85 +134,37 @@ function AddCourse() {
               value={startDate}
               required
             />
-            {countries?.length > 0 ? (
+            {data?.length > 0 ? (
               <div style={{ width: "200px" }}>
                 <Dropdown
-                  options={countries}
+                  options={data.map((item) => ({ name: item.country }))}
                   userPrompt="Select Country..."
                   value={country}
                   onChange={(val) => {
                     setCountry(val);
-                    getCities(val);
                   }}
                 />
-                {console.log("country", country)}
               </div>
             ) : null}
-            {cities?.length > 0 ? (
+            {country?.name !== undefined ? (
               <div style={{ width: "200px" }}>
                 <Dropdown
-                  options={cities}
+                  options={data
+                    .filter((item) => {
+                      return (
+                        item.country.toLowerCase() ===
+                        country.name.toLowerCase()
+                      );
+                    })
+                    .map((item) => [...item.cities])
+                    .flat()
+                    .map((val) => ({ name: val }))}
                   userPrompt="Select City..."
                   value={city}
                   onChange={(val) => setCity(val)}
                 />
-                {console.log(city)}
               </div>
             ) : null}
-            {/* <label htmlFor="country">Country:</label>
-            <input
-              id="country_filter"
-              placeholder="Search"
-              autoComplete="on"
-              onChange={(e) => {
-                setCountryFilter(e.target.value.toLowerCase());
-              }}
-            />
-            <select
-              id="country"
-              defaultValue={0}
-              autoComplete="off"
-              onChange={(e) => {
-                setCountry(e.target.value);
-                getCities(e.target.value);
-              }}
-              // value={country}
-              required
-            >
-              <option hidden disabled value={0}>
-                -- select an option --
-              </option>
-              {countryFilter === ""
-                ? countries.map((item, index) => (
-                    <option key={index} value={item.name} label={item.name} />
-                  ))
-                : countries
-                    .filter((item) => {
-                      return item.name.toLowerCase().includes(countryFilter);
-                    })
-                    .map((item, index) => (
-                      <option key={index} value={item.name} label={item.name} />
-                    ))}
-            </select> */}
-            {/* <label htmlFor="city">City:</label>
-            <select
-              id="city"
-              defaultValue={0}
-              autoComplete="on"
-              onChange={(e) => {
-                setCity(e.target.value);
-              }}
-              // value={city}
-              required
-            >
-              <option hidden disabled value={0}>
-                -- select an option --
-              </option>
-              {cities.map((item, index) => (
-                <option key={index} value={item.name} label={item.name} />
-              ))}
-            </select> */}
-            {/* {console.log(countries[0].name)} */}
             <button className={styles.FormSubmitBtn}>Submit</button>
           </form>
         </section>

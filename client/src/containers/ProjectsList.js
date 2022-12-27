@@ -98,7 +98,7 @@ function ProjectsList() {
           <h1 className={styles.listHeader}>List of Projects</h1>
           {projects.map((item, index) => {
             return (
-              <div key={index}>
+              <div className={styles.itemBigDaddy} key={index}>
                 <h3
                   className={styles.listItem}
                   onClick={() => {
@@ -106,17 +106,19 @@ function ProjectsList() {
                     return navigate("/project_details");
                   }}
                 >
-                  Project Name: {item.project_name}
+                  {item.project_name} - {item.description}
                 </h3>
-                <FontAwesomeIcon
-                  icon={faTimes}
-                  className={authState.role === "admin" ? "invalid" : "hide"}
-                  onClick={() => {
-                    setType("project");
-                    setSelectedId(item.id);
-                    toggle();
-                  }}
-                />
+                <span className={styles.spaceBetween}>
+                  <FontAwesomeIcon
+                    icon={faTimes}
+                    className={authState.role === "admin" ? "invalid" : "hide"}
+                    onClick={() => {
+                      setType("project");
+                      setSelectedId(item.id);
+                      toggle();
+                    }}
+                  />
+                </span>
               </div>
             );
           })}

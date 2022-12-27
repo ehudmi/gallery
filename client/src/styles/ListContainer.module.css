@@ -21,6 +21,11 @@
   font-size: 50px;
 }
 
+.itemBigDaddy {
+  display: flex;
+  flex-direction: row;
+}
+
 .listItem {
   color: white;
   margin: 10px auto;
@@ -33,7 +38,8 @@
 }
 
 .spaceBetween {
-  margin-right: 5px;
+  margin-left: 10px;
+  margin-top: 13px;
 }
 
 .listItem:hover {
