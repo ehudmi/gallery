@@ -224,16 +224,16 @@ function ProjectDetails() {
           {projectDetails.findIndex((item) => {
             return item.author_id === authState.userId;
           }) >= 0 ? (
-            <div>
-              <label htmlFor="addImages">
-                <button
-                  component="span"
-                  className="btn"
-                  onClick={() => filesRef.current.click()}
-                >
-                  <span>Select Images</span>
-                </button>
-              </label>
+            <div className={styles.btnContainer}>
+              {/* <label htmlFor="addImages"> */}
+              <button
+                component="span"
+                className="btn"
+                onClick={() => filesRef.current.click()}
+              >
+                <span>Select Images</span>
+              </button>
+              {/* </label> */}
               <input
                 ref={filesRef}
                 accept=".jpg, .jpeg, .png, .gif"

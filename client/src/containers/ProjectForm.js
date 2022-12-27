@@ -151,24 +151,24 @@ function ProjectForm() {
       <>
         <div>
           <div className={styles.bigDaddy2}>
-            {success ? (
-              <p
-                ref={successRef}
-                className={successMsg ? "errMsg" : "offscreen"}
-                aria-live="assertive"
-              >
-                {successMsg}
-              </p>
-            ) : (
-              <p
-                ref={errRef}
-                className={errMsg ? "errMsg" : "offscreen"}
-                aria-live="assertive"
-              >
-                {errMsg}
-              </p>
-            )}
             <div className={styles.FormContainer}>
+              {success ? (
+                <p
+                  ref={successRef}
+                  className={successMsg ? "errMsgPrj" : "offscreen"}
+                  aria-live="assertive"
+                >
+                  {successMsg}
+                </p>
+              ) : (
+                <p
+                  ref={errRef}
+                  className={errMsg ? "errMsgPrj" : "offscreen"}
+                  aria-live="assertive"
+                >
+                  {errMsg}
+                </p>
+              )}
               <form onSubmit={submitProject} className={styles.ActiveForm}>
                 <h1 className={styles.title}>Add A Project</h1>
                 <label htmlFor="project_name">Project Name</label>

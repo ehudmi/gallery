@@ -54,10 +54,36 @@
   padding: 30px;
 }
 
+.btnContainer {
+  display: flex;
+  justify-content: space-evenly;
+  height: 200px;
+}
+
 @media screen and (max-width: 1175px) {
   .masterContainer {
     display: flex;
     flex-wrap: wrap;
+  }
+  .btnContainer {
+    flex-direction: column;
+    align-content: space-around;
+  }
+}
+h3 {
+  color: white;
+}
+
+@media screen and (max-width: 626px) {
+  .masterContainer {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .btnContainer {
+    flex-direction: row;
+    height: 100px;
+    width: 100%;
+    justify-content: space-evenly;
   }
 }
 h3 {
