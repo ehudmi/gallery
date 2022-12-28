@@ -94,18 +94,18 @@ const _countRows = (table, data, column, operator, value) => {
   return db(table).count(data).where(column, operator, value);
 };
 
-const _searchDb = (table, column1, value1, column2) => {
-  return db(table).whereILike(column1, value1).orWhereILike(column2, value1);
-};
+// const _searchDb = (table, column1, value1, column2) => {
+//   return db(table).whereILike(column1, value1).orWhereILike(column2, value1);
+// };
 
-const _searchAuthorsDb = (table, data, criteria1, column1, value1, column2) => {
-  return db(table)
-    .select(data)
-    .where(criteria1)
-    .andWhere(function () {
-      this.whereILike(column1, value1).orWhereILike(column2, value1);
-    });
-};
+// const _searchAuthorsDb = (table, data, criteria1, column1, value1, column2) => {
+//   return db(table)
+//     .select(data)
+//     .where(criteria1)
+//     .andWhere(function () {
+//       this.whereILike(column1, value1).orWhereILike(column2, value1);
+//     });
+// };
 
 const _insertDb = (table, inputData) => {
   return db(table).insert(inputData).returning("*");
@@ -156,8 +156,8 @@ module.exports = {
   _readDb_Limited,
   _readDb_LimitedWhereNot,
   _countRows,
-  _searchDb,
-  _searchAuthorsDb,
+  // _searchDb,
+  // _searchAuthorsDb,
   _insertDb,
   _deleteDb,
   _updateDb,

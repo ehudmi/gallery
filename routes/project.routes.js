@@ -4,7 +4,7 @@ const {
   authUser,
   getCountProjects,
   getCountMyProjects,
-  searchProjects,
+  // searchProjects,
   getAuthorProjects,
   getMyProjects,
   getProjectsList,
@@ -18,6 +18,7 @@ const {
   deleteImages,
   addComment,
   deleteComment,
+  getFullProjectsList,
 } = require("../controllers/project.controllers");
 
 const { authJwt } = require("../middleware/auth");
@@ -37,7 +38,7 @@ router.post("/project_images", [authJwt.checkToken], getProjectImages);
 router.post("/project_comments", [authJwt.checkToken], getProjectComments);
 router.post("/add_comment", [authJwt.checkToken], addComment);
 router.post("/delete_comment", [authJwt.checkToken], deleteComment);
-router.post("/search", [authJwt.checkToken], searchProjects);
+router.get("/full_project_list", [authJwt.checkToken], getFullProjectsList);
 router.post("/author_projects", [authJwt.checkToken], getAuthorProjects);
 router.get("/count_projects", [authJwt.checkToken], getCountProjects);
 

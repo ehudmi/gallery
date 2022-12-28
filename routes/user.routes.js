@@ -25,7 +25,7 @@ const router = express.Router();
 router.get("/auth", [authJwt.checkToken], authUser);
 
 // router.get("/users", getUsers);
-router.get("/authors", getAuthors);
+// router.get("/authors", getAuthors);
 router.post("/register", register);
 router.post("/login", login);
 router.get("/logout", logout);
@@ -34,7 +34,7 @@ router.get("/logout", logout);
 
 router.post("/user_comments", [authJwt.checkToken], getUserComments);
 router.post("/delete_comment", [authJwt.checkToken], deleteComment);
-router.post("/search", [authJwt.checkToken], searchAuthors);
+router.get("/authors", [authJwt.checkToken], getAuthors);
 
 // routes available to Admin
 router.get("/count_users", [authJwt.isAdmin], getCountUsers);

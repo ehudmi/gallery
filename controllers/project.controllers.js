@@ -3,11 +3,12 @@ const {
   _readDbNotNull,
   _readDb_Limited,
   _countRows,
-  _searchDb,
+  // _searchDb,
   _insertDb,
   _deleteDb,
   _get2TabJoinData,
   _get3TabJoinData,
+  _readDbWhereNot,
 } = require("../models/gallery.models");
 const jwt = require("jsonwebtoken");
 // const config = require("../config/auth.config.json");
@@ -69,32 +70,44 @@ const getCountMyProjects = async (req, res) => {
   }
 };
 
-// function to retrieve list of projects by search term
+// function to retrieve list of all projects for user no limits
 
-const searchProjects = async (req, res) => {
-  const selectedData = [];
+const getFullProjectsList = async (req, res) => {
   try {
-    const result = await _searchDb(
-      "projects",
-      "project_name",
-      `%${req.body.search_term}%`,
-      "description"
-    );
-    result.map((item) => {
-      selectedData.push({
-        id: item.id,
-        name: item.project_name,
-        about: item.description,
-      });
-    });
-    result.length !== 0
-      ? res.send(selectedData)
-      : res.send({ error: "no project matches search term" });
+    const result = await _readDbNotNull("projects", "*", "id");
+    return res.send(result);
   } catch (error) {
     console.log(error);
     res.status(404).json({ error: "couldn't read projects" });
   }
 };
+
+// function to retrieve list of projects by search term
+
+// const searchProjects = async (req, res) => {
+//   const selectedData = [];
+//   try {
+//     const result = await _searchDb(
+//       "projects",
+//       "project_name",
+//       `%${req.body.search_term}%`,
+//       "description"
+//     );
+//     result.map((item) => {
+//       selectedData.push({
+//         id: item.id,
+//         name: item.project_name,
+//         about: item.description,
+//       });
+//     });
+//     result.length !== 0
+//       ? res.send(selectedData)
+//       : res.send({ error: "no project matches search term" });
+//   } catch (error) {
+//     console.log(error);
+//     res.status(404).json({ error: "couldn't read projects" });
+//   }
+// };
 
 // function to retrieve list of projects authored by author
 
@@ -417,7 +430,7 @@ module.exports = {
   authUser,
   getCountProjects,
   getCountMyProjects,
-  searchProjects,
+  getFullProjectsList,
   getAuthorProjects,
   getMyProjects,
   getProjectsList,

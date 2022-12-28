@@ -1,10 +1,10 @@
 const {
   _readDb,
   _countRows,
-  _readDb_Limited,
+  // _readDb_Limited,
   _readDb_LimitedWhereNot,
   _readDbWhereNot,
-  _searchAuthorsDb,
+  // _searchAuthorsDb,
   _insertDb,
   _get2TabJoinData,
   _deleteDb,
@@ -198,45 +198,45 @@ const getAuthors = async (req, res) => {
   try {
     const result = await _readDbWhereNot(
       "users",
-      ["id", "first_name", "last_name", "email", "role"],
+      ["id", "first_name", "last_name", "email", "role", "about"],
       { id: data.id },
       { role: "author" }
     );
     return res.json(result);
   } catch (e) {
-    res.json({ msg: "not" });
+    res.json({ msg: "couldn't get authors" });
   }
 };
 
 // function to retrieve list of authors by search term
 
-const searchAuthors = async (req, res) => {
-  const selectedData = [];
-  try {
-    const result = await _searchAuthorsDb(
-      "users",
-      ["id", "first_name", "last_name", "role", "about"],
-      { role: "author" },
-      "first_name",
-      `%${req.body.search_term}%`,
-      "last_name"
-    );
-    result.map((item) => {
-      selectedData.push({
-        id: item.id,
-        name: `${item.first_name} ${item.last_name}`,
-        role: item.role,
-        about: item.about,
-      });
-    });
-    result.length !== 0
-      ? res.send(selectedData)
-      : res.send({ error: "no project matches search term" });
-  } catch (error) {
-    console.log(error);
-    res.status(404).json({ error: "couldn't search users" });
-  }
-};
+// const searchAuthors = async (req, res) => {
+//   const selectedData = [];
+//   try {
+//     const result = await _searchAuthorsDb(
+//       "users",
+//       ["id", "first_name", "last_name", "role", "about"],
+//       { role: "author" },
+//       "first_name",
+//       `%${req.body.search_term}%`,
+//       "last_name"
+//     );
+//     result.map((item) => {
+//       selectedData.push({
+//         id: item.id,
+//         name: `${item.first_name} ${item.last_name}`,
+//         role: item.role,
+//         about: item.about,
+//       });
+//     });
+//     result.length !== 0
+//       ? res.send(selectedData)
+//       : res.send({ error: "no project matches search term" });
+//   } catch (error) {
+//     console.log(error);
+//     res.status(404).json({ error: "couldn't search users" });
+//   }
+// };
 
 // function to retrieve list of comments authored by user
 
@@ -281,7 +281,7 @@ module.exports = {
   addCourse,
   deleteUser,
   getAuthors,
-  searchAuthors,
+  // searchAuthors,
   getUserComments,
   deleteComment,
   authUser,
