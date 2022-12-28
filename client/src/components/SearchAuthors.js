@@ -128,7 +128,7 @@ function SearchAuthors() {
                   <div
                     key={index}
                     onClick={() => {
-                      sessionStorage.setItem("author_id", item.author_id);
+                      sessionStorage.setItem("author_id", item.id);
                       return navigate("/author_projects");
                     }}
                   >
