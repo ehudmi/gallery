@@ -31,10 +31,15 @@
 
 .projectName {
   font-weight: bold;
-  font-size: 15px;
-  text-transform: capitalize;
+  font-size: 16px;
+  text-transform: uppercase;
   margin-left: 5px;
   cursor: pointer;
+}
+
+.projectName:hover {
+  color: rgb(209, 138, 30);
+  transition: all 0.4s ease;
 }
 
 .textarea {
