@@ -108,7 +108,7 @@ function ProjectsList() {
                 >
                   {item.project_name} - {item.description}
                 </h3>
-                <span className={styles.spaceBetween}>
+                <span className={styles.deleteIcon}>
                   <FontAwesomeIcon
                     icon={faTimes}
                     className={authState.role === "admin" ? "invalid" : "hide"}

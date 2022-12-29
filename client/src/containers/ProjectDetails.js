@@ -117,12 +117,13 @@ function ProjectDetails() {
   // upload image files to DB
 
   const uploadFiles = async () => {
-    if (files.length > 3 - countImages.current) {
-      console.log("too many files");
-    }
     if (countImages.current >= 3) {
-      alert("You already have 3 images for the project");
-    } else {
+      console.log("You already have 3 images for the project");
+    }
+    if (files.length + countImages.current > 3) {
+      console.log(files.length);
+      console.log("too many files");
+    } else if (files.length + countImages.current <= 3) {
       const data = new FormData();
       data.append("project_id", sessionStorage.getItem("project_id"));
       data.append("file_count", files.length);
@@ -190,19 +191,21 @@ function ProjectDetails() {
                         src={item.url}
                         id={item.uuid}
                       />
-                      {projectDetails.findIndex((item) => {
-                        return item.author_id === authState.userId;
-                      }) >= 0 ? (
-                        <FontAwesomeIcon
-                          icon={faTimes}
-                          className="invalid"
-                          onClick={() => {
-                            setType("image");
-                            setSelectedId(item.uuid);
-                            toggle();
-                          }}
-                        />
-                      ) : null}
+                      <span className={styles.deleteIcon}>
+                        {projectDetails.findIndex((item) => {
+                          return item.author_id === authState.userId;
+                        }) >= 0 ? (
+                          <FontAwesomeIcon
+                            icon={faTimes}
+                            className="invalid"
+                            onClick={() => {
+                              setType("image");
+                              setSelectedId(item.uuid);
+                              toggle();
+                            }}
+                          />
+                        ) : null}
+                      </span>
                     </div>
                   );
                 })
@@ -223,7 +226,7 @@ function ProjectDetails() {
           />
           {projectDetails.findIndex((item) => {
             return item.author_id === authState.userId;
-          }) >= 0 ? (
+          }) >= 0 && countImages.current < 3 ? (
             <div className={styles.btnContainer}>
               {/* <label htmlFor="addImages"> */}
               <button

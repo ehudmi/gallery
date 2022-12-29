@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import styles from "../styles/Comments.module.css";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import useAuth from "../hooks/useAuth";
 import useModal from "../hooks/useModal";
 import ConfirmModal from "../components/ConfirmModal";
+// import styles from "../styles/Comments.module.css";
+import styles from "../styles/ListContainer.module.css";
 
 function UserComments() {
   const { authState } = useAuth();
@@ -78,45 +79,44 @@ function UserComments() {
 
   if (comments.length > 0) {
     return (
-      <div className={styles.commentsContainer}>
-        <h1 className={styles.title}> My Comments</h1>
-        {comments.map((item, index) => {
-          return (
-            <div className={styles.comment} key={index}>
-              <p>
-                {item.user_comment} - project
-                <span
+      <div className={styles.bigDaddy}>
+        <h1 className={styles.listHeader}> My Comments</h1>
+        <div className={styles.listContainer}>
+          {comments.map((item, index) => {
+            return (
+              <div className={styles.itemBigDaddy} key={index}>
+                <h3
+                  className={styles.listItem}
                   onClick={() => {
                     sessionStorage.setItem("project_id", item.project_id);
                     return navigate("/project_details");
                   }}
-                  className={styles.projectName}
                 >
-                  {item.project_name}
+                  {item.user_comment} - project {item.project_name}
+                </h3>
+                <span className={styles.deleteIcon}>
+                  <FontAwesomeIcon
+                    icon={faTimes}
+                    className="invalid"
+                    onClick={() => {
+                      setType("comment");
+                      setSelectedId(item.comment_id);
+                      toggle();
+                    }}
+                  />
                 </span>
-              </p>
-              {
-                <FontAwesomeIcon
-                  icon={faTimes}
-                  className="invalid"
-                  onClick={() => {
-                    setType("comment");
-                    setSelectedId(item.comment_id);
-                    toggle();
-                  }}
-                />
-              }
-            </div>
-          );
-        })}
-        <ConfirmModal
-          isShowing={isShowing}
-          hide={toggle}
-          message={message}
-          confirmModal={deleteComment}
-          id={selectedId}
-          type={type}
-        />
+              </div>
+            );
+          })}
+          <ConfirmModal
+            isShowing={isShowing}
+            hide={toggle}
+            message={message}
+            confirmModal={deleteComment}
+            id={selectedId}
+            type={type}
+          />
+        </div>
       </div>
     );
   } else {

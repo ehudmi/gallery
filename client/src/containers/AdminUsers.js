@@ -108,7 +108,7 @@ function AdminUsers() {
                   Role: {item.role}
                   About: {item.about}
                 </h3>
-                <span className={styles.spaceBetween}>
+                <span className={styles.deleteIcon}>
                   <FontAwesomeIcon
                     icon={faTimes}
                     className="invalid"

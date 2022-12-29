@@ -89,6 +89,7 @@ const getImageList = async (req, res, next) => {
     const list = picList.map((item) => item.uuid);
     console.log(list);
     list.length > 0 ? (req.body.list = list) : (req.body.list = "");
+    console.log(req.body.list);
   } catch (error) {
     console.log(error);
     res.status(404).json({ error: "couldn't read images" });
@@ -118,7 +119,7 @@ const deleteBatchFromAPI = async (req, res, next) => {
       console.log(error);
       res.status(404).json({ error: "couldn't delete images" });
     }
-  } else next();
+  } else null;
   next();
 };
 
