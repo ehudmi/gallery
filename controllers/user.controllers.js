@@ -2,7 +2,7 @@ const {
   _readDb,
   _countRows,
   // _readDb_Limited,
-  _readDb_LimitedWhereNot,
+  _readDb_LimitedWhere,
   _readDbWhereNot,
   // _searchAuthorsDb,
   _insertDb,
@@ -19,9 +19,7 @@ const authUser = async (req, res) => {
   const req_token = req.cookies.accessToken;
   const data = jwt.verify(req_token, process.env.JWT_SECRET);
   try {
-    const user = await _readDb("users", "*", {
-      id: data.id,
-    });
+    const user = await _readDb("users", "*", "id", "=", data.id, "id", "ASC");
     if (!user) {
       return res.status(400).json({ error: "user not found" });
     }
@@ -47,9 +45,15 @@ const register = async (req, res) => {
   const salt = await bcrypt.genSalt();
   const hashPassword = await bcrypt.hash(password, salt);
   const isStudent = async () => {
-    const response = await _readDb("students", "*", {
-      email: email,
-    });
+    const response = await _readDb(
+      "students",
+      "*",
+      "email",
+      "=",
+      email,
+      "id",
+      "ASC"
+    );
     console.log(response);
     return response.length == 0 ? "user" : "author";
   };
@@ -74,9 +78,15 @@ const register = async (req, res) => {
 
 const login = async (req, res) => {
   try {
-    const user = await _readDb("users", "*", {
-      email: req.body.email,
-    });
+    const user = await _readDb(
+      "users",
+      "*",
+      "email",
+      "=",
+      req.body.email,
+      "id",
+      "ASC"
+    );
     const match = await bcrypt.compare(req.body.password, user[0].password);
     if (!match) return res.status(400).json({ error: "Wrong password" });
     const { id, first_name, last_name, email, role } = user[0];
@@ -129,12 +139,16 @@ const getUsers = async (req, res) => {
   const data = jwt.verify(req.cookies.accessToken, process.env.JWT_SECRET);
   // console.log(req.body.limit, req.body.offset);
   try {
-    const users = await _readDb_LimitedWhereNot(
+    const users = await _readDb_LimitedWhere(
       "users",
       ["id", "first_name", "last_name", "email", "role", "birth_date", "about"],
-      { id: data.id },
+      "id",
+      "<>",
+      data.id,
       req.body.limit,
-      req.body.offset
+      req.body.offset,
+      "first_name",
+      "ASC"
     );
     return res.send(users);
   } catch (error) {
@@ -248,7 +262,9 @@ const getUserComments = async (req, res) => {
       "projects",
       "user_comments.project_id",
       "projects.id",
-      { user_id: req.body.id }
+      { user_id: req.body.id },
+      "user_comment",
+      "ASC"
     );
     return res.send(result);
   } catch (error) {

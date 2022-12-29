@@ -16,9 +16,7 @@ const checkToken = async (req, res, next) => {
 
 const isAdmin = async (req, res, next) => {
   const data = jwt.verify(req.cookies.accessToken, process.env.JWT_SECRET);
-  const user = await _readDb("users", "*", {
-    id: data.id,
-  });
+  const user = await _readDb("users", "*", "id", "=", data.id, "id", "ASC");
   const userRole = user[0].role;
   if (userRole === "admin") {
     next();
@@ -32,9 +30,7 @@ const isAdmin = async (req, res, next) => {
 
 const isAuthor = async (req, res, next) => {
   const data = jwt.verify(req.cookies.accessToken, process.env.JWT_SECRET);
-  const user = await _readDb("users", "*", {
-    id: data.id,
-  });
+  const user = await _readDb("users", "*", "id", "=", data.id, "id", "ASC");
   const userRole = user[0].role;
   if (userRole === "author") {
     next();
@@ -48,9 +44,7 @@ const isAuthor = async (req, res, next) => {
 
 const isUser = async (req, res, next) => {
   const data = jwt.verify(req.cookies.accessToken, process.env.JWT_SECRET);
-  const user = await _readDb("users", "*", {
-    id: data.id,
-  });
+  const user = await _readDb("users", "*", "id", "=", data.id, "id", "ASC");
   const userRole = user[0].role;
   if (userRole === "user") {
     next();

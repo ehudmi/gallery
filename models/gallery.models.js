@@ -66,8 +66,11 @@ const _readDbSingleAuthor = (table1, column1, criteria) => {
 // 	   ORDER by t1.project_id
 //  ;
 
-const _readDb = (table, data, criteria) => {
-  return db(table).select(data).where(criteria);
+const _readDb = (table, data, column1, operator, value, column2, type) => {
+  return db(table)
+    .select(data)
+    .where(column1, operator, value)
+    .orderBy(column2, type);
 };
 
 const _readDbList = (table, data, column, array) => {
@@ -78,16 +81,31 @@ const _readDbWhereNot = (table, data, criteria1, criteria2) => {
   return db(table).select(data).whereNot(criteria1).andWhere(criteria2);
 };
 
-const _readDbNotNull = (table, data, criteria) => {
-  return db(table).select(data).whereNotNull(criteria);
-};
+// const _readDbNotNull = (table, data, criteria) => {
+//   return db(table).select(data).whereNotNull(criteria);
+// };
 
-const _readDb_Limited = (table, data, limit, offset) => {
-  return db(table).select(data).limit(limit).offset(offset);
-};
+// const _readDb_Limited = (table, data, limit, offset) => {
+//   return db(table).select(data).limit(limit).offset(offset);
+// };
 
-const _readDb_LimitedWhereNot = (table, data, criteria1, limit, offset) => {
-  return db(table).select(data).whereNot(criteria1).limit(limit).offset(offset);
+const _readDb_LimitedWhere = (
+  table,
+  data,
+  column1,
+  operator,
+  value,
+  limit,
+  offset,
+  column2,
+  type
+) => {
+  return db(table)
+    .select(data)
+    .where(column1, operator, value)
+    .limit(limit)
+    .offset(offset)
+    .orderBy(column2, type);
 };
 
 const _countRows = (table, data, column, operator, value) => {
@@ -119,11 +137,20 @@ const _updateDb = (table, updatedData, criteria) => {
   return db(table).update(updatedData).where(criteria).returning("*");
 };
 
-const _get2TabJoinData = (table1, table2, column1, column2, criteria1) => {
+const _get2TabJoinData = (
+  table1,
+  table2,
+  column1,
+  column2,
+  criteria1,
+  column3,
+  type
+) => {
   return db(table1)
     .join(table2, column1, "=", column2)
     .select("*")
-    .where(criteria1);
+    .where(criteria1)
+    .orderBy(column3, type);
 };
 
 const _get3TabJoinData = (
@@ -136,7 +163,9 @@ const _get3TabJoinData = (
   column4,
   criteria1,
   limit,
-  offset
+  offset,
+  column5,
+  type
 ) => {
   return db(table1)
     .join(table2, column1, "=", column2)
@@ -144,7 +173,8 @@ const _get3TabJoinData = (
     .select("*")
     .where(criteria1)
     .limit(limit)
-    .offset(offset);
+    .offset(offset)
+    .orderBy(column5, type);
 };
 
 module.exports = {
@@ -152,9 +182,9 @@ module.exports = {
   _readDb,
   _readDbList,
   _readDbWhereNot,
-  _readDbNotNull,
-  _readDb_Limited,
-  _readDb_LimitedWhereNot,
+  // _readDbNotNull,
+  // _readDb_Limited,
+  _readDb_LimitedWhere,
   _countRows,
   // _searchDb,
   // _searchAuthorsDb,

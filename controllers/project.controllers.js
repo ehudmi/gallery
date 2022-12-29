@@ -1,14 +1,14 @@
 const {
   _readDb,
-  _readDbNotNull,
-  _readDb_Limited,
+  // _readDbNotNull,
+  _readDb_LimitedWhere,
   _countRows,
   // _searchDb,
   _insertDb,
   _deleteDb,
   _get2TabJoinData,
   _get3TabJoinData,
-  _readDbWhereNot,
+  // _readDbWhereNot,
 } = require("../models/gallery.models");
 const jwt = require("jsonwebtoken");
 // const config = require("../config/auth.config.json");
@@ -19,9 +19,7 @@ const authUser = async (req, res) => {
   const req_token = req.cookies.accessToken;
   const data = jwt.verify(req_token, process.env.JWT_SECRET);
   try {
-    const user = await _readDb("users", "*", {
-      id: data.id,
-    });
+    const user = await _readDb("users", "*", "id", "=", data.id, "id", "ASC");
     if (!user) {
       return res.status(400).json({ error: "user not found" });
     }
@@ -74,7 +72,15 @@ const getCountMyProjects = async (req, res) => {
 
 const getFullProjectsList = async (req, res) => {
   try {
-    const result = await _readDbNotNull("projects", "*", "id");
+    const result = await _readDb(
+      "projects",
+      "*",
+      "id",
+      ">",
+      0,
+      "project_name",
+      "ASC"
+    );
     return res.send(result);
   } catch (error) {
     console.log(error);
@@ -124,7 +130,9 @@ const getAuthorProjects = async (req, res) => {
       "projects.id",
       { user_id: req.body.user_id },
       req.body.limit,
-      req.body.offset
+      req.body.offset,
+      "projects.project_name",
+      "ASC"
     );
     result.map((item) => {
       selectedData.push({
@@ -163,7 +171,9 @@ const getMyProjects = async (req, res) => {
       "projects.id",
       { user_id: data.id },
       req.body.limit,
-      req.body.offset
+      req.body.offset,
+      "projects.project_name",
+      "ASC"
     );
     result.map((item) => {
       selectedData.push({
@@ -190,11 +200,16 @@ const getMyProjects = async (req, res) => {
 
 const getProjectsList = async (req, res) => {
   try {
-    const result = await _readDb_Limited(
+    const result = await _readDb_LimitedWhere(
       "projects",
       "*",
+      "id",
+      ">",
+      0,
       req.body.limit,
-      req.body.offset
+      req.body.offset,
+      "project_name",
+      "ASC"
     );
     return res.send(result);
   } catch (error) {
@@ -218,7 +233,9 @@ const getProjectDetails = async (req, res) => {
       "projects.id",
       { project_id: req.body.project_id },
       5,
-      0
+      0,
+      "projects.id",
+      "ASC"
     );
     result.map((item) => {
       selectedData.push({
@@ -243,7 +260,7 @@ const getProjectDetails = async (req, res) => {
 
 const getCourseList = async (req, res) => {
   try {
-    const result = await _readDbNotNull("courses", "*", "id");
+    const result = await _readDb("courses", "*", "id", "<>", "", "name", "ASC");
     return res.send(result);
   } catch (error) {
     console.log(error);
@@ -307,9 +324,15 @@ const addImages = async (req, res) => {
     name: field.originalname,
   }));
   try {
-    const isProjectExist = await _readDb("projects", "*", {
-      id: req.body.project_id,
-    });
+    const isProjectExist = await _readDb(
+      "projects",
+      "*",
+      "id",
+      "=",
+      req.body.project_id,
+      "id",
+      "ASC"
+    );
     if (isProjectExist.length > 0) {
       const checkImageCount = await _countRows(
         "project_images",
@@ -337,9 +360,15 @@ const addImages = async (req, res) => {
 
 const getProjectImages = async (req, res) => {
   try {
-    const result = await _readDb("project_images", "*", {
-      project_id: req.body.project_id,
-    });
+    const result = await _readDb(
+      "project_images",
+      "*",
+      "project_id",
+      "=",
+      req.body.project_id,
+      "name",
+      "ASC"
+    );
     result.length !== 0
       ? res.send(result)
       : res.send({ error: "no images for this project" });
@@ -361,7 +390,9 @@ const getProjectComments = async (req, res) => {
       "users.id",
       {
         project_id: req.body.project_id,
-      }
+      },
+      "user_comment",
+      "ASC"
     );
     result.map((item) => {
       selectedData.push({
