@@ -65,7 +65,7 @@ function ProjectsList() {
 
   const deleteProject = async (id) => {
     try {
-      const response = await fetch("/projects/delete_project", {
+      const response = await fetch("/projects/admin_delete_project", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
