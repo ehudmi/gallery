@@ -152,7 +152,8 @@ function ProjectDetails() {
         <div className={styles.descriptionContainer}>
           <h2 className={styles.bigProjectTitle}>
             Project {sessionStorage.getItem("project_id")} -{" "}
-            {projectDetails[0].project_name}
+            {projectDetails[0].project_name} by {projectDetails[0].first_name}{" "}
+            {projectDetails[0].last_name}
           </h2>
         </div>
         <div className={styles.descriptionContainer}>
@@ -162,21 +163,23 @@ function ProjectDetails() {
           <h3>Link - {projectDetails[0].link}</h3>
           <div>
             <h3>Additional Authors:</h3>
-            {projectDetails.map((item, index) => {
-              return (
-                <div key={index}>
-                  <h3
-                    className={styles.listItem}
-                    onClick={() => {
-                      sessionStorage.setItem("author_id", item.author_id);
-                      return navigate("/author_projects");
-                    }}
-                  >
-                    {item.first_name} {item.last_name}
-                  </h3>
-                </div>
-              );
-            })}
+            {projectDetails
+              .slice(1, projectDetails.length)
+              .map((item, index) => {
+                return (
+                  <div key={index}>
+                    <h3
+                      className={styles.listItem}
+                      onClick={() => {
+                        sessionStorage.setItem("author_id", item.author_id);
+                        return navigate("/author_projects");
+                      }}
+                    >
+                      {item.first_name} {item.last_name}
+                    </h3>
+                  </div>
+                );
+              })}
           </div>
         </div>
         <div className={styles.masterContainer}>
@@ -184,12 +187,13 @@ function ProjectDetails() {
             {images.length > 0
               ? images.map((item, index) => {
                   return (
-                    <div key={index} onClick={(e) => openModal(e, index)}>
+                    <div key={index}>
                       <img
                         className={styles.image}
                         alt="pic"
                         src={item.url}
                         id={item.uuid}
+                        onClick={(e) => openModal(e, index)}
                       />
                       <span className={styles.deleteIcon}>
                         {projectDetails.findIndex((item) => {

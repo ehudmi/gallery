@@ -1,28 +1,26 @@
-import React from "react";
-// import "./ImageModal.css";
+import ReactDOM from "react-dom";
+import styles from "../styles/ImageModal.module.css";
 
-function ImageModal({ show, closeModal, src }) {
-  return (
-    <>
-      <div className={show ? "modal" : "hide"}>
-        <img
-          onClick={closeModal}
-          src={src}
-          alt={"selected_image"}
-          style={{
-            border: "2px solid black",
-            borderRadius: "5px",
-            width: 400,
-            height: "auto",
-            zIndex: 999,
-            position: "fixed",
-            top: "10%",
-            left: "10%",
-          }}
-        />
-      </div>
-    </>
-  );
-}
+const ImageModal = ({ show, closeModal, src }) =>
+  show
+    ? ReactDOM.createPortal(
+        <>
+          <div className={styles.modal_overlay}>
+            <div className={styles.modal_wrapper}>
+              <div className={styles.modal}>
+                <h1 className={styles.modal_header}>Click again to close</h1>
+                <img
+                  className={styles.image}
+                  onClick={closeModal}
+                  src={src}
+                  alt={"selected_image"}
+                />
+              </div>
+            </div>
+          </div>
+        </>,
+        document.body
+      )
+    : null;
 
 export default ImageModal;

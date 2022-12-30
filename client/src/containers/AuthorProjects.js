@@ -36,50 +36,52 @@ function AuthorProjects() {
 
   if (projects.length > 0) {
     return (
-      <div className={styles.listContainer}>
+      <div className={styles.bigDaddy}>
         <h1 className={styles.listHeader}>Author Projects</h1>
-        {projects.map((item, index) => {
-          return (
-            <div key={index}>
-              <h3
-                className={styles.listItem}
-                onClick={() => {
-                  sessionStorage.setItem("project_id", item.id);
-                  return navigate("/project_details");
-                }}
-              >
-                Project Name: {item.project_name}
-              </h3>
-            </div>
-          );
-        })}
-        <div className={styles.btnContainer}>
-          <button
-            className={`${styles.btn} ${styles.prevButton} ${
-              countProj.current <= 0 ? "btnHidden" : "btnVisible"
-            }`}
-            id="previous"
-            name="previous"
-            onClick={() => {
-              countProj.current = countProj.current - 5;
-              getAuthorProjects(5, countProj.current);
-            }}
-          >
-            Previous
-          </button>
-          <button
-            className={`${styles.btn} ${styles.nextButton} ${
-              projects.length === 0 ? "btnHidden" : "btnVisible"
-            }`}
-            id="next"
-            name="next"
-            onClick={() => {
-              countProj.current = countProj.current + 5;
-              getAuthorProjects(5, countProj.current);
-            }}
-          >
-            Next
-          </button>
+        <div className={styles.listContainer}>
+          {projects.map((item, index) => {
+            return (
+              <div className={styles.itemBigDaddy} key={index}>
+                <h3
+                  className={styles.listItem}
+                  onClick={() => {
+                    sessionStorage.setItem("project_id", item.id);
+                    return navigate("/project_details");
+                  }}
+                >
+                  Project Name: {item.project_name}
+                </h3>
+              </div>
+            );
+          })}
+          <div className={styles.btnContainer}>
+            <button
+              className={`${styles.btn} ${styles.prevButton} ${
+                countProj.current <= 0 ? "btnHidden" : "btnVisible"
+              }`}
+              id="previous"
+              name="previous"
+              onClick={() => {
+                countProj.current = countProj.current - 5;
+                getAuthorProjects(5, countProj.current);
+              }}
+            >
+              Previous
+            </button>
+            <button
+              className={`${styles.btn} ${styles.nextButton} ${
+                projects.length === 0 ? "btnHidden" : "btnVisible"
+              }`}
+              id="next"
+              name="next"
+              onClick={() => {
+                countProj.current = countProj.current + 5;
+                getAuthorProjects(5, countProj.current);
+              }}
+            >
+              Next
+            </button>
+          </div>
         </div>
       </div>
     );
