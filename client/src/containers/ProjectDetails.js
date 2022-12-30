@@ -38,6 +38,7 @@ function ProjectDetails() {
   } = useModal();
 
   // functions to open and close ImageModal
+
   const openModal = (e, index) => {
     setShow(true);
     currentIndex.current = index;
@@ -121,7 +122,6 @@ function ProjectDetails() {
       console.log("You already have 3 images for the project");
     }
     if (files.length + countImages.current > 3) {
-      console.log(files.length);
       console.log("too many files");
     } else if (files.length + countImages.current <= 3) {
       const data = new FormData();
@@ -232,7 +232,6 @@ function ProjectDetails() {
             return item.author_id === authState.userId;
           }) >= 0 && countImages.current < 3 ? (
             <div className={styles.btnContainer}>
-              {/* <label htmlFor="addImages"> */}
               <button
                 component="span"
                 className="btn"
@@ -240,7 +239,6 @@ function ProjectDetails() {
               >
                 <span>Select Images</span>
               </button>
-              {/* </label> */}
               <input
                 ref={filesRef}
                 accept=".jpg, .jpeg, .png, .gif"
@@ -266,15 +264,7 @@ function ProjectDetails() {
       </>
     );
   } else if (projectDetails.length === 0) {
-    return (
-      // <div className={styles.masterContainer}>
-      //   <ProjectComments
-      //     // className={styles.commentsContainer}
-      //     project_id={sessionStorage.getItem("project_id")}
-      //   />
-      // </div>
-      <p>Loading</p>
-    );
+    return <p>Loading</p>;
   }
 }
 

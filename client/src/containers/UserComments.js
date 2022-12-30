@@ -5,7 +5,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import useAuth from "../hooks/useAuth";
 import useModal from "../hooks/useModal";
 import ConfirmModal from "../components/ConfirmModal";
-// import styles from "../styles/Comments.module.css";
 import styles from "../styles/ListContainer.module.css";
 
 function UserComments() {

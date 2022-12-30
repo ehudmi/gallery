@@ -76,27 +76,6 @@ function ProjectForm() {
 
   const submitProject = async (event) => {
     event.preventDefault();
-    // console.log(
-    //   JSON.stringify({
-    //     project_name: projectName,
-    //     course_id: courseId.id,
-    //     description: description,
-    //     authors: authors.map((item) => item.id),
-    //     link: link,
-    //   })
-    // );
-    // setSuccess(true);
-    // setSuccessMsg("Added Project");
-    // setProjectName("");
-    // setCourseId(0);
-    // setDescription("");
-    // setAuthors([
-    //   {
-    //     id: authState.userId,
-    //     name: `${authState.first_name} ${authState.last_name}`,
-    //   },
-    // ]);
-    // setLink("");
     try {
       const response = await fetch("/projects/add_project", {
         method: "POST",
@@ -129,7 +108,6 @@ function ProjectForm() {
         successRef.current.focus();
       } else if (projectAdd?.error) throw projectAdd.error;
     } catch (error) {
-      // console.log("error");
       setErrMsg(error);
       errRef.current.focus();
     }

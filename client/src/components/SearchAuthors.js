@@ -14,6 +14,8 @@ function SearchAuthors() {
 
   const navigate = useNavigate();
 
+  // get list of authors from DB
+
   const getAuthors = async () => {
     try {
       const response = await fetch("/users/authors", {
@@ -34,18 +36,6 @@ function SearchAuthors() {
   };
 
   const handleSearch = () => {
-    // console.log(data);
-    // console.log(
-    //   data
-    //     .filter((item) => {
-    //       return item.about?.toLowerCase().includes(searchTerm.toLowerCase());
-    //     })
-    //     .map((item) => ({
-    //       id: item.id,
-    //       name: item.name,
-    //       about: item.about,
-    //     }))
-    // );
     setSearchData(
       data
         .filter((item) => {
@@ -63,17 +53,6 @@ function SearchAuthors() {
     getAuthors();
   }, []);
 
-  //   return <div><form>
-  //   <label htmlFor="search_term">Search Term</label>
-  //     <input
-  //       type={"text"}
-  //       id="search_term"
-  //       name="search_term"
-  //       onChange={(e) => {
-  //         setSearchTerm(e.target.value);
-  //       }}
-  //     />
-  //   </form></div>;
   if (data.length > 0) {
     return (
       <>

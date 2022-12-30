@@ -14,6 +14,8 @@ function SearchProjects() {
 
   const navigate = useNavigate();
 
+  // get list of projects from DB
+
   const getProjects = async () => {
     try {
       const response = await fetch("/projects/full_project_list", {
@@ -35,23 +37,6 @@ function SearchProjects() {
   };
 
   const handleSearch = () => {
-    // console.log(searchTerm);
-    // console.log(data.map((item) => ({ desc: item.description.toLowerCase() })));
-    // console.log(
-    //   data
-    //     .filter((item) => {
-    //       return item.description
-    //         .toLowerCase()
-    //         .includes(searchTerm.toLowerCase());
-    //       // .indexOf(searchTerm.toLowerCase()) >
-    //       // -1
-    //     })
-    //     .map((item) => ({
-    //       id: item.id,
-    //       name: item.name,
-    //       description: item.description,
-    //     }))
-    // );
     setSearchData(
       data
         .filter((item) => {
@@ -71,17 +56,6 @@ function SearchProjects() {
     getProjects();
   }, []);
 
-  //   return <div><form>
-  //   <label htmlFor="search_term">Search Term</label>
-  //     <input
-  //       type={"text"}
-  //       id="search_term"
-  //       name="search_term"
-  //       onChange={(e) => {
-  //         setSearchTerm(e.target.value);
-  //       }}
-  //     />
-  //   </form></div>;
   if (data.length > 0) {
     return (
       <>

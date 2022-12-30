@@ -1,18 +1,11 @@
-// const { json } = require("body-parser");
 const multer = require("multer");
 const uploadcareStorage = require("multer-storage-uploadcare");
 const {
   _readDbSingleAuthor,
-  // _readDb,
   _readDbList,
 } = require("../models/gallery.models.js");
 
-// Uploadcare keys
-
-// const UPLOADCARE_PUB_KEY = "a8a3d493f7784d19923f";
-// const UPLOADCARE_SEC_KEY = "7504d155b72e01f55dbf";
-
-// middleware for adding images to Uploadcare
+// middleware for uploading images to Uploadcare
 
 const fileStorageEngine = uploadcareStorage({
   public_key: process.env.API_PUB_KEY,
@@ -35,29 +28,13 @@ const deleteFromAPI = async (req, res, next) => {
     }
   );
   const json = await response.json();
-  console.log(json);
   next();
 };
 
-// const getProjectList = async (req, res, next) => {
-//   const user_id = req.body.user_id;
-//   try {
-//     const projectList = await _readDb("project_authors", ["project_id"], {
-//       user_id: user_id,
-//     });
-//     const list = projectList.map((item) => item.project_id);
-//     req.body.project_id = list;
-//     console.log(list);
-//   } catch (error) {
-//     console.log(error);
-//     res.status(404).json({ error: "couldn't read projects" });
-//   }
-//   next();
-// };
+// middleware for deleting images from Uploadcare when deleting author or single author project
 
 const getProjectList = async (req, res, next) => {
   const user_id = req.body.user_id;
-  console.log(user_id);
   try {
     const projectList = await _readDbSingleAuthor(
       "project_authors",
@@ -66,10 +43,8 @@ const getProjectList = async (req, res, next) => {
         user_id: user_id,
       }
     );
-    // const list = projectList;
     const list = projectList.map((item) => item.project_id);
     req.body.project_id = list;
-    console.log(list);
   } catch (error) {
     console.log(error);
     res.status(404).json({ error: "couldn't read projects" });
@@ -87,9 +62,7 @@ const getImageList = async (req, res, next) => {
       project_id
     );
     const list = picList.map((item) => item.uuid);
-    console.log(list);
     list.length > 0 ? (req.body.list = list) : (req.body.list = "");
-    console.log(req.body.list);
   } catch (error) {
     console.log(error);
     res.status(404).json({ error: "couldn't read images" });
@@ -114,7 +87,6 @@ const deleteBatchFromAPI = async (req, res, next) => {
         }
       );
       const json = await response.json();
-      console.log(json);
     } catch (error) {
       console.log(error);
       res.status(404).json({ error: "couldn't delete images" });

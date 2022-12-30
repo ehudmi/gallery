@@ -45,6 +45,8 @@ function AddStudent() {
     setValidEmail(EMAIL_REGEX.test(email));
   }, [email]);
 
+  // append student to students tab in DB
+
   const submitStudent = async (event) => {
     event.preventDefault();
     const v1 = NAME_REGEX.test(fName);

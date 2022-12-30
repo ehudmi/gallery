@@ -4,7 +4,6 @@ const {
   authUser,
   getCountProjects,
   getCountMyProjects,
-  // searchProjects,
   getAuthorProjects,
   getMyProjects,
   getProjectsList,

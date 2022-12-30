@@ -1,6 +1,7 @@
 const { _readDb } = require("../models/gallery.models");
 const jwt = require("jsonwebtoken");
-// const config = require("../config/auth.config.json");
+
+// middleware for checking if token exists
 
 const checkToken = async (req, res, next) => {
   const req_token = req.cookies.accessToken;
@@ -13,6 +14,8 @@ const checkToken = async (req, res, next) => {
     next();
   }
 };
+
+// middleware for checking if token exists and user role is Admin
 
 const isAdmin = async (req, res, next) => {
   const data = jwt.verify(req.cookies.accessToken, process.env.JWT_SECRET);
@@ -28,6 +31,8 @@ const isAdmin = async (req, res, next) => {
   return;
 };
 
+// middleware for checking if token exists and user role is Author
+
 const isAuthor = async (req, res, next) => {
   const data = jwt.verify(req.cookies.accessToken, process.env.JWT_SECRET);
   const user = await _readDb("users", "*", "id", "=", data.id, "id", "ASC");
@@ -41,6 +46,8 @@ const isAuthor = async (req, res, next) => {
   });
   return;
 };
+
+// middleware for checking if token exists and user role is User
 
 const isUser = async (req, res, next) => {
   const data = jwt.verify(req.cookies.accessToken, process.env.JWT_SECRET);

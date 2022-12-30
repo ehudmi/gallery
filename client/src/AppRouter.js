@@ -5,17 +5,16 @@ import {
   Navigate,
   Outlet,
 } from "react-router-dom";
+import Welcome from "./components/Welcome";
 import useAuth from "./hooks/useAuth";
+import PersistLogin from "./components/PersistLogin";
 import Signup from "./components/Signup";
+import Login from "./components/Login";
+import Layout from "./components/Layout";
 import Homepage from "./containers/Homepage";
 import MyProjects from "./containers/MyProjects";
-import Login from "./components/Login";
-import Welcome from "./components/Welcome";
 import ProjectForm from "./containers/ProjectForm";
-import Layout from "./components/Layout";
-import PersistLogin from "./components/PersistLogin";
 import ProjectDetails from "./containers/ProjectDetails";
-// import ProjectComments from "./containers/ProjectComments";
 import UserComments from "./containers/UserComments";
 import Search from "./components/Search";
 import AuthorProjects from "./containers/AuthorProjects";

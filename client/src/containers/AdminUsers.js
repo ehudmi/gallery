@@ -116,7 +116,6 @@ function AdminUsers() {
                       setType("user");
                       setSelectedId(item.id);
                       toggle();
-                      // deleteUser(item.id)
                     }}
                   />
                 </span>

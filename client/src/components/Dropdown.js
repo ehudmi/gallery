@@ -1,4 +1,3 @@
-// import { useState } from "react";
 import { useState, useRef, useEffect } from "react";
 import styles from "../styles/Dropdown.module.css";
 
@@ -62,7 +61,6 @@ function Dropdown({ options, id, label, userPrompt, value, onChange }) {
             }`}
             onClick={() => {
               selectOption(option);
-              // console.log(option[label]);
             }}
           >
             {option[label]}

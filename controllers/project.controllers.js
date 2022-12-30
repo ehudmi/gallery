@@ -1,17 +1,13 @@
 const {
   _readDb,
-  // _readDbNotNull,
   _readDb_LimitedWhere,
   _countRows,
-  // _searchDb,
   _insertDb,
   _deleteDb,
   _get2TabJoinData,
   _get3TabJoinData,
-  // _readDbWhereNot,
 } = require("../models/gallery.models");
 const jwt = require("jsonwebtoken");
-// const config = require("../config/auth.config.json");
 
 // function to verify token from front-end
 
@@ -87,33 +83,6 @@ const getFullProjectsList = async (req, res) => {
     res.status(404).json({ error: "couldn't read projects" });
   }
 };
-
-// function to retrieve list of projects by search term
-
-// const searchProjects = async (req, res) => {
-//   const selectedData = [];
-//   try {
-//     const result = await _searchDb(
-//       "projects",
-//       "project_name",
-//       `%${req.body.search_term}%`,
-//       "description"
-//     );
-//     result.map((item) => {
-//       selectedData.push({
-//         id: item.id,
-//         name: item.project_name,
-//         about: item.description,
-//       });
-//     });
-//     result.length !== 0
-//       ? res.send(selectedData)
-//       : res.send({ error: "no project matches search term" });
-//   } catch (error) {
-//     console.log(error);
-//     res.status(404).json({ error: "couldn't read projects" });
-//   }
-// };
 
 // function to retrieve list of projects authored by author
 
@@ -286,7 +255,6 @@ const addProject = async (req, res) => {
       });
 
       const addProjAuth = await _insertDb("project_authors", dataToInsert);
-      console.log(addProjAuth);
       return res.send(addProjAuth);
     } else {
       return res.send({ error: "failed to add project" });
@@ -314,9 +282,6 @@ const deleteProject = async (req, res) => {
 // function to add new images to DB
 
 const addImages = async (req, res) => {
-  for (const item of req.files) {
-    console.log(item.uploadcare_file_id);
-  }
   const fieldsToInsert = req.files.map((field) => ({
     uuid: field.uploadcare_file_id,
     url: `https://ucarecdn.com/${field.uploadcare_file_id}/`,

@@ -9,7 +9,6 @@ const {
   addCourse,
   deleteUser,
   getAuthors,
-  searchAuthors,
   authUser,
   getUserComments,
   deleteComment,
@@ -24,8 +23,8 @@ const router = express.Router();
 
 router.get("/auth", [authJwt.checkToken], authUser);
 
-// router.get("/users", getUsers);
-// router.get("/authors", getAuthors);
+// routes available to All
+
 router.post("/register", register);
 router.post("/login", login);
 router.get("/logout", logout);
@@ -37,6 +36,7 @@ router.post("/delete_comment", [authJwt.checkToken], deleteComment);
 router.get("/authors", [authJwt.checkToken], getAuthors);
 
 // routes available to Admin
+
 router.get("/count_users", [authJwt.isAdmin], getCountUsers);
 router.post("/user_list", [authJwt.isAdmin], getUsers);
 router.post("/add_student", [authJwt.isAdmin], addStudent);
@@ -48,8 +48,5 @@ router.post(
   [handleAPI.deleteBatch],
   deleteUser
 );
-router.post("/test_delete", [handleAPI.getProjects], (req, res) => {
-  res.send({ message: "got projects" });
-});
 
 module.exports = router;

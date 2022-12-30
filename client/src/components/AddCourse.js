@@ -21,6 +21,8 @@ function AddCourse() {
   const [errMsg, setErrMsg] = useState("");
   const [success, setSuccess] = useState(false);
 
+  // retrieve list of countries and cities from API
+
   const getData = async () => {
     try {
       const response = await fetch(
@@ -37,17 +39,10 @@ function AddCourse() {
     }
   };
 
+  // append course to courses tab in DB
+
   const submitCourse = async (event) => {
     event.preventDefault();
-    // console.log(
-    //   JSON.stringify({
-    //     id: courseId,
-    //     name: courseName,
-    //     start_date: startDate,
-    //     city: city.name,
-    //     country: country.name,
-    //   })
-    // );
     try {
       const response = await fetch("/users/add_course", {
         method: "POST",
