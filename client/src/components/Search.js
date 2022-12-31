@@ -9,7 +9,7 @@ function Search() {
   return (
     <>
       <div className={styles.bigDaddy}>
-        <div className={styles.ListContainer}>
+        <div className={styles.listContainer}>
           <h1 className={styles.listHeader}>Search</h1>
           <div className={styles.btnContainer}>
             <label className={styles.lblSearch} htmlFor="projects">

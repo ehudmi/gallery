@@ -61,7 +61,7 @@ function SearchProjects() {
       <>
         <div className={styles.motherContainer}>
           <div className={styles.bigDaddy}>
-            <div className={styles.ListContainer}>
+            <div className={styles.listContainer}>
               <p
                 ref={errRef}
                 className={errMsg ? "errMsgPrj" : "offscreen"}
@@ -75,7 +75,7 @@ function SearchProjects() {
                 <label className={styles.lblSearchAbout} htmlFor="project_name">
                   Project Name
                 </label>
-                <div style={{ width: "283px" }}>
+                <div className={styles.dropdown}>
                   <Dropdown
                     className={styles.inpSearchAbout}
                     options={data.map((item) => ({

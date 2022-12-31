@@ -187,7 +187,7 @@ function ProjectForm() {
                 />
                 <label htmlFor="course_id">Course</label>
                 {courseData?.length > 0 ? (
-                  <div style={{ width: "200px" }}>
+                  <div style={{ width: "250px" }}>
                     <Dropdown
                       options={courseData}
                       id="id"
@@ -209,10 +209,10 @@ function ProjectForm() {
                   cols="50"
                   onChange={(e) => setDescription(e.target.value)}
                 ></textarea>
-                <label htmlFor="add_author">Additional Author</label>
+                <label htmlFor="add_author">Select Additional Author</label>
                 <div className={styles.authorSelectContainer}>
                   {authorData?.length > 0 ? (
-                    <div style={{ width: "200px" }}>
+                    <div style={{ width: "250px" }}>
                       <Dropdown
                         options={authorData}
                         id="id"
@@ -268,12 +268,9 @@ function ProjectForm() {
                   value={link}
                   onChange={(e) => setLink(e.target.value)}
                 />
-
-                <div className="btnContainer">
-                  <button type="submit" className={` btn ${styles.submitPrj}`}>
-                    Submit
-                  </button>
-                </div>
+                <button type="submit" className={` btn ${styles.submitPrj}`}>
+                  Submit
+                </button>
               </form>
             </div>
             {!!validProjectId ? (
