@@ -1,7 +1,7 @@
 const knex = require("knex");
-const dotenv = require("dotenv");
+// const dotenv = require("dotenv");
 
-dotenv.config({ path: "C:/Github/gallery/server/.env" });
+// dotenv.config({ path: "C:/Github/gallery/server/.env" });
 
 const db = knex({
   client: "pg",

@@ -7,7 +7,7 @@ const path = require("path");
 
 const app = express();
 
-dotenv.config({ path: "C:/GitHub/gallery/.env" });
+dotenv.config();
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
