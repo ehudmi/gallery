@@ -68,10 +68,14 @@ function SearchAuthors() {
               </p>
               {/* <form className={styles.ActiveForm}> */}
               <h1 className={styles.listHeader}>Search Authors</h1>
-              <label htmlFor="author_name">Author Name</label>
+
               <div className={styles.searchContainer}>
-                <div style={{ width: "200px" }}>
+                <label className={styles.lblSearchAbout} htmlFor="author_name">
+                  Author Name
+                </label>
+                <div style={{ width: "283px" }}>
                   <Dropdown
+                    className={styles.inpSearchAbout}
                     options={data.map((item) => ({
                       id: item.id,
                       name: item.name,
@@ -86,17 +90,21 @@ function SearchAuthors() {
                   />
                 </div>
                 <button
+                  className={` btn ${styles.submitPrj} ${styles.searchBtn}`}
                   onClick={() => {
                     sessionStorage.setItem("author_id", selectedAuthor.id);
                     return navigate("/author_projects");
                   }}
                 >
-                  Take me to the author
+                  To Author
                 </button>
               </div>
-              <div>
-                <label htmlFor="search_term">Search about</label>
+              <div className={styles.searchAboutContainer}>
+                <label className={styles.lblSearchAbout} htmlFor="search_term">
+                  Search about
+                </label>
                 <input
+                  className={styles.inpSearchAbout}
                   type={"text"}
                   id="search_term"
                   name="search_term"
@@ -106,7 +114,7 @@ function SearchAuthors() {
                 />
                 <button
                   onClick={handleSearch}
-                  className={` btn ${styles.submitPrj}`}
+                  className={` btn ${styles.submitPrj} ${styles.searchBtn}`}
                 >
                   Search
                 </button>

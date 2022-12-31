@@ -10,9 +10,9 @@ function Search() {
     <>
       <div className={styles.bigDaddy}>
         <div className={styles.ListContainer}>
-          <h1 className={styles.listHeader}>search</h1>
+          <h1 className={styles.listHeader}>Search</h1>
           <div className={styles.btnContainer}>
-            <label htmlFor="projects">project name</label>
+            <label htmlFor="projects">Project Name</label>
             <input
               type={"radio"}
               id="projects"
@@ -22,7 +22,7 @@ function Search() {
                 setSearchField(e.target.value);
               }}
             />
-            <label htmlFor="authors">author name</label>
+            <label htmlFor="authors">Author Name</label>
             <input
               type={"radio"}
               id="authors"
