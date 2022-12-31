@@ -12,7 +12,6 @@ const EMAIL_REGEX = new RegExp("^\\S+@\\S+\\.\\S+$");
 
 function AddStudent() {
   const fNameRef = useRef();
-  const errRef = useRef();
 
   const [fName, setFName] = useState("");
   const [validFName, setValidFName] = useState();
@@ -26,7 +25,11 @@ function AddStudent() {
   const [validEmail, setValidEmail] = useState();
   const [emailFocus, setEmailFocus] = useState(false);
 
+  const errRef = useRef();
   const [errMsg, setErrMsg] = useState("");
+
+  const successRef = useRef();
+  const [successMsg, setSuccessMsg] = useState("");
   const [success, setSuccess] = useState(false);
 
   useEffect(() => {
@@ -71,6 +74,7 @@ function AddStudent() {
       const result = await response.json();
       if (result.msg === "Added Successfully") {
         setSuccess(true);
+        setSuccessMsg("Added Student");
         setFName("");
         setLName("");
         setEmail("");
@@ -84,21 +88,28 @@ function AddStudent() {
 
   return (
     <>
-      {success ? (
-        <section>
-          <h1>Student Added!</h1>
-        </section>
-      ) : (
-        <section className={styles.FormContainer}>
-          <p
-            ref={errRef}
-            className={errMsg ? "errMsg" : "offscreen"}
-            aria-live="assertive"
-          >
-            {errMsg}
-          </p>
-          <h1>Add Student</h1>
+      <div className={styles.bigDaddy2}>
+        <div className={styles.FormContainer}>
+          {success ? (
+            <p
+              ref={successRef}
+              className={successMsg ? "errMsgPrj" : "offscreen"}
+              aria-live="assertive"
+            >
+              {successMsg}
+            </p>
+          ) : (
+            <p
+              ref={errRef}
+              className={errMsg ? "errMsgPrj" : "offscreen"}
+              aria-live="assertive"
+            >
+              {errMsg}
+            </p>
+          )}
+
           <form className={styles.ActiveForm} onSubmit={submitStudent}>
+            <h1 className={styles.title}>Add Student</h1>
             <label htmlFor="firstName">
               First Name:
               <FontAwesomeIcon
@@ -217,8 +228,8 @@ function AddStudent() {
               Submit
             </button>
           </form>
-        </section>
-      )}
+        </div>
+      </div>
     </>
   );
 }

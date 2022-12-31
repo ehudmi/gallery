@@ -8,7 +8,7 @@ function AdminDataInput() {
 
   return (
     <>
-      <section className={styles.FormContainer}>
+      <div className={styles.FormContainer}>
         <form className={styles.ActiveForm}>
           <label htmlFor="student">student</label>
           <input
@@ -31,7 +31,7 @@ function AdminDataInput() {
             }}
           />
         </form>
-      </section>
+      </div>
 
       {(() => {
         switch (typeAdd) {

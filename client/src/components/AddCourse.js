@@ -4,7 +4,6 @@ import styles from "../styles/FormComponents.module.css";
 
 function AddCourse() {
   const courseIdRef = useRef();
-  const errRef = useRef();
 
   const [courseId, setCourseId] = useState("");
 
@@ -18,7 +17,11 @@ function AddCourse() {
 
   const [city, setCity] = useState("");
 
+  const errRef = useRef();
   const [errMsg, setErrMsg] = useState("");
+
+  const successRef = useRef();
+  const [successMsg, setSuccessMsg] = useState("");
   const [success, setSuccess] = useState(false);
 
   // retrieve list of countries and cities from API
@@ -60,6 +63,7 @@ function AddCourse() {
       const result = await response.json();
       if (result.msg === "Added Successfully") {
         setSuccess(true);
+        setSuccessMsg("Added Course");
         setCourseId("");
         setCourseName("");
         setStartDate("");
@@ -67,7 +71,6 @@ function AddCourse() {
         setCountry("");
       } else if (result.error) throw result.error;
     } catch (error) {
-      console.log("error");
       setErrMsg(error);
       errRef.current.focus();
     }
@@ -83,21 +86,27 @@ function AddCourse() {
 
   return (
     <>
-      {success ? (
-        <section>
-          <h1>Course Added!</h1>
-        </section>
-      ) : (
-        <section className={styles.FormContainer}>
-          <p
-            ref={errRef}
-            className={errMsg ? "errMsg" : "offscreen"}
-            aria-live="assertive"
-          >
-            {errMsg}
-          </p>
-          <h1>Add Course</h1>
-          <form className={styles.ActiveForm} onSubmit={submitCourse}>
+      <div className={styles.bigDaddy2}>
+        <div className={styles.FormContainer}>
+          {success ? (
+            <p
+              ref={successRef}
+              className={successMsg ? "errMsgPrj" : "offscreen"}
+              aria-live="assertive"
+            >
+              {successMsg}
+            </p>
+          ) : (
+            <p
+              ref={errRef}
+              className={errMsg ? "errMsgPrj" : "offscreen"}
+              aria-live="assertive"
+            >
+              {errMsg}
+            </p>
+          )}
+          <form onSubmit={submitCourse} className={styles.ActiveForm}>
+            <h1 className={styles.title}>Add Course</h1>
             <label htmlFor="courseId">Course Id:</label>
             <input
               type="text"
@@ -169,8 +178,8 @@ function AddCourse() {
             ) : null}
             <button className={styles.FormSubmitBtn}>Submit</button>
           </form>
-        </section>
-      )}
+        </div>
+      </div>
     </>
   );
 }
