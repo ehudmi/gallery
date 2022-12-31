@@ -68,7 +68,6 @@ function SearchAuthors() {
               </p>
               {/* <form className={styles.ActiveForm}> */}
               <h1 className={styles.listHeader}>Search Authors</h1>
-
               <div className={styles.searchContainer}>
                 <label className={styles.lblSearchAbout} htmlFor="author_name">
                   Author Name
@@ -123,7 +122,7 @@ function SearchAuthors() {
             </div>
           </div>
           {searchData !== undefined ? (
-            <div>
+            <div className={styles.mapContainer}>
               {searchData.map((item, index) => {
                 return (
                   <div className={styles.itemBigDaddy} key={index}>

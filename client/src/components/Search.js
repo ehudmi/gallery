@@ -12,26 +12,33 @@ function Search() {
         <div className={styles.ListContainer}>
           <h1 className={styles.listHeader}>Search</h1>
           <div className={styles.btnContainer}>
-            <label htmlFor="projects">Project Name</label>
-            <input
-              type={"radio"}
-              id="projects"
-              name="search_field"
-              value={"project"}
-              onChange={(e) => {
-                setSearchField(e.target.value);
-              }}
-            />
-            <label htmlFor="authors">Author Name</label>
-            <input
-              type={"radio"}
-              id="authors"
-              name="search_field"
-              value={"author"}
-              onChange={(e) => {
-                setSearchField(e.target.value);
-              }}
-            />
+            <label className={styles.lblSearch} htmlFor="projects">
+              <input
+                className={styles.inpSearch}
+                type={"radio"}
+                id="projects"
+                name="search_field"
+                value={"project"}
+                onChange={(e) => {
+                  setSearchField(e.target.value);
+                }}
+              />
+              <span className={styles.lblSpan}>Project Name</span>
+            </label>
+
+            <label className={styles.lblSearch} htmlFor="authors">
+              <input
+                className={styles.inpSearch}
+                type={"radio"}
+                id="authors"
+                name="search_field"
+                value={"author"}
+                onChange={(e) => {
+                  setSearchField(e.target.value);
+                }}
+              />
+              <span className={styles.lblSpan}> Author Name</span>
+            </label>
           </div>
         </div>
       </div>

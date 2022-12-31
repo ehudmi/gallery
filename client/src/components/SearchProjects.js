@@ -59,7 +59,7 @@ function SearchProjects() {
   if (data.length > 0) {
     return (
       <>
-        <div>
+        <div className={styles.motherContainer}>
           <div className={styles.bigDaddy}>
             <div className={styles.ListContainer}>
               <p
@@ -71,10 +71,13 @@ function SearchProjects() {
               </p>
               {/* <div className={styles.ActiveForm}> */}
               <h1 className={styles.listHeader}>Search Projects</h1>
-              <label htmlFor="project_name">Project Name</label>
               <div className={styles.searchContainer}>
-                <div style={{ width: "200px" }}>
+                <label className={styles.lblSearchAbout} htmlFor="project_name">
+                  Project Name
+                </label>
+                <div style={{ width: "283px" }}>
                   <Dropdown
+                    className={styles.inpSearchAbout}
                     options={data.map((item) => ({
                       id: item.id,
                       name: item.name,
@@ -89,17 +92,21 @@ function SearchProjects() {
                   />
                 </div>
                 <button
+                  className={` btn ${styles.submitPrj} ${styles.searchBtn}`}
                   onClick={() => {
                     sessionStorage.setItem("project_id", selectedProject.id);
                     return navigate("/project_details");
                   }}
                 >
-                  Take me to the project
+                  To Project
                 </button>
               </div>
-              <div className={styles.searchContainer}>
-                <label htmlFor="search_term">Search Description</label>
+              <div className={styles.searchAboutContainer}>
+                <label className={styles.lblSearchAbout} htmlFor="search_term">
+                  Pj Description
+                </label>
                 <input
+                  className={styles.inpSearchAbout}
                   type={"text"}
                   id="search_term"
                   name="search_term"
@@ -109,16 +116,15 @@ function SearchProjects() {
                 />
                 <button
                   onClick={handleSearch}
-                  className={` btn ${styles.submitPrj}`}
+                  className={` btn ${styles.submitPrj} ${styles.searchBtn}`}
                 >
                   Search
                 </button>
               </div>
-              {/* </div> */}
             </div>
           </div>
           {searchData !== undefined ? (
-            <div>
+            <div className={styles.mapContainer}>
               {searchData.map((item, index) => {
                 return (
                   <div className={styles.itemBigDaddy} key={index}>
