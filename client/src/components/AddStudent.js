@@ -108,7 +108,7 @@ function AddStudent() {
             </p>
           )}
 
-          <form className={styles.ActiveForm} onSubmit={submitStudent}>
+          <form className={styles.adminActiveForm} onSubmit={submitStudent}>
             <h1 className={styles.title}>Add Student</h1>
             <label htmlFor="firstName">
               First Name:

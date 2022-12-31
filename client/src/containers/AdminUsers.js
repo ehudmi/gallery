@@ -103,10 +103,10 @@ function AdminUsers() {
                     return navigate("/user_comments");
                   }}
                 >
-                  User Name: {item.first_name} {item.last_name}
-                  Email: {item.email}
-                  Role: {item.role}
-                  About: {item.about}
+                  <div>
+                    User Name: {item.first_name} {item.last_name}
+                  </div>
+                  <div> Role: {item.role}</div>
                 </h3>
                 <span className={styles.deleteIcon}>
                   <FontAwesomeIcon

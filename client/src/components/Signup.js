@@ -115,12 +115,12 @@ function Signup() {
   return (
     <>
       {success ? (
-        <section className={styles.FormContainer}>
+        <div className={styles.FormContainer}>
           <h1>Success!</h1>
-          <p>
+          <p className={styles.line}>
             <a href="login">Sign In</a>
           </p>
-        </section>
+        </div>
       ) : (
         <section className={styles.FormContainer}>
           <p

@@ -105,7 +105,7 @@ function AddCourse() {
               {errMsg}
             </p>
           )}
-          <form onSubmit={submitCourse} className={styles.ActiveForm}>
+          <form onSubmit={submitCourse} className={styles.adminActiveForm}>
             <h1 className={styles.title}>Add Course</h1>
             <label htmlFor="courseId">Course Id:</label>
             <input
@@ -139,8 +139,9 @@ function AddCourse() {
               required
             />
             {data?.length > 0 ? (
-              <div style={{ width: "200px" }}>
+              <div className={styles.dropdown}>
                 <Dropdown
+                  className={styles.inpSearchAbout}
                   options={data.map((item, index) => ({
                     name: item.country,
                     id: index,

@@ -30,12 +30,12 @@ function Logout() {
 
   if (loggedOut === true && authState === "") {
     return (
-      <>
+      <div className={styles.logoutContainer}>
         <h1>You have been logged out</h1>
         <span className={styles.line}>
           <a href="login">Sign In</a>
         </span>
-      </>
+      </div>
     );
   } else {
     return <div>Failed to log you out</div>;
