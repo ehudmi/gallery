@@ -20,7 +20,7 @@ app.use(
   })
 );
 
-// app.use("/", express.static(path.resolve(__dirname, "./client/build")));
+app.use("/", express.static(path.resolve(__dirname, "./client/build")));
 
 app.use("/users", require("./routes/user.routes"));
 app.use("/projects", require("./routes/project.routes"));
