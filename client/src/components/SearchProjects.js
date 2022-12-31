@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import Dropdown from "./Dropdown";
-import styles from "../styles/ListContainer.module.css";
+import styles from "../styles/Search.module.css";
 
 function SearchProjects() {
   const [searchTerm, setSearchTerm] = useState("");

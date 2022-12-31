@@ -1,7 +1,7 @@
 import { useState } from "react";
 import SearchAuthors from "./SearchAuthors";
 import SearchProjects from "./SearchProjects";
-import styles from "../styles/ListContainer.module.css";
+import styles from "../styles/Search.module.css";
 
 function Search() {
   const [searchField, setSearchField] = useState("");
