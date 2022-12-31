@@ -66,7 +66,6 @@ function SearchAuthors() {
               >
                 {errMsg}
               </p>
-              {/* <form className={styles.ActiveForm}> */}
               <h1 className={styles.listHeader}>Search Authors</h1>
               <div className={styles.searchContainer}>
                 <label className={styles.lblSearchAbout} htmlFor="author_name">
@@ -118,7 +117,6 @@ function SearchAuthors() {
                   Search
                 </button>
               </div>
-              {/* </form> */}
             </div>
           </div>
           {searchData !== undefined ? (

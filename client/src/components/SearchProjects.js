@@ -69,7 +69,6 @@ function SearchProjects() {
               >
                 {errMsg}
               </p>
-              {/* <div className={styles.ActiveForm}> */}
               <h1 className={styles.listHeader}>Search Projects</h1>
               <div className={styles.searchContainer}>
                 <label className={styles.lblSearchAbout} htmlFor="project_name">

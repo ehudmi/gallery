@@ -84,7 +84,7 @@ select {
 .listHeader {
   color: white;
   text-shadow: rgb(64, 64, 64) 5px 3px;
-  margin: 30px;
+  margin: 15px 30px;
   font-size: 50px;
 }
 
@@ -124,7 +124,7 @@ select {
 .btnContainer {
   display: flex;
   margin-bottom: 20px;
-  justify-content: space-around;
+  justify-content: center;
   align-items: center;
 }
 
@@ -136,7 +136,7 @@ select {
 
 .lblSearch {
   width: fit-content;
-  font-size: 34px;
+  font-size: 10px;
   display: flex;
   cursor: pointer;
   font-weight: 500;
@@ -165,7 +165,7 @@ select {
   padding: 0.375em 0.75em 0.375em 0.375em;
   border-radius: 99em;
   transition: 0.25s ease;
-  font-size: 30px;
+  font-size: 20px;
 }
 
 .lblSpan:hover {
