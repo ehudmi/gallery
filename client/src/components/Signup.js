@@ -115,7 +115,7 @@ function Signup() {
   return (
     <>
       {success ? (
-        <section>
+        <section className={styles.FormContainer}>
           <h1>Success!</h1>
           <p>
             <a href="login">Sign In</a>
