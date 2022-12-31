@@ -92,7 +92,7 @@ function Login() {
       <p className={styles.alreadyReg}>
         Need an account?
         <br />
-        <span className="line">
+        <span className={styles.line}>
           <a href="signup">Sign Up</a>
         </span>
       </p>

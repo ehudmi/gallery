@@ -126,6 +126,10 @@ textarea {
   margin-top: 60px;
 }
 
+.line {
+  color: white;
+}
+
 .listHeader {
   color: white;
   text-shadow: rgb(64, 64, 64) 5px 3px;

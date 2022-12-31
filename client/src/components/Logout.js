@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import useAuth from "../hooks/useAuth";
+import styles from "../styles/FormComponents.module.css";
 
 function Logout() {
   const { authState, setAuthState } = useAuth();
@@ -30,10 +31,8 @@ function Logout() {
   if (loggedOut === true && authState === "") {
     return (
       <>
-        <p>You have been logged out</p>
-        <p>Your auth state is {authState}</p>
-        <p>Your session data is {sessionStorage.key(0)}</p>
-        <span className="line">
+        <h1>You have been logged out</h1>
+        <span className={styles.line}>
           <a href="login">Sign In</a>
         </span>
       </>

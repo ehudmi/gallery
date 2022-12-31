@@ -132,7 +132,7 @@ function Signup() {
           </p>
           <div className={styles.alreadyReg}>
             Already registered?
-            <span className="line">
+            <span className={styles.line}>
               <a href="login">Sign In</a>
             </span>
           </div>

@@ -116,7 +116,7 @@ select {
 }
 
 .listItem:hover {
-  color: rgb(209, 138, 30);
+  color: #d18a1e;
   cursor: pointer;
   transition: all 0.4s ease;
 }

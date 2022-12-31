@@ -45,6 +45,13 @@
   color: white;
 }
 
+.line > a {
+  color: rgb(214, 153, 41);
+}
+.line > a:hover {
+  color: rgb(255, 255, 255);
+}
+
 input,
 select,
 label {
