@@ -8,4 +8,5 @@ const db = knex({
   },
 });
 console.log("my connection",process.env.DATABASE_URL)
+
 module.exports = db;
