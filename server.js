@@ -13,12 +13,12 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cookieParser());
 // app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
-app.use(
-  cors({
-    credentials: true,
-    origin: "https://gallery-project-di.herokuapp.com",
-  })
-);
+// app.use(
+//   cors({
+//     credentials: true,
+//     origin: "https://project-gallery-qjhs.onrender.com/",
+//   })
+// );
 
 app.use("/", express.static(path.resolve(__dirname, "./client/build")));
 
