@@ -2,11 +2,8 @@ const knex = require("knex");
 
 const db = knex({
   client: "pg",
-  connection: {
-    connectionString: process.env.DATABASE_URL,
-    ssl: { rejectUnauthorized: false },
-  },
+  connection: "postgresql://postgres:h1Q8pFvY1uRokM7f@db.nghssamptdjccacinnuy.supabase.co:5432/postgres"
 });
-console.log("my connection",process.env.DATABASE_URL)
+console.log("my connection",db.connection)
 
 module.exports = db;
