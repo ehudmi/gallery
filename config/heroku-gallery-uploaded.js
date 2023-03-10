@@ -7,5 +7,5 @@ const db = knex({
     ssl: { rejectUnauthorized: false },
   },
 });
-
+console.log("my connection",process.env.DATABASE_URL)
 module.exports = db;
