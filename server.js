@@ -16,7 +16,7 @@ app.use(cookieParser());
 app.use(
   cors({
     credentials: true,
-    origin: "https://gallery-project-di.herokuapp.com",
+    origin: "https://project-gallery-qjhs.onrender.com",
   })
 );
 
