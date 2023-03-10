@@ -1,4 +1,4 @@
-const { db } = require("../config/heroku-gallery-local");
+const { db } = require("../config/heroku-gallery-uploaded");
 
 const _readDbSingleAuthor = (table1, column1, criteria) => {
   return db
